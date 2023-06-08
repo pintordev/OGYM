@@ -1,0 +1,74 @@
+/* font */
+* {
+	font-family: "Noto Sans KR", sans-serif;
+}
+
+/* normalize */
+body,
+ul,
+li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-bottom: 0;
+}
+a {
+	color: inherit;
+	text-decoration: none;
+}
+section {
+	width: 1000px;
+	margin: 0 auto;
+	/* 	border: 1px solid rgb(0, 0, 0, 0.3); */
+}
+.btn {
+	background-color: gray;
+	padding: 8px 16px;
+	border-radius: 5px;
+	color: white;
+}
+.btn-sm {
+	background-color: gray;
+	padding: 5px 10px;
+	border-radius: 5px;
+	color: white;
+}
+.sort-btn {
+	border: none;
+	color: rgba(0, 0, 0, 0.5);
+}
+
+/* nav-bar-section css */
+.nav-bar-section {
+	height: 90px;
+	/* 	border: 1px solid red; */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.nav-bar-section > .left-box {
+	display: flex;
+}
+.nav-bar-section > .left-box > .logo-box {
+	font-weight: bold;
+	font-size: 2.5rem;
+	line-height: 90px;
+}
+.nav-bar-section > .left-box > .left-nav > li {
+	display: inline-block;
+	line-height: 90px;
+	margin-left: 20px;
+}
+
+.nav-bar-section > .right-box > .right-nav > li {
+	display: inline-block;
+	line-height: 90px;
+	margin-left: 20px;
+}
