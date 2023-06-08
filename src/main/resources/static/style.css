@@ -23,26 +23,87 @@ a {
 	color: inherit;
 	text-decoration: none;
 }
+input:focus,
+select:focus,
+option:focus,
+textarea:focus,
+button:focus {
+	outline: none;
+}
 section {
 	width: 1000px;
 	margin: 0 auto;
 	/* 	border: 1px solid rgb(0, 0, 0, 0.3); */
 }
+section.form {
+	width: 400px;
+	margin: 0 auto;
+	/* 	border: 1px solid rgb(128, 128, 128); */
+}
+.input-box {
+	display: flex;
+	flex-direction: column;
+}
 .btn {
 	background-color: gray;
 	padding: 8px 16px;
-	border-radius: 5px;
+	border-radius: 0.3rem;
 	color: white;
+	border: none;
 }
 .btn-sm {
 	background-color: gray;
 	padding: 5px 10px;
-	border-radius: 5px;
+	border-radius: 0.3rem;
 	color: white;
+	border: none;
+}
+.btn-long {
+	width: 100%;
 }
 .sort-btn {
 	border: none;
-	color: rgba(0, 0, 0, 0.5);
+	color: rgb(128, 128, 128);
+	background-color: rgb();
+}
+.search-btn {
+	color: black;
+	font-size: 0.9rem;
+	margin: 0 10px;
+}
+.comment-number {
+	color: rgb(128, 128, 128);
+}
+.page-list {
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.page-list > li {
+	/* 	border: 1px solid red; */
+	width: 35px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 0.8rem;
+	color: rgb(128, 128, 128);
+	text-align: center;
+	border-top: 1px solid rgb(128, 128, 128);
+	border-bottom: 1px solid rgb(128, 128, 128);
+	border-left: 1px solid rgb(128, 128, 128);
+}
+.page-list > li.page-start {
+	border-top-left-radius: 0.5rem;
+	border-bottom-left-radius: 0.5rem;
+}
+.page-list > li.page-end {
+	border-right: 1px solid rgb(128, 128, 128);
+	border-top-right-radius: 0.5rem;
+	border-bottom-right-radius: 0.5rem;
+}
+.page-list > li.page-active {
+	color: rgba(0, 0, 0);
+	font-weight: bold;
 }
 
 /* nav-bar-section css */
@@ -71,4 +132,56 @@ section {
 	display: inline-block;
 	line-height: 90px;
 	margin-left: 20px;
+}
+
+/* top-banner-section css */
+.top-banner-section {
+	margin-top: 20px;
+}
+.top-banner-section > img {
+	width: 1000px;
+	object-fit: cover;
+}
+
+/* signup-form-section css */
+.signup-form-section > .logo-box {
+	font-weight: bold;
+	font-size: 2.5rem;
+	line-height: 90px;
+	text-align: center;
+}
+.signup-form-section > .signup-form > .input-box input {
+	height: 40px;
+	padding: 0 10px;
+	font-size: 0.9rem;
+	border-radius: 0.3rem;
+	border: 1px solid rgb(128, 128, 128);
+}
+.signup-form-section > .signup-form > .input-box > div {
+	display: flex;
+}
+.signup-form-section > .signup-form > .input-box > .three-part > input {
+	width: 100%;
+}
+.signup-form-section
+	> .signup-form
+	> .input-box
+	> .three-part
+	> input.margined {
+	margin-right: 5px;
+}
+.signup-form-section > .signup-form > .input-box > .two-part > input {
+	margin-right: 5px;
+	flex: 1 1 auto;
+}
+.signup-form-section > .signup-form > .input-box > .error {
+	padding: 0 10px;
+	font-size: 0.7rem;
+	color: red;
+	height: 25px;
+	line-height: 20px;
+	/* 		visibility: hidden; opacity: 0; */
+}
+.signup-form-section > .signup-form > .btn-long {
+	height: 40px;
 }

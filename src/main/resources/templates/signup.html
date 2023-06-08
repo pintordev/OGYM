@@ -1,0 +1,63 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <!-- 구현 Start -->
+    <!-- signup-form-section start -->
+    <section class="form signup-form-section">
+        <div class="logo-box">
+            <span>Welcome to</span>
+            <span>oGym</span>
+        </div>
+        <form class="signup-form" action="">
+            <div class="input-box loginId">
+                <input type="text" placeholder="로그인 ID를 입력해주세요">
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <div class="input-box password">
+                <input type="password" placeholder="비밀번호를 입력해주세요">
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <div class="input-box passwordCheck">
+                <input type="password" placeholder="입력한 비밀번호를 다시 한번 입력해주세요">
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <div class="input-box nickname">
+                <input type="text" placeholder="닉네임을 입력해주세요">
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <div class="input-box username">
+                <input type="text" placeholder="이름을 입력해주세요">
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <div class="input-box birthDate">
+                <div class="three-part">
+                    <input class="margined" type="text" placeholder="생년(4자)">
+                    <input class="margined" type="text" placeholder="월">
+                    <input type="text" placeholder="일">
+                </div>
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <div class="input-box email">
+                <div class="two-part">
+                    <input class="email" type="email" placeholder="email@example.com">
+                    <button class="btn">인증번호 발송</button>
+                </div>
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <div class="input-box code">
+                <div class="two-part">
+                    <input class="code" type="text" placeholder="발송된 인증번호를 입력해주세요">
+                    <button class="btn">인증번호 확인</button>
+                </div>
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <div class="input-box phone">
+                <input class="phone" type="text" placeholder="휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)">
+                <div class="error">길환이형 에러남</div>
+            </div>
+            <button class="btn btn-long">회원가입</button>
+        </form>
+    </section>
+    <!-- signup-form-section end -->
+    <!-- 구현 End -->
+</div>
+</html>

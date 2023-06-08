@@ -19,8 +19,6 @@ public class MainController {
 
     @GetMapping("/index")
     public String index() {
-        SiteUser user = this.userService.getUserByLoginId("ogym_admin");
-        System.out.println(user.getAuthority().getValue());
         return "index";
     }
 
