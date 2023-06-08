@@ -1,6 +1,5 @@
-package com.ogym.project.recomment;
+package com.ogym.project.reComment;
 
-import com.ogym.project.board.Board;
 import com.ogym.project.comment.Comment;
 import com.ogym.project.user.SiteUser;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.ogym.project.comment;
 
 import com.ogym.project.board.Board;
-import com.ogym.project.recomment.ReComment;
+import com.ogym.project.reComment.ReComment;
 import com.ogym.project.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;

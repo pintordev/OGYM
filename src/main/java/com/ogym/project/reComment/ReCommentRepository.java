@@ -1,4 +1,4 @@
-package com.ogym.project.recomment;
+package com.ogym.project.reComment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
