@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+<html layout:decorate="~{layout}">
+<script layout:fragment="simplemde" type="text/javascript" th:src="@{/simplemde.min.js}"></script>
+<div layout:fragment="content">
+    <!-- 구현 Start -->
+    <!-- header-section start -->
+    <section th:replace="~{community_header :: community_headerFragment}"></section>
+    <!-- header-section end -->
+
+    <!-- board-write-section start -->
+    <section class="board-write-section">
+        <h3>글쓰기</h3>
+        <form class="board-write-form" action="">
+            <div class="board-write-header">
+                <div>
+                    <select>
+                        <option th:each="boardCategory : ${boardCategoryList}" th:value="${boardCategory.name}" th:text="${boardCategory.name}"></option>
+                    </select>
+                </div>
+                <input type="text" placeholder="제목">
+            </div>
+            <div class="board-write-body">
+                <textarea id="editor"></textarea>
+            </div>
+            <div class="board-write-btn">
+                <button class="btn">취소</button>
+                <button class="btn">저장하기</button>
+            </div>
+        </form>
+    </section>
+    <!-- board-write-section end -->
+    <!-- 구현 End -->
+    <script layout:fragment="script" type='text/javascript'>
+        const editMde = new SimpleMDE({
+	        element: $("#editor")[0],
+	        placeholder: "내용을 입력해주세요",
+	        hideIcons: ["guide", "fullscreen", "side-by-side"]
+        });
+    </script>
+</div>
 </html>

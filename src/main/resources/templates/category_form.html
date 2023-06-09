@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+  <!-- 구현 Start -->
+  <form th:action="@{/admin/category}" method="post">
+    <label for="name">카테고리</label>
+    <input type="text" name="name" id="name">
+    <button type="submit">저장하기</button>
+  </form>
+  <!-- 구현 End -->
+</div>
 </html>

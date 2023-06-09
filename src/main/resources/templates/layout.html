@@ -9,7 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" th:href="@{/simplemde.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <script type="text/javascript" th:src="@{/jquery-3.7.0.min.js}"></script>
+    <th:block layout:fragment="simplemde"></th:block>
     <title>oGym</title>
 </head>
 <body>
@@ -19,5 +22,8 @@
     <th:block layout:fragment="content"></th:block>
     <!-- 기본 템플릿 안에 삽입될 내용 End -->
     <!-- footer -->
+    <!-- 자바스크립트 Start -->
+    <th:block layout:fragment="script"></th:block>
+    <!-- 자바스크립트 End -->
 </body>
 </html>
