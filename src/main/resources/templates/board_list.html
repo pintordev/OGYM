@@ -1,5 +1,5 @@
 <!-- board-list-section start -->
-<section th:fragment="board_listFragment" class="board-list-section board-main">
+<section th:fragment="board_listFragment" class="board-list-section">
     <div class="list-header">
         <div class="left-box">
             <div class="list-paging-box">
@@ -10,19 +10,19 @@
                 </select>
             </div>
             <div class="sort-button-box">
-                <button class="sort-btn">
+                <button class="sort-btn" id="comment-sort-list">
                     <i class="fa-solid fa-list"></i>
                 </button>
-                <button class="sort-btn">
+                <button class="sort-btn" id="comment-sort-vote">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </button>
-                <button class="sort-btn">
+                <button class="sort-btn" id="comment-sort-comment">
                     <i class="fa-solid fa-comment-dots"></i>
                 </button>
             </div>
         </div>
         <div class="right-box">
-            <button class="write-btn btn-sm">글쓰기</button>
+            <a href="/board/write" class="write-btn btn-sm">글쓰기</a>
         </div>
     </div>
     <div class="list-content">
@@ -34,6 +34,19 @@
             <li class="create-date">작성시간</li>
             <li class="view">조회수</li>
             <li class="heart">추천수</li>
+        </ul>
+        <ul th:each="board, loop : ${boardPaging}" class="body" th:classappend="${board.id == presentBoard.id ? 'active' : ''}">
+            <li th:text="${boardPaging.getTotalElements - (boardPaging.number * boardPaging.size) - loop.index}" class="no"></li>
+            <li th:text="${board.boardCategory.name}" class="cate"></li>
+            <li class="content">
+                <a th:href="@{|/board/${board.id}|}" th:text="${board.title}"></a>
+            </li>
+            <li class="author">
+                <span th:text="${board.author.nickname}"></span>
+            </li>
+            <li class="create-date" th:text="${@commonUtil.timeDifference(board.createDate)}"></li>
+            <li class="view" th:text="${board.hit}"></li>
+            <li class="heart" th:text="${#lists.size(board.voter)}"></li>
         </ul>
         <ul>
             <li class="no">20</li>

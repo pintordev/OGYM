@@ -1,0 +1,281 @@
+<html layout:decorate="~{layout}">
+<script layout:fragment="simplemde" type="text/javascript" th:src="@{/simplemde.min.js}"></script>
+<div layout:fragment="content">
+  <!-- 구현 Start -->
+  <!-- board-header-section start -->
+  <section th:replace="~{board_header :: board_headerFragment}"></section>
+  <!-- board-header-section end -->
+
+  <!-- board-detail-section start -->
+  <section class="board-detail-section">
+    <div class="board-detail-header">
+      <div class="title-box">
+        <div th:text="${presentBoard.boardCategory.name}" class="title-category"></div>
+        <div th:text="${presentBoard.title}" class="title-subject"></div>
+      </div>
+      <div class="sub-box">
+        <div class="sub-left-box">
+          <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+          <div th:text="${presentBoard.author.nickname}" class="profile-name"></div>
+          <div th:text="${#temporals.format(presentBoard.createDate, 'yy.MM.dd HH:mm')}" class="create-date"></div>
+          <div th:if="${presentBoard.modifyDate != null}" th:text="|(수정됨 ${@commonUtil.timeDifference(presentBoard.modifyDate)})|" class="modify-date"></div>
+          <div class="modify-btn">
+            <span><i class="fa-solid fa-eraser"></i></span>
+          </div>
+          <div class="delete-btn">
+            <span><i class="fa-solid fa-trash"></i></span>
+          </div>
+        </div>
+        <div class="sub-right-box">
+          <div class="view-count">
+            <span><i class="fa-solid fa-eye"></i></span>
+            <span th:text="${presentBoard.hit}"></span>
+          </div>
+          <div class="vote-count">
+            <span><i class="fa-solid fa-thumbs-up"></i></span>
+            <span th:text="${#lists.size(presentBoard.voter)}"></span>
+          </div>
+          <div class="comment-count">
+            <span><i class="fa-solid fa-comment-dots"></i></span>
+            <span th:text="${#lists.size(presentBoard.commentList)}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="board-detail-body">
+      <div class="board-detail-content">
+			<span th:text="${presentBoard.content}"></span>
+      </div>
+      <div class="vote-btn btn">
+        <span><i class="fa-solid fa-thumbs-up"></i></span>
+        <span th:text="${#lists.size(presentBoard.voter)}"></span>
+      </div>
+    </div>
+  </section>
+  <!-- board-detail-section end -->
+
+  <!-- board-comment-section start -->
+  <section class="board-comment-section">
+    <div class="board-comment-header">
+      <div class="header-left-box">
+        <div>
+          <span>답글</span>
+          <span th:text="${#lists.size(presentBoard.commentList)}" class="comment-number"></span>
+        </div>
+        <div class="sort-button-box">
+          <button class="sort-btn">
+            <i class="fa-solid fa-list"></i>
+          </button>
+          <button class="sort-btn">
+            <i class="fa-solid fa-thumbs-up"></i>
+          </button>
+          <button class="sort-btn">
+            <i class="fa-solid fa-comment-dots"></i>
+          </button>
+        </div>
+      </div>
+      <div class="header-right-box">
+        <i class="fa-solid fa-pen-to-square"></i>
+      </div>
+    </div>
+    <div class="write-box">
+      <div class="eitor">
+        <textarea id="editor"></textarea>
+      </div>
+      <div class="write-btn btn">
+        <span>답글 등록</span>
+      </div>
+    </div>
+    <div class="board-comment-list">
+      <div class="comment">
+        <div class="comment-box">
+          <div class="comment-profile-box">
+            <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+            <div class="profile-name">최기범</div>
+            <div class="create-date">1일 전</div>
+            <div class="modify-date">
+              <span>(수정됨 1시간 전)</span>
+            </div>
+            <div class="modify-btn">
+              <span><i class="fa-solid fa-eraser"></i></span>
+            </div>
+            <div class="delete-btn">
+              <span><i class="fa-solid fa-trash"></i></span>
+            </div>
+          </div>
+          <div class="comment-content-box">
+					<span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, quia rerum! Saepe, quibusdam ad temporibus placeat commodi exercitationem at voluptatem, repudiandae, natus corporis fugiat? Tempora minus natus architecto quis omnis.
+						Molestiae, iure odio, maxime facilis alias neque earum porro voluptates eligendi inventore incidunt ullam corrupti? Dolorem fuga nostrum accusantium? Ipsum reiciendis impedit dolore culpa? Illo dolorum ex omnis dignissimos. Consequuntur.</span>
+          </div>
+          <div class="comment-btn-box">
+            <div class="vote-btn btn-sm">
+              <span><i class="fa-solid fa-thumbs-up"></i></span>
+              <span>11</span>
+            </div>
+            <div class="comment-btn btn-sm">
+              <span>댓글</span>
+            </div>
+          </div>
+        </div>
+        <div class="recomment">
+          <div class="recomment-box">
+            <div class="recomment-profile-box">
+              <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+              <div class="profile-name">최기범</div>
+              <div class="create-date">1일 전</div>
+              <div class="modify-date">
+                <span>(수정됨 1시간 전)</span>
+              </div>
+              <div class="modify-btn">
+                <span><i class="fa-solid fa-eraser"></i></span>
+              </div>
+              <div class="delete-btn">
+                <span><i class="fa-solid fa-trash"></i></span>
+              </div>
+            </div>
+            <div class="recomment-content-box">
+						<span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, quia rerum! Saepe, quibusdam ad temporibus placeat commodi exercitationem at voluptatem, repudiandae, natus corporis fugiat? Tempora minus natus architecto quis omnis.
+							Molestiae, iure odio, maxime facilis alias neque earum porro voluptates eligendi inventore incidunt ullam corrupti? Dolorem fuga nostrum accusantium? Ipsum reiciendis impedit dolore culpa? Illo dolorum ex omnis dignissimos. Consequuntur.</span>
+            </div>
+            <div class="recomment-btn-box">
+              <div class="vote-btn btn-sm">
+                <span><i class="fa-solid fa-thumbs-up"></i></span>
+                <span>11</span>
+              </div>
+              <div class="comment-btn btn-sm">
+                <span>댓글</span>
+              </div>
+            </div>
+          </div>
+          <div class="recomment-box">
+            <div class="recomment-profile-box">
+              <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+              <div class="profile-name">신광식</div>
+              <div class="create-date">10분 전</div>
+              <div class="modify-date">
+                <span>(수정됨 방금 전)</span>
+              </div>
+              <div class="modify-btn">
+                <span><i class="fa-solid fa-eraser"></i></span>
+              </div>
+              <div class="delete-btn">
+                <span><i class="fa-solid fa-trash"></i></span>
+              </div>
+            </div>
+            <div class="recomment-referer-box">
+              <span>@최기범</span>
+            </div>
+            <div class="recomment-content-box">
+              <span>똑같은 말 반복하지 마세요</span>
+            </div>
+            <div class="recomment-btn-box">
+              <div class="vote-btn btn-sm">
+                <span><i class="fa-solid fa-thumbs-up"></i></span>
+                <span>11</span>
+              </div>
+              <div class="comment-btn btn-sm">
+                <span>댓글</span>
+              </div>
+            </div>
+          </div>
+          <div class="recomment-box">
+            <div class="recomment-profile-box">
+              <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+              <div class="profile-name">김호현</div>
+              <div class="create-date">8분 전</div>
+              <div class="modify-btn">
+                <span><i class="fa-solid fa-eraser"></i></span>
+              </div>
+              <div class="delete-btn">
+                <span><i class="fa-solid fa-trash"></i></span>
+              </div>
+            </div>
+            <div class="recomment-referer-box">
+              <span>@신광식</span>
+            </div>
+            <div class="recomment-content-box">
+              <span>22</span>
+            </div>
+            <div class="recomment-btn-box">
+              <div class="vote-btn btn-sm">
+                <span><i class="fa-solid fa-thumbs-up"></i></span>
+                <span>11</span>
+              </div>
+              <div class="comment-btn btn-sm">
+                <span>댓글</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="comment">
+        <div class="comment-box">
+          <div class="comment-profile-box">
+            <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+            <div class="profile-name">문창빈</div>
+            <div class="create-date">2시간 전</div>
+            <div class="modify-date">
+              <span>(수정됨 50분 전)</span>
+            </div>
+            <div class="modify-btn">
+              <span><i class="fa-solid fa-eraser"></i></span>
+            </div>
+            <div class="delete-btn">
+              <span><i class="fa-solid fa-trash"></i></span>
+            </div>
+          </div>
+          <div class="comment-content-box">
+            <span>아파</span>
+          </div>
+          <div class="comment-btn-box">
+            <div class="vote-btn btn-sm">
+              <span><i class="fa-solid fa-thumbs-up"></i></span>
+              <span>11</span>
+            </div>
+            <div class="comment-btn btn-sm">
+              <span>댓글</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="page-list">
+        <li class="page-start">처음</li>
+        <li class="page-middle"><i class="fa-solid fa-angles-left"></i></li>
+        <li class="page-middle"><i class="fa-solid fa-angle-left"></i></li>
+        <li class="page-middle page-active">1</li>
+        <li class="page-middle">2</li>
+        <li class="page-middle">3</li>
+        <li class="page-middle">4</li>
+        <li class="page-middle">5</li>
+        <li class="page-middle"><i class="fa-solid fa-angle-right"></i></li>
+        <li class="page-middle"><i class="fa-solid fa-angles-right"></i></li>
+        <li class="page-end">끝</li>
+      </ul>
+    </div>
+  </section>
+  <!-- board-comment-section end -->
+
+  <!-- middle-banner-section start -->
+  <section class="middle-banner-section">
+    <img th:src="@{/image/middle-banner-1.jpg}" alt="">
+  </section>
+  <!-- middle-banner-section end -->
+
+  <!-- board-list-section start -->
+  <section th:replace="~{board_list :: board_listFragment}"></section>
+  <!-- board-list-section end -->
+  <!-- 구현 End -->
+
+</div>
+<script layout:fragment="script" type='text/javascript'>
+    let editMde = new SimpleMDE({
+        element: $("#editor")[0],
+        placeholder: "내용을 입력해주세요",
+        hideIcons: ["guide", "fullscreen", "side-by-side"]
+    });
+
+    $(".vote-btn").click(function() {
+        confirm("정말 추천하시겠습니까?");
+    });
+</script>
+</html>

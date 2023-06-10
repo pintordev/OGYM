@@ -16,14 +16,20 @@
     <title>oGym</title>
 </head>
 <body>
-    <!-- navigation bar -->
+    <!-- nav-bar-section start -->
     <section th:replace="~{navbar :: navbarFragment}"></section>
-    <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+    <!-- nav-bar-section end -->
+
+    <!-- 기본 템플릿 안에 삽입될 내용 start -->
     <th:block layout:fragment="content"></th:block>
-    <!-- 기본 템플릿 안에 삽입될 내용 End -->
-    <!-- footer -->
-    <!-- 자바스크립트 Start -->
+    <!-- 기본 템플릿 안에 삽입될 내용 end -->
+
+    <!-- footer-section start -->
+    <section th:replace="~{footer :: footerFragment}"></section>
+    <!-- footer-section end -->
+
+    <!-- 자바스크립트 start -->
     <th:block layout:fragment="script"></th:block>
-    <!-- 자바스크립트 End -->
+    <!-- 자바스크립트 end -->
 </body>
 </html>

@@ -9,32 +9,34 @@
     <!-- board-write-section start -->
     <section class="board-write-section">
         <h3>글쓰기</h3>
-        <form class="board-write-form" action="">
+        <form th:object="${boardForm}" method="post" class="board-write-form">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="board-write-header">
                 <div>
-                    <select>
+                    <select th:field="*{boardCategory}">
                         <option th:each="boardCategory : ${boardCategoryList}" th:value="${boardCategory.name}" th:text="${boardCategory.name}"></option>
                     </select>
                 </div>
-                <input type="text" placeholder="제목">
+                <input type="text" th:field="*{title}" placeholder="제목">
             </div>
             <div class="board-write-body">
-                <textarea id="editor"></textarea>
+                <textarea th:field="*{content}"></textarea>
             </div>
             <div class="board-write-btn">
-                <button class="btn">취소</button>
-                <button class="btn">저장하기</button>
+                <a href="/board" class="btn-sm cancel">취소</a>
+                <button type="submit" class="btn-sm">저장하기</button>
             </div>
         </form>
     </section>
     <!-- board-write-section end -->
     <!-- 구현 End -->
-    <script layout:fragment="script" type='text/javascript'>
-        const editMde = new SimpleMDE({
-	        element: $("#editor")[0],
-	        placeholder: "내용을 입력해주세요",
-	        hideIcons: ["guide", "fullscreen", "side-by-side"]
-        });
-    </script>
+
 </div>
+<script layout:fragment="script" type='text/javascript'>
+    let editMde = new SimpleMDE({
+        element: $("#content")[0],
+        placeholder: "내용을 입력해주세요",
+        hideIcons: ["guide", "fullscreen", "side-by-side"]
+    });
+</script>
 </html>

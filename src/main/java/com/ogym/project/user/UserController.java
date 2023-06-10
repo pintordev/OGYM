@@ -17,6 +17,11 @@ public class UserController {
         return "signup";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/find")
     public String findUser() {
         return "user_find";

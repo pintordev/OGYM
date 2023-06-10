@@ -1,0 +1,65 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+  <!-- 구현 Start -->
+  <!-- login-form-section start -->
+  <section class="form login-form-section">
+    <div class="logo-box">
+      <span>oGym</span>
+    </div>
+    <form class="login-form" action="">
+      <div class="input-box loginId">
+        <input id="loginId" type="text" placeholder="로그인 ID를 입력해주세요">
+        <div class="error"></div>
+      </div>
+      <div class="input-box password">
+        <input id="loginpassword" type="password" placeholder="비밀번호를 입력해주세요">
+        <div class="error"></div>
+      </div>
+      <button class="btn btn-long">로그인</button>
+    </form>
+    <div class="link-box">
+      <div class="signup-link">
+        <a href="/user/signup">회원가입</a>
+      </div>
+      <div class="delimiter"></div>
+      <div class="find-link">
+        <a href="/user/find">아이디/비밀번호 찾기</a>
+      </div>
+    </div>
+    <div>
+      <span class="login">간편 로그인</span>
+    </div>
+    <div class="login-logo">
+      <div class="logo" id="login-kakao">
+        <a href="#">
+          <img src="https://velog.velcdn.com/images/ohgil/post/23219782-71aa-482a-87d0-120e41daa363/image.png" alt="">
+        </a>
+      </div>
+      <div class="logo" id="login-naver">
+        <a href="">
+          <img src="https://velog.velcdn.com/images/ohgil/post/4aaf2e54-527b-4f9b-b890-d7df3d7f2ea1/image.png" alt="">
+        </a>
+      </div>
+      <div class="logo" id="login_google">
+        <a href="">
+          <img src="https://velog.velcdn.com/images/ohgil/post/0e09b57e-3e14-417f-b17c-604a665c827f/image.png" alt="">
+        </a>
+      </div>
+      <div class="logo" id="login_instagram">
+        <a href="">
+          <img src="https://velog.velcdn.com/images/ohgil/post/0c21c884-3b29-4a4d-b512-48790e4c9c52/image.png" alt="">
+        </a>
+      </div>
+      <div class="logo" id="login-facebook">
+        <a href="">
+          <img src="https://velog.velcdn.com/images/ohgil/post/74c1eb89-9a5d-4596-8977-84fe31a53613/image.png" alt="">
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- login-form-section end -->
+  <!-- 구현 End -->
+</div>
+<script layout:fragment="script" type="text/javascript">
+</script>
+</html>

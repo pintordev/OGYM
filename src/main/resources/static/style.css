@@ -30,6 +30,9 @@ textarea:focus,
 button:focus {
 	outline: none;
 }
+button:hover {
+    cursor: pointer;
+}
 section {
 	width: 1000px;
 	margin: 0 auto;
@@ -45,18 +48,28 @@ section.form {
 	flex-direction: column;
 }
 .btn {
-	background-color: gray;
+	background-color: rgb(128, 128, 128);
 	padding: 8px 16px;
 	border-radius: 0.3rem;
 	color: white;
 	border: none;
+	font-size: 0.8rem;
+}
+.btn:hover {
+    background-color: black;
+    cursor: pointer;
 }
 .btn-sm {
-	background-color: gray;
+	background-color: rgb(128, 128, 128);
 	padding: 5px 10px;
 	border-radius: 0.3rem;
 	color: white;
 	border: none;
+	font-size: 0.8rem;
+}
+.btn-sm:hover {
+    background-color: black;
+    cursor: pointer;
 }
 .btn-long {
 	width: 100%;
@@ -122,6 +135,9 @@ section.form {
 .CodeMirror {
     border: solid rgb(128, 128, 128);
     border-width: 0 1px 1px 1px;
+}
+.editor-statusbar {
+    display: none;
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -256,6 +272,96 @@ input[type="number"]::-webkit-inner-spin-button {
 	height: 40px;
 }
 
+/* login-form-section css */
+.login-form-section > .logo-box {
+	font-weight: bold;
+	font-size: 2.5rem;
+	line-height: 90px;
+	text-align: center;
+}
+.login-form-section > .login-form > .input-box input {
+	height: 40px;
+	padding: 0 10px;
+	font-size: 0.9rem;
+	border-radius: 0.3rem;
+	border: 1px solid rgb(128, 128, 128);
+}
+.login-form-section > .login-form > .input-box > div {
+	display: flex;
+}
+.login-form-section > .login-form > .input-box > .three-part > input {
+	width: 100%;
+}
+.login-form-section > .login-form > .input-box > .three-part > input.margined {
+	margin-right: 5px;
+}
+.login-form-section > .login-form > .input-box > .two-part > input {
+	margin-right: 5px;
+	flex: 1 1 auto;
+}
+.login-form-section > .login-form > .input-box > .error {
+	padding: 0 10px;
+	font-size: 0.7rem;
+	color: red;
+	height: 25px;
+	line-height: 20px;
+	/* 		visibility: hidden; opacity: 0; */
+}
+.login-form-section > .login-form > .btn-long {
+	height: 40px;
+}
+
+.login-form-section > .link-box {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 5px;
+	align-items: center;
+	font-size: 0.8rem;
+}
+.login-form-section > .link-box > .delimiter {
+	margin: 0 5px;
+	margin-top: 2px;
+	border: 1px solid;
+	height: 0.5rem;
+}
+
+.login {
+	display: flex;
+	align-items: center;
+	margin: 15px 0px;
+}
+.login::before {
+	content: "";
+	flex-grow: 1;
+	margin: 0px 10px 0px 0px;
+	background: rgba(0, 0, 0, 0.35);
+	height: 1px;
+	line-height: 0px;
+}
+.login::after {
+	content: "";
+	flex-grow: 1;
+	margin: 0px 0px 0px 10px;
+	background: rgba(0, 0, 0, 0.35);
+	height: 1px;
+	font-size: 0px;
+	line-height: 0px;
+}
+.login-logo {
+	width: 100%;
+	display: flex;
+	position: relative;
+	justify-content: space-between;
+}
+.login-logo > .logo {
+	width: 12%;
+}
+.login-logo > .logo img {
+	width: 100%;
+	object-fit: cover;
+	border-radius: 0.5rem;
+}
+
 /* user-find-form-section css */
 .user-find-form-section > .logo-box {
 	font-weight: bold;
@@ -372,11 +478,16 @@ input[type="number"]::-webkit-inner-spin-button {
 	margin-left: 10px;
 }
 .board-write-section > .board-write-form > .board-write-btn {
-	text-align: end;
+    display: flex;
+    justify-content: flex-end;
+    margin-top:10px;
+}
+.board-write-section > .board-write-form > .board-write-btn > .btn-sm.cancel {
+    margin-right: 5px;
 }
 
 /* board-list-section css */
-.board-list-section.board-main {
+.board-list-section {
     margin-top: 60px;
 }
 .board-list-section > .list-header {
@@ -397,6 +508,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .board-list-section > .list-header > .right-box {
 	margin-right: 5px;
+	display: flex;
 }
 .board-list-section > .list-header > .right-box > .write-btn {
 	border: none;
@@ -407,6 +519,10 @@ input[type="number"]::-webkit-inner-spin-button {
 	/* 	border-bottom: 2px solid rgba(0, 0, 0, 0.2); */
 	border-top: 2px solid rgb(128, 128, 128);
 	border-bottom: 2px solid rgb(128, 128, 128);
+}
+.board-list-section > .list-content > ul.body.active {
+    background-color: rgba(128, 128, 128, 0.1);
+    font-weight: bold;
 }
 .board-list-section > .list-content > ul {
 	display: flex;
@@ -470,4 +586,257 @@ input[type="number"]::-webkit-inner-spin-button {
 	width: 265px;
 	height: 28px;
 	padding-left: 10px;
+}
+
+/* board-detail-section css */
+.board-detail-section {
+	margin-top: 40px;
+}
+.board-detail-section > div {
+	padding: 15px;
+}
+.board-detail-section > .board-detail-header {
+	border-top: 2px solid rgb(128, 128, 128);
+	border-bottom: 3px double rgb(128, 128, 128);
+}
+.board-detail-section > .board-detail-header > .title-box {
+	display: flex;
+	font-size: 1.1rem;
+}
+.board-detail-section > .board-detail-header > .title-box > .title-category {
+	margin-right: 20px;
+}
+.board-detail-section > .board-detail-header > .title-box > .title-subject {
+	font-weight: bold;
+}
+
+.board-detail-section > .board-detail-header > .sub-box {
+	margin-top: 15px;
+	font-size: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.board-detail-section > .board-detail-header > .sub-box > .sub-left-box > div {
+	display: inline-block;
+}
+.board-detail-section
+	> .board-detail-header
+	> .sub-box
+	> .sub-left-box
+	> .profile-name {
+	margin-left: 5px;
+	margin-right: 10px;
+}
+.board-detail-section
+	> .board-detail-header
+	> .sub-box
+	> .sub-left-box
+	> .modify-date {
+	margin-right: 10px;
+}
+.board-detail-section
+	> .board-detail-header
+	> .sub-box
+	> .sub-left-box
+	> .modify-btn {
+	margin-left: 10px;
+	margin-right: 5px;
+}
+
+.board-detail-section > .board-detail-header > .sub-box > .sub-right-box > div {
+	display: inline-block;
+}
+.board-detail-section
+	> .board-detail-header
+	> .sub-box
+	> .sub-right-box
+	> .vote-count {
+	margin: 0 5px;
+}
+
+.board-detail-section > .board-detail-body {
+	border-bottom: 1px solid rgb(128, 128, 128);
+	display: flex;
+	flex-direction: column;
+}
+.board-detail-section > .board-detail-body > .board-detail-content {
+    min-height: 250px;
+}
+.board-detail-section > .board-detail-body > .vote-btn {
+	margin: 30px auto 0 auto;
+}
+
+/* board-comment-section css */
+.board-comment-section > .board-comment-header {
+	padding: 15px;
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid rgb(128, 128, 128);
+}
+.board-comment-section > .board-comment-header > .header-left-box > div {
+	display: inline-block;
+}
+.board-comment-section
+	> .board-comment-header
+	> .header-left-box
+	> .sort-button-box {
+	margin-left: 10px;
+	font-size: 0;
+}
+
+.board-comment-section > .write-box {
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	border-bottom: 1px solid rgb(128, 128, 128);
+}
+.board-comment-section > .write-box > .write-btn {
+	margin: 10px 0 0 auto;
+}
+
+.board-comment-section > .board-comment-list > .comment > .comment-box {
+	padding: 15px;
+	font-size: 0.9rem;
+	border-bottom: 1px solid rgb(128, 128, 128);
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-profile-box
+	> div {
+	display: inline-block;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-profile-box
+	> .profile-name {
+	margin-left: 3px;
+	margin-right: 6px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-profile-box
+	> .modify-btn {
+	margin-left: 6px;
+	margin-right: 3px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-content-box {
+	margin-top: 10px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-btn-box {
+	margin-top: 10px;
+	display: flex;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-btn-box
+	> .vote-btn {
+	margin-right: 5px;
+}
+
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box {
+	padding: 15px;
+	padding-left: 50px;
+	font-size: 0.9rem;
+	border-bottom: 1px solid rgb(128, 128, 128);
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-profile-box
+	> div {
+	display: inline-block;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-profile-box
+	> .profile-name {
+	margin-left: 3px;
+	margin-right: 6px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-profile-box
+	> .modify-btn {
+	margin-left: 6px;
+	margin-right: 3px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-content-box {
+	margin-top: 10px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-referer-box {
+	margin-top: 5px;
+	font-size: 0.8rem;
+	color: rgb(128, 128, 128);
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-btn-box {
+	margin-top: 10px;
+	display: flex;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .recomment
+	> .recomment-box
+	> .recomment-btn-box
+	> .vote-btn {
+	margin-right: 5px;
+}
+
+/* middle-banner-section css */
+.middle-banner-section {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+}
+.middle-banner-section > img {
+    height: 200px;
+}
+
+/* footer-section css */
+.footer-section {
+    margin-top: 200px;
 }
