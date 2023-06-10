@@ -123,6 +123,11 @@ section.form {
     border: solid rgb(128, 128, 128);
     border-width: 0 1px 1px 1px;
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 
 /* nav-bar-section css */
 .nav-bar-section {
@@ -168,6 +173,7 @@ section.form {
 	line-height: 90px;
 	text-align: center;
 }
+
 .signup-form-section > .signup-form > .input-box input {
 	height: 40px;
 	padding: 0 10px;
@@ -175,6 +181,11 @@ section.form {
 	border-radius: 0.3rem;
 	border: 1px solid rgb(128, 128, 128);
 }
+
+.signup-form-section > .signup-form > .input-box input:focus {
+	outline: 2px solid rgb(128, 128, 128);
+}
+
 .signup-form-section > .signup-form > .input-box > div {
 	display: flex;
 }
@@ -188,10 +199,51 @@ section.form {
 	> input.margined {
 	margin-right: 5px;
 }
+.signup-form-section > .signup-form > .input-box > .two-part {
+	position: relative;
+}
+
+.signup-form-section > .signup-form > .input-box > .two-part > .btn-box {
+	position: relative;
+}
+.signup-form-section > .signup-form > .input-box > .two-part > .btn-box > .btn {
+	height: 100%;
+	white-space: nowrap;
+}
+
+.signup-form-section
+	> .signup-form
+	> .input-box
+	> .two-part
+	> .btn-box
+	> .timer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: black;
+	width: 100%;
+	height: 100%;
+	border-radius: 0.3rem;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	display: none;
+}
+
 .signup-form-section > .signup-form > .input-box > .two-part > input {
 	margin-right: 5px;
 	flex: 1 1 auto;
 }
+
+.signup-form-section > .signup-form > .input-box > .two-part > .modify-btn {
+	position: absolute;
+	right: 32%;
+	top: 50%;
+	transform: translate(0, -50%);
+	display: none;
+}
+
 .signup-form-section > .signup-form > .input-box > .error {
 	padding: 0 10px;
 	font-size: 0.7rem;
@@ -204,12 +256,73 @@ section.form {
 	height: 40px;
 }
 
-/* header-section css */
-.header-section > h2 {
+/* user-find-form-section css */
+.user-find-form-section > .logo-box {
+	font-weight: bold;
+	font-size: 2.5rem;
+	line-height: 90px;
+	text-align: center;
+}
+.user-find-form-section > h3 {
+	margin-bottom: 15px;
+}
+
+.user-find-form-section > .loginId-find-form > .input-box input {
+	height: 40px;
+	padding: 0 10px;
+	font-size: 0.9rem;
+	border-radius: 0.3rem;
+	border: 1px solid rgb(128, 128, 128);
+}
+
+.user-find-form-section > .loginId-find-form > .input-box > div {
+	display: flex;
+}
+.user-find-form-section > .loginId-find-form > .input-box > .error {
+	padding: 0 10px;
+	font-size: 0.7rem;
+	color: red;
+	height: 25px;
+	line-height: 20px;
+	/* 		visibility: hidden; opacity: 0; */
+}
+
+.user-find-form-section > .loginId-find-form > .btn {
+	display: block;
+	margin-left: auto;
+	margin-top: -10px;
+}
+
+.user-find-form-section > .password-find-form > .input-box input {
+	height: 40px;
+	padding: 0 10px;
+	font-size: 0.9rem;
+	border-radius: 0.3rem;
+	border: 1px solid rgb(128, 128, 128);
+}
+.user-find-form-section > .password-find-form > .input-box > div {
+	display: flex;
+}
+.user-find-form-section > .password-find-form > .input-box > .error {
+	padding: 0 10px;
+	font-size: 0.7rem;
+	color: red;
+	height: 25px;
+	line-height: 20px;
+	/* 		visibility: hidden; opacity: 0; */
+}
+.user-find-form-section > .password-find-form > .btn {
+	display: block;
+	margin-left: auto;
+	margin-top: -10px;
+}
+
+/* board-header-section css */
+.board-header-section > h2 {
 	/* 	border: 1px solid orange; */
 	margin: 40px 0;
 }
-.header-section > .category-box > .category-list {
+.board-header-section > .category-box > .category-list {
 	/* 	border: 1px solid green; */
 	display: flex;
 	flex-wrap: wrap;
@@ -217,10 +330,10 @@ section.form {
 	align-items: between;
 	margin: 10px 0;
 }
-.header-section > .category-box > .category-list > .category-text {
+.board-header-section > .category-box > .category-list > .category-text {
 	width: calc(100% / 6);
 }
-.header-section > .category-box > .category-list > .category-text > a {
+.board-header-section > .category-box > .category-list > .category-text > a {
 	display: block;
 	height: 40px;
 	line-height: 40px;
@@ -260,4 +373,101 @@ section.form {
 }
 .board-write-section > .board-write-form > .board-write-btn {
 	text-align: end;
+}
+
+/* board-list-section css */
+.board-list-section.board-main {
+    margin-top: 60px;
+}
+.board-list-section > .list-header {
+	margin: 10px 0 10px 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+}
+.board-list-section > .list-header > .left-box > div {
+	display: inline-block;
+	margin-left: 5px;
+}
+.board-list-section > .list-header > .left-box > .list-paging-box > select {
+	border: 1px solid rgb(128, 128, 128);
+}
+.board-list-section > .list-header > .left-box > .sort-button-box {
+	font-size: 0;
+}
+.board-list-section > .list-header > .right-box {
+	margin-right: 5px;
+}
+.board-list-section > .list-header > .right-box > .write-btn {
+	border: none;
+}
+
+.board-list-section > .list-content > ul.head {
+	/* 	border-top: 2px solid rgba(0, 0, 0, 0.2); */
+	/* 	border-bottom: 2px solid rgba(0, 0, 0, 0.2); */
+	border-top: 2px solid rgb(128, 128, 128);
+	border-bottom: 2px solid rgb(128, 128, 128);
+}
+.board-list-section > .list-content > ul {
+	display: flex;
+	/* 	border-bottom: 1px solid rgba(0, 0, 0, 0.2); */
+	border-bottom: 1px solid rgb(128, 128, 128);
+	height: 3rem;
+}
+.board-list-section > .list-content > ul > li {
+	display: inline-block;
+	text-align: center;
+	line-height: 3rem;
+	/* 		border: 1px solid green; */
+}
+.board-list-section > .list-content > ul > li.no {
+	flex: 0 0 8%;
+}
+.board-list-section > .list-content > ul > li.cate {
+	flex: 0 0 8%;
+}
+.board-list-section > .list-content > ul > li.title {
+	flex: 1 1 auto;
+}
+.board-list-section > .list-content > ul > li.content {
+	text-align: start;
+	padding-left: 3%;
+	flex: 1 1 auto;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.board-list-section > .list-content > ul > li.author {
+	flex: 0 0 15%;
+}
+.board-list-section > .list-content > ul > li.create-date {
+	flex: 0 0 8%;
+}
+.board-list-section > .list-content > ul > li.view {
+	flex: 0 0 8%;
+}
+.board-list-section > .list-content > ul > li.heart {
+	flex: 0 0 8%;
+}
+
+.board-list-section > .list-footer {
+	margin: 0 0 15px 0;
+	text-align: center;
+}
+.board-list-section > .list-footer > .search-box {
+	font-size: 0;
+	border: 1px solid rgb(128, 128, 128);
+	border-radius: 0.5rem;
+	display: inline-block;
+}
+.board-list-section > .list-footer > .search-box > select {
+	border: none;
+	margin: 0 3px;
+}
+.board-list-section > .list-footer > .search-box > input {
+	border: solid rgb(128, 128, 128);
+	border-width: 0 0 0 1px;
+	width: 265px;
+	height: 28px;
+	padding-left: 10px;
 }

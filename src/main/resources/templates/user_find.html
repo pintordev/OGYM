@@ -1,0 +1,36 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+  <!-- 구현 Start -->
+  <!-- user-find-form-section start -->
+  <section class="form user-find-form-section">
+    <div class="logo-box">
+      <span>oGym</span>
+    </div>
+    <h3>아이디 찾기</h3>
+    <form class="loginId-find-form" action="">
+      <div class="input-box email">
+        <input id="findIdEmail" type="text" placeholder="회원가입에 사용한 이메일을 입력해주세요">
+        <div class="error" id="findIdError"></div>
+      </div>
+      <button class="btn" id="findId-btn">아이디 찾기</button>
+    </form>
+    <h3>비밀번호 찾기</h3>
+    <form class="password-find-form" action="">
+      <div class="input-box findPW">
+        <input id="findPWId" type="text" placeholder="로그인 ID를 입력해주세요">
+        <div class="error" id="findPWIdError"></div>
+      </div>
+      <div class="input-box email">
+        <input id="findPWEmail" type="text" placeholder="회원가입에 사용한 이메일을 입력해주세요">
+
+        <div class="error" id="findPWEmailError"></div>
+      </div>
+      <button class="btn" id="findPW-btn">비밀번호 찾기</button>
+    </form>
+  </section>
+  <!-- user-find-form-section end -->
+  <!-- 구현 End -->
+</div>
+<script layout:fragment="script" type="text/javascript">
+</script>
+</html>

@@ -1,0 +1,247 @@
+<!-- board-list-section start -->
+<section th:fragment="board_listFragment" class="board-list-section board-main">
+    <div class="list-header">
+        <div class="left-box">
+            <div class="list-paging-box">
+                <select>
+                    <option value="20">20개씩 보기</option>
+                    <option value="50">50개씩 보기</option>
+                    <option value="100">100개씩 보기</option>
+                </select>
+            </div>
+            <div class="sort-button-box">
+                <button class="sort-btn">
+                    <i class="fa-solid fa-list"></i>
+                </button>
+                <button class="sort-btn">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                </button>
+                <button class="sort-btn">
+                    <i class="fa-solid fa-comment-dots"></i>
+                </button>
+            </div>
+        </div>
+        <div class="right-box">
+            <button class="write-btn btn-sm">글쓰기</button>
+        </div>
+    </div>
+    <div class="list-content">
+        <ul class="head">
+            <li class="no">번호</li>
+            <li class="cate">분류</li>
+            <li class="title">제목</li>
+            <li class="author">작성자</li>
+            <li class="create-date">작성시간</li>
+            <li class="view">조회수</li>
+            <li class="heart">추천수</li>
+        </ul>
+        <ul>
+            <li class="no">20</li>
+            <li class="cate">자유</li>
+            <li class="content">비밀번호 찾기는 어떻게 진행되나요?</li>
+            <li class="author">오길환</li>
+            <li class="create-date">23시간 전</li>
+            <li class="view">19</li>
+            <li class="heart">2</li>
+        </ul>
+        <ul>
+            <li class="no">19</li>
+            <li class="cate">자유</li>
+            <li class="content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possi Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi deserunt recusandae est mollitia iure alias, natus eos corporis eum delectus aliquam, nihil beatae dolore officiis amet quibusdam quae a assumenda.</li>
+            <li class="author">최기범</li>
+            <li class="create-date">1일 전</li>
+            <li class="view">4</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">18</li>
+            <li class="cate">운동일지</li>
+            <li class="content">6월 3일 오운완 인증합니다</li>
+            <li class="author">신광식</li>
+            <li class="create-date">1일 전</li>
+            <li class="view">21</li>
+            <li class="heart">15</li>
+        </ul>
+        <ul>
+            <li class="no">17</li>
+            <li class="cate">영양/식단</li>
+            <li class="content">식단 추천해주실분?</li>
+            <li class="author">황인성</li>
+            <li class="create-date">2일 전</li>
+            <li class="view">10</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">16</li>
+            <li class="cate">다이어트</li>
+            <li class="content">다이어트 식품 추천좀요</li>
+            <li class="author">문창빈</li>
+            <li class="create-date">2일 전</li>
+            <li class="view">10</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">15</li>
+            <li class="cate">체중증가</li>
+            <li class="content">증량 계획이 필요합니다</li>
+            <li class="author">최기범</li>
+            <li class="create-date">3일 전</li>
+            <li class="view">5</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">14</li>
+            <li class="cate">상체운동</li>
+            <li class="content">상체운동</li>
+            <li class="author">테스터</li>
+            <li class="create-date">4일 전</li>
+            <li class="view">6</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">13</li>
+            <li class="cate">하체운동</li>
+            <li class="content">하체운동</li>
+            <li class="author">테스터</li>
+            <li class="create-date">4일 전</li>
+            <li class="view">7</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">12</li>
+            <li class="cate">분할운동</li>
+            <li class="content">분할운동</li>
+            <li class="author">테스터</li>
+            <li class="create-date">4일 전</li>
+            <li class="view">8</li>
+            <li class="heart">3</li>
+        </ul>
+        <ul>
+            <li class="no">11</li>
+            <li class="cate">부상/재활</li>
+            <li class="content">부상/재활</li>
+            <li class="author">테스터</li>
+            <li class="create-date">5일 전</li>
+            <li class="view">15</li>
+            <li class="heart">10</li>
+        </ul>
+        <ul>
+            <li class="no">10</li>
+            <li class="cate">바디프로필</li>
+            <li class="content">바디프로필</li>
+            <li class="author">테스터</li>
+            <li class="create-date">5일 전</li>
+            <li class="view">50</li>
+            <li class="heart">25</li>
+        </ul>
+        <ul>
+            <li class="no">9</li>
+            <li class="cate">용품</li>
+            <li class="content">용품</li>
+            <li class="author">테스터</li>
+            <li class="create-date">6일 전</li>
+            <li class="view">13</li>
+            <li class="heart">2</li>
+        </ul>
+        <ul>
+            <li class="no">8</li>
+            <li class="cate">보충제</li>
+            <li class="content">보충제</li>
+            <li class="author">테스터</li>
+            <li class="create-date">6일 전</li>
+            <li class="view">16</li>
+            <li class="heart">12</li>
+        </ul>
+        <ul>
+            <li class="no">7</li>
+            <li class="cate">자유</li>
+            <li class="content">자유</li>
+            <li class="author">테스터</li>
+            <li class="create-date">23.05.29</li>
+            <li class="view">0</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">6</li>
+            <li class="cate">자유</li>
+            <li class="content">자유</li>
+            <li class="author">테스터</li>
+            <li class="create-date">23.05.29</li>
+            <li class="view">0</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">5</li>
+            <li class="cate">자유</li>
+            <li class="content">자유</li>
+            <li class="author">테스터</li>
+            <li class="create-date">23.05.29</li>
+            <li class="view">0</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">4</li>
+            <li class="cate">자유</li>
+            <li class="content">자유</li>
+            <li class="author">테스터</li>
+            <li class="create-date">23.05.28</li>
+            <li class="view">0</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">3</li>
+            <li class="cate">자유</li>
+            <li class="content">자유</li>
+            <li class="author">테스터</li>
+            <li class="create-date">23.05.28</li>
+            <li class="view">0</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">2</li>
+            <li class="cate">자유</li>
+            <li class="content">자유</li>
+            <li class="author">테스터</li>
+            <li class="create-date">23.05.28</li>
+            <li class="view">0</li>
+            <li class="heart">0</li>
+        </ul>
+        <ul>
+            <li class="no">1</li>
+            <li class="cate">자유</li>
+            <li class="content">자유</li>
+            <li class="author">테스터</li>
+            <li class="create-date">23.05.27</li>
+            <li class="view">0</li>
+            <li class="heart">0</li>
+        </ul>
+    </div>
+    <div class="list-footer">
+        <ul class="page-list">
+            <li class="page-start">처음</li>
+            <li class="page-middle"><i class="fa-solid fa-angles-left"></i></li>
+            <li class="page-middle"><i class="fa-solid fa-angle-left"></i></li>
+            <li class="page-middle page-active">1</li>
+            <li class="page-middle">2</li>
+            <li class="page-middle">3</li>
+            <li class="page-middle">4</li>
+            <li class="page-middle">5</li>
+            <li class="page-middle"><i class="fa-solid fa-angle-right"></i></li>
+            <li class="page-middle"><i class="fa-solid fa-angles-right"></i></li>
+            <li class="page-end">끝</li>
+        </ul>
+        <div class="search-box">
+            <select>
+                <option value="all">전체</option>
+                <option value="title">제목</option>
+                <option value="content">내용</option>
+                <option value="titleandcontent">제목+내용</option>
+                <option value="author">작성자</option>
+                <option value="comment">답글</option>
+            </select>
+            <input type="text" placeholder="검색어를 입력해주세요.">
+            <a href="#" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+        </div>
+    </div>
+</section>
+<!-- board-list-section end -->

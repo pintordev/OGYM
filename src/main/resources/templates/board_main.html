@@ -1,0 +1,16 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <!-- 구현 Start -->
+    <!-- board-header-section start -->
+    <section th:replace="~{board_header :: board_headerFragment}"></section>
+    <!-- board-header-section end -->
+
+    <!-- board-list-section start -->
+    <section th:replace="~{board_list :: board_listFragment}"></section>
+    <!-- board-list-section end -->
+
+    <!-- 구현 End -->
+</div>
+<script layout:fragment="script" type="text/javascript">
+</script>
+</html>

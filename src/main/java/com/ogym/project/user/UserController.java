@@ -16,4 +16,10 @@ public class UserController {
     public String signup() {
         return "signup";
     }
+
+
+    @GetMapping("/find")
+    public String findUser() {
+        return "user_find";
+    }
 }
