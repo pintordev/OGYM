@@ -793,11 +793,18 @@ input[type="number"]::-webkit-inner-spin-button {
     flex-direction: column;
 }
 .board-comment-section
-	> .board-comment-list
-	> .comment
-	> .comment-box
-	> .reComment-write-box > .reComment-write-form > .CodeMirror, .CodeMirror-scroll {
-	min-height: 80px;
+   > .board-comment-list
+   > .comment
+   > .comment-box
+   > .reComment-write-box > .reComment-write-form > .CodeMirror {
+   min-height: 80px;
+}
+.board-comment-section
+   > .board-comment-list
+   > .comment
+   > .comment-box
+   > .reComment-write-box > .reComment-write-form > .CodeMirror > .CodeMirror-scroll {
+   min-height: 80px;
 }
 .board-comment-section
 	> .board-comment-list
@@ -911,12 +918,21 @@ input[type="number"]::-webkit-inner-spin-button {
     flex-direction: column;
 }
 .board-comment-section
-	> .board-comment-list
-	> .comment
-	> .reComment
-	> .reComment-box
-	> .reComment-write-box > .reComment-write-form > .CodeMirror, .CodeMirror-scroll {
-	min-height: 80px;
+   > .board-comment-list
+   > .comment
+   > .reComment
+   > .reComment-box
+   > .reComment-write-box > .reComment-write-form > .CodeMirror {
+   min-height: 80px;
+}
+
+.board-comment-section
+   > .board-comment-list
+   > .comment
+   > .reComment
+   > .reComment-box
+   > .reComment-write-box > .reComment-write-form > .CodeMirror > .CodeMirror-scroll {
+   min-height: 80px;
 }
 .board-comment-section
 	> .board-comment-list

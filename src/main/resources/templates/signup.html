@@ -1,4 +1,4 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
     <!-- 구현 Start -->
     <!-- signup-form-section start -->
@@ -7,38 +7,47 @@
             <span>Welcome to</span>
             <span>oGym</span>
         </div>
-        <form class="signup-form" action="">
+        <form class="signup-form" th:object="${userCreateForm}"  action="">
             <div class="input-box loginId">
-                <input id="loginId" type="text" placeholder="로그인 ID를 입력해주세요">
+                <label for="loginId"></label>
+                <input th:field="*{loginId}" type="text" placeholder="아이디를 입력해주세요">
                 <div class="error" id="loginIdError"></div>
             </div>
             <div class="input-box password">
-                <input id="password" type="password" placeholder="비밀번호를 입력해주세요">
+                <label for="password"></label>
+                <input th:field="*{password}" type="password" placeholder="비밀번호를 입력해주세요">
                 <div class="error" id="passwordError"></div>
             </div>
             <div class="input-box passwordCheck">
-                <input id="passwordCheck" type="password" placeholder="입력한 비밀번호를 다시 한번 입력해주세요">
+                <label for="passwordCheck"></label>
+                <input th:field="*{passwordCheck}" type="password" placeholder="입력한 비밀번호를 다시 한번 입력해주세요">
                 <div class="error" id="passwordCheckError"></div>
             </div>
             <div class="input-box nickname">
-                <input id="nickname" type="text" placeholder="닉네임을 입력해주세요">
+                <label for="nickname"></label>
+                <input th:field="*{nickname}" type="text" placeholder="닉네임을 입력해주세요">
                 <div class="error" id="nicknameError"></div>
             </div>
             <div class="input-box username">
-                <input id="username" type="text" placeholder="이름을 입력해주세요">
+                <label for="name"></label>
+                <input th:field="*{name}" type="text" placeholder="이름을 입력해주세요">
                 <div class="error" id="usernameError"></div>
             </div>
             <div class="input-box birthDate">
+                <label for="birthYear"></label>
+                <label for="birthMonth"></label>
+                <label for="birthDay"></label>
                 <div class="three-part">
-                    <input class="margined" id="birthYear" type="number" placeholder="생년(4자)">
-                    <input class="margined" id="birthMonth" type="number" placeholder="월">
-                    <input id="birthDay" type="number" placeholder="일">
+                    <input class="margined" th:field="*{birthYear}" type="text" placeholder="생년(4자)">
+                    <input class="margined" th:field="*{birthMonth}" type="text" placeholder="월(2자)">
+                    <input th:field="*{birthDay}" type="text" placeholder="일(2자)">
                 </div>
                 <div class="error" id="birthDateError"></div>
             </div>
             <div class="input-box email">
+                <label for="emailError"></label>
                 <div class="two-part">
-                    <input class="email" id="emailError" type="email" placeholder="email@example.com">
+                    <input class="email" th:field="*{email}" type="email" placeholder="email@example.com">
                     <div class="modify-btn">
                         <span><i class="fa-solid fa-eraser"></i></span>
                     </div>
@@ -47,19 +56,22 @@
                         <div class="timer">00:00</div>
                     </div>
                 </div>
-                <div class="error" id="birthDateError"></div>
+                <div class="error" id="emailError"></div>
             </div>
             <div class="input-box code">
+                <label for="code"></label>
                 <div class="two-part">
-                    <input class="code" id="codeError" type="text" placeholder="발송된 인증번호를 입력해주세요">
+                    <input class="code" th:field="*{code}" type="text" placeholder="발송된 인증번호를 입력해주세요">
                     <button class="btn" id="code-btn">인증번호 확인</button>
                 </div>
-                <div class="error" id="birthDateError"></div>
+                <div class="error" id="codeError"></div>
             </div>
             <div class="input-box phone">
-                <input class="phone" id="phoneError" type="number" placeholder="휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)">
-                <div class="error" id="birthDateError"></div>
+                <label for="phone"></label>
+                <input class="phone" th:field="*{phone}" type="number" placeholder="휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)">
+                <div class="error" id="phoneError"></div>
             </div>
+            <input type="hidden" th:field=*{genCode} class="form-control">
             <button class="btn btn-long" id="signup-btn">회원가입</button>
         </form>
     </section>
