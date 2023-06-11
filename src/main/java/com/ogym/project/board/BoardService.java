@@ -39,6 +39,20 @@ public class BoardService {
         return board;
     }
 
+    public void modify(Board board, String title, String content, BoardCategory boardCategory) {
+
+        board.setTitle(title);
+        board.setContent(content);
+        board.setBoardCategory(boardCategory);
+        board.setModifyDate(LocalDateTime.now());
+
+        this.boardRepository.save(board);
+    }
+
+    public void delete(Board board) {
+        this.boardRepository.delete(board);
+    }
+
     public Page<Board> getList(int boardPage, String searchKeyWord) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));

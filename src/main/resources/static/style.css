@@ -33,6 +33,9 @@ button:focus {
 button:hover {
     cursor: pointer;
 }
+.icon {
+    font-size: inherit;
+}
 section {
 	width: 1000px;
 	margin: 0 auto;
@@ -83,6 +86,18 @@ section.form {
 	color: black;
 	font-size: 0.9rem;
 	margin: 0 10px;
+}
+.icon-btn {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: inherit;
+    font-size: inherit;
+    color: rgb(128, 128, 128);
+}
+.icon-btn:hover {
+    color: black;
+    cursor: pointer;
 }
 .comment-number {
 	color: rgb(128, 128, 128);
@@ -477,12 +492,12 @@ input[type="number"]::-webkit-inner-spin-button {
 	padding: 0 10px;
 	margin-left: 10px;
 }
-.board-write-section > .board-write-form > .board-write-btn {
+.board-write-section > .board-write-form > .write-btn-box {
     display: flex;
     justify-content: flex-end;
     margin-top:10px;
 }
-.board-write-section > .board-write-form > .board-write-btn > .btn-sm.cancel {
+.board-write-section > .board-write-form > .write-btn-box > .btn-sm.cancel {
     margin-right: 5px;
 }
 
@@ -546,12 +561,20 @@ input[type="number"]::-webkit-inner-spin-button {
 	flex: 1 1 auto;
 }
 .board-list-section > .list-content > ul > li.content {
-	text-align: start;
 	padding-left: 3%;
 	flex: 1 1 auto;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	display: flex;
+	align-items: center;
+}
+.board-list-section > .list-content > ul > li.content > a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.board-list-section > .list-content > ul > li.content > span {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    color: rgb(128, 128, 128);
 }
 .board-list-section > .list-content > ul > li.author {
 	flex: 0 0 15%;
@@ -632,13 +655,6 @@ input[type="number"]::-webkit-inner-spin-button {
 	> .board-detail-header
 	> .sub-box
 	> .sub-left-box
-	> .modify-date {
-	margin-right: 10px;
-}
-.board-detail-section
-	> .board-detail-header
-	> .sub-box
-	> .sub-left-box
 	> .modify-btn {
 	margin-left: 10px;
 	margin-right: 5px;
@@ -674,6 +690,9 @@ input[type="number"]::-webkit-inner-spin-button {
 	justify-content: space-between;
 	border-bottom: 1px solid rgb(128, 128, 128);
 }
+.board-comment-section > .board-comment-header.expended {
+	border-bottom: none;
+}
 .board-comment-section > .board-comment-header > .header-left-box > div {
 	display: inline-block;
 }
@@ -684,15 +703,22 @@ input[type="number"]::-webkit-inner-spin-button {
 	margin-left: 10px;
 	font-size: 0;
 }
-
-.board-comment-section > .write-box {
-	padding: 15px;
-	display: flex;
-	flex-direction: column;
+.board-comment-section > .comment-write-box {
+	padding: 0 15px 15px 15px;
+	display: none;
 	border-bottom: 1px solid rgb(128, 128, 128);
 }
-.board-comment-section > .write-box > .write-btn {
-	margin: 10px 0 0 auto;
+.board-comment-section > .comment-write-box.active {
+	display: flex;
+	flex-direction: column;
+}
+.board-comment-section > .comment-write-box > .comment-write-form > .write-btn-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-top:10px;
+}
+.board-comment-section > .comment-write-box > .comment-write-form > .write-btn-box > .btn-sm.cancel {
+    margin-right: 5px;
 }
 
 .board-comment-section > .board-comment-list > .comment > .comment-box {
@@ -753,8 +779,48 @@ input[type="number"]::-webkit-inner-spin-button {
 .board-comment-section
 	> .board-comment-list
 	> .comment
-	> .recomment
-	> .recomment-box {
+	> .comment-box
+	> .reComment-write-box {
+	margin-top: 15px;
+    display: none;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .reComment-write-box.active {
+    display: flex;
+    flex-direction: column;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .reComment-write-box > .reComment-write-form > .CodeMirror, .CodeMirror-scroll {
+	min-height: 80px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .reComment-write-box > .reComment-write-form > .write-btn-box {
+	display: flex;
+    justify-content: flex-end;
+    margin-top:10px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .reComment-write-box > .reComment-write-form > .write-btn-box > .btn-sm.cancel {
+    margin-right: 5px;
+}
+
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .reComment
+	> .reComment-box {
 	padding: 15px;
 	padding-left: 50px;
 	font-size: 0.9rem;
@@ -763,18 +829,18 @@ input[type="number"]::-webkit-inner-spin-button {
 .board-comment-section
 	> .board-comment-list
 	> .comment
-	> .recomment
-	> .recomment-box
-	> .recomment-profile-box
+	> .reComment
+	> .reComment-box
+	> .reComment-profile-box
 	> div {
 	display: inline-block;
 }
 .board-comment-section
 	> .board-comment-list
 	> .comment
-	> .recomment
-	> .recomment-box
-	> .recomment-profile-box
+	> .reComment
+	> .reComment-box
+	> .reComment-profile-box
 	> .profile-name {
 	margin-left: 3px;
 	margin-right: 6px;
@@ -782,9 +848,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .board-comment-section
 	> .board-comment-list
 	> .comment
-	> .recomment
-	> .recomment-box
-	> .recomment-profile-box
+	> .reComment
+	> .reComment-box
+	> .reComment-profile-box
 	> .modify-btn {
 	margin-left: 6px;
 	margin-right: 3px;
@@ -792,17 +858,17 @@ input[type="number"]::-webkit-inner-spin-button {
 .board-comment-section
 	> .board-comment-list
 	> .comment
-	> .recomment
-	> .recomment-box
-	> .recomment-content-box {
+	> .reComment
+	> .reComment-box
+	> .reComment-content-box {
 	margin-top: 10px;
 }
 .board-comment-section
 	> .board-comment-list
 	> .comment
-	> .recomment
-	> .recomment-box
-	> .recomment-referer-box {
+	> .reComment
+	> .reComment-box
+	> .reComment-referer-box {
 	margin-top: 5px;
 	font-size: 0.8rem;
 	color: rgb(128, 128, 128);
@@ -810,20 +876,81 @@ input[type="number"]::-webkit-inner-spin-button {
 .board-comment-section
 	> .board-comment-list
 	> .comment
-	> .recomment
-	> .recomment-box
-	> .recomment-btn-box {
+	> .reComment
+	> .reComment-box
+	> .reComment-btn-box {
 	margin-top: 10px;
 	display: flex;
 }
 .board-comment-section
 	> .board-comment-list
 	> .comment
-	> .recomment
-	> .recomment-box
-	> .recomment-btn-box
+	> .reComment
+	> .reComment-box
+	> .reComment-btn-box
 	> .vote-btn {
 	margin-right: 5px;
+}
+
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .reComment
+	> .reComment-box
+	> .reComment-write-box {
+	margin-top: 15px;
+    display: none;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .reComment
+	> .reComment-box
+	> .reComment-write-box.active {
+    display: flex;
+    flex-direction: column;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .reComment
+	> .reComment-box
+	> .reComment-write-box > .reComment-write-form > .CodeMirror, .CodeMirror-scroll {
+	min-height: 80px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .reComment
+	> .reComment-box
+	> .reComment-write-box > .reComment-write-form > .write-btn-box {
+	display: flex;
+    justify-content: flex-end;
+    margin-top:10px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .reComment
+	> .reComment-box
+	> .reComment-write-box > .reComment-write-form > .write-btn-box > .btn-sm.cancel {
+    margin-right: 5px;
+}
+
+/* comment-modify-section css */
+.comment-modify-section {
+	margin-top: 40px;
+}
+.comment-modify-section > .comment-modify-form > .comment-modify-body {
+	margin-top: 15px;
+}
+.comment-modify-section > .comment-modify-form > .modify-btn-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-top:10px;
+}
+.comment-modify-section > .comment-modify-form > .modify-btn-box > .btn-sm.cancel {
+    margin-right: 5px;
 }
 
 /* middle-banner-section css */

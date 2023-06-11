@@ -22,7 +22,7 @@
             <div class="board-write-body">
                 <textarea th:field="*{content}"></textarea>
             </div>
-            <div class="board-write-btn">
+            <div class="write-btn-box">
                 <a href="/board" class="btn-sm cancel">취소</a>
                 <button type="submit" class="btn-sm">저장하기</button>
             </div>
@@ -33,7 +33,7 @@
 
 </div>
 <script layout:fragment="script" type='text/javascript'>
-    let editMde = new SimpleMDE({
+    let simpleMde = new SimpleMDE({
         element: $("#content")[0],
         placeholder: "내용을 입력해주세요",
         hideIcons: ["guide", "fullscreen", "side-by-side"]
