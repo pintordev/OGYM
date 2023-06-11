@@ -17,15 +17,15 @@ class ProjectApplicationTests {
 
 	@Test
 	void testJpa() {
-//		SiteUser user = new SiteUser();
-//		user.setAuthority(UserRole.ADMIN);
-//		user.setLoginId("ogym_admin");
-//		user.setPassword("1234");
-//		user.setNickname("오짐관리자");
-//		user.setUsername("ogym_admin");
-//		user.setBirthDate("20230608");
-//		user.setEmail("administrator@ogym.one");
-//		user.setCreateDate(LocalDateTime.now());
-//		this.userRepository.save(user);
+		SiteUser user = new SiteUser();
+		user.setAuthority(UserRole.ADMIN);
+		user.setLoginId("ogym_admin");
+		user.setPassword("1234");
+		user.setNickname("오짐관리자");
+		user.setUsername("ogym_admin");
+		user.setBirthDate("20230608");
+		user.setEmail("administrator@ogym.one");
+		user.setCreateDate(LocalDateTime.now());
+		this.userRepository.save(user);
 	}
 }
