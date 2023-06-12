@@ -20,19 +20,19 @@ public class UserService {
     public SiteUser create(String username, String password, String email, String birthyear, String birthmonth, String birthday, String phone, @Pattern(regexp = "\\d{11,12}", message = "휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)") String userCreateFormPhone) {
         String birthDate = birthyear + birthmonth + birthday;
 
-        int phoneNumber = 0;
-        if (phone != null) {
-            phoneNumber = Integer.parseInt(phone.replaceAll("-", ""));
-        }
-
+//        int phoneNumber = 0;
+//        if (phone != null) {
+//            phoneNumber = Integer.parseInt(phone.replaceAll("-", ""));
+//        }
+//
         SiteUser user = new SiteUser();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setEmail(email);
-        user.setBirthDate(birthDate);
-        user.setPhoneNumber(phoneNumber);
-        user.setCreateDate(LocalDateTime.now());
-        this.userRepository.save(user);
+//        user.setUsername(username);
+//        user.setPassword(passwordEncoder.encode(password));
+//        user.setEmail(email);
+//        user.setBirthDate(birthDate);
+//        user.setPhoneNumber(phoneNumber);
+//        user.setCreateDate(LocalDateTime.now());
+//        this.userRepository.save(user);
         return user;
     }
 
