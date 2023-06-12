@@ -32,5 +32,102 @@
   <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
+  $(function () {
+	function updateFindIdButtonState() {
+		var findIdEmail = $("#findIdEmail").val();
+		var findIdButton = $("#findId-btn");
+
+		if (findIdEmail.trim() !== "") {
+			findIdButton.css({ background: "black", color: "white" });
+		} else {
+			findIdButton.css({ background: "", color: "" });
+		}
+	}
+
+	$("#findId-btn").click(function () {
+		var findIdEmail = $("#findIdEmail").val();
+		var findIdResult = $("#findIdError");
+
+		if (!findIdEmail.trim()) {
+			findIdResult.text("이메일을 입력해주세요.");
+			return;
+		}
+
+		$.ajax({
+			url: `API Request URL`,
+			method: "POST",
+			data: { emailId: findIdEmail },
+			success: function (data) {
+				// TODO: API 요청 성공에 대한 처리
+			},
+			error: function (error) {
+				// TODO: API 요청 실패에 대한 처리
+			}
+		});
+	});
+
+	$("#findIdEmail").on("input", function () {
+		$("#findIdError").text("");
+		updateFindIdButtonState();
+	});
+
+	function updateFindPWButtonState() {
+		var findPWId = $("#findPWId").val();
+		var findPWEmail = $("#findPWEmail").val();
+		var findPWButton = $("#findPW-btn");
+
+		if (findPWId.trim() !== "" && findPWEmail.trim() !== "") {
+			findPWButton.css({ background: "black", color: "white" });
+		} else {
+			findPWButton.css({ background: "", color: "" });
+		}
+	}
+
+	$("#findPW-btn").click(function () {
+		var findPWId = $("#findPWId").val();
+		var findPWEmail = $("#findPWEmail").val();
+		var findPWIdResult = $("#findPWIdError");
+		var findPWEmailResult = $("#findPWEmailError");
+
+		if (!findPWId.trim() && !findPWEmail.trim()) {
+			findPWIdResult.text("아이디를 입력해주세요.");
+			findPWEmailResult.text("이메일을 입력해주세요.");
+			return;
+		}
+		if (!findPWId.trim()) {
+			findPWIdResult.text("아이디를 입력해주세요.");
+			findPWEmailResult.text("");
+			return;
+		}
+		if (!findPWEmail.trim()) {
+			findPWIdResult.text("");
+			findPWEmailResult.text("이메일을 입력해주세요.");
+			return;
+		}
+
+		$.ajax({
+			url: `API Request URL`,
+			method: "POST",
+			data: { emailId: findPWId, emailPw: findPWEmail },
+			success: function (data) {
+				// TODO: API 요청 성공에 대한 처리
+			},
+			error: function (error) {
+				// TODO: API 요청 실패에 대한 처리
+			}
+		});
+	});
+
+	$("#findPWId").on("input", function () {
+		$("#findPWIdError").text("");
+		updateFindPWButtonState();
+	});
+
+	$("#findPWEmail").on("input", function () {
+		$("#findPWEmailError").text("");
+		updateFindPWButtonState();
+	});
+});
+
 </script>
 </html>

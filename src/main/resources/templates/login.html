@@ -31,7 +31,7 @@
     </div>
     <div class="login-logo">
       <div class="logo" id="login-kakao">
-        <a href="#">
+        <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=d242caacaeef4e7e50acc0b0df1bec34&redirect_uri=http://localhost:14641/user/auth/kakao/callback">
           <img th:src="@{/image/login_Kakao.png}" alt="">
         </a>
       </div>
@@ -61,5 +61,63 @@
   <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
+  $(document).ready(function () {
+	function updateloginButtonState() {
+		var loginId = $("#loginId").val();
+		var loginpassword = $("#loginpassword").val();
+		var loginButton = $(".btn-long");
+
+		if (loginId.trim() !== "" && loginpassword.trim() !== "") {
+			loginButton.css({ background: "black", color: "white" });
+		} else {
+			loginButton.css({ background: "", color: "" });
+		}
+	}
+
+	$("#loginId, #loginpassword").keyup(function () {
+		updateloginButtonState();
+	});
+});
+
+$(document).ready(function () {
+	$(".btn-long").click(function (event) {
+		event.preventDefault();
+
+		var loginId = $("#loginId").val();
+		var loginPassword = $("#loginpassword").val();
+		var loginButton = $(".btn-long");
+
+		var idErrorMessage = $(".input-box.loginId .error");
+		var passwordErrorMessage = $(".input-box.password .error");
+
+		idErrorMessage.text("");
+		passwordErrorMessage.text("");
+
+		if (loginId.trim() === "" && loginPassword.trim() === "") {
+			idErrorMessage.text("아이디를 입력해주세요.");
+			passwordErrorMessage.text("비밀번호를 입력해주세요.");
+		} else if (loginId.trim() === "") {
+			idErrorMessage.text("아이디를 입력해주세요.");
+		} else if (loginPassword.trim() === "") {
+			passwordErrorMessage.text("비밀번호를 입력해주세요.");
+		} else {
+			$.ajax({
+				url: "API Request URL",
+				method: "POST",
+				data: {
+					id: loginId,
+					password: loginPassword
+				},
+				success: function (response) {
+					window.location.href = "";
+				},
+				error: function (error) {
+					alert("가입된 아이디가 없습니다.");
+				}
+			});
+		}
+	});
+});
+
 </script>
 </html>
