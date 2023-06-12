@@ -2,29 +2,27 @@ package com.ogym.project.trainer;
 
 
 import com.ogym.project.trainerCertificate.TrainerCertificate;
-import com.ogym.project.trainerLesson.TrainerLesson;
 import com.ogym.project.trainerItem.TrainerItem;
+import com.ogym.project.trainerLesson.TrainerLesson;
 import com.ogym.project.user.SiteUser;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
-@Entity
-public class Trainer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne
+public class TrainerCreateForm {
+    @Size(min=3,max=12)
+    @NotEmpty(message= "유저이름은 필수 항목입니다.")
     private SiteUser trainerInfo;
 
+    @NotEmpty(message="트레이너 이름은 필수항목입니다.")
     //트레이너 이름 : 중복허용가능
     private String name;
 
@@ -35,30 +33,30 @@ public class Trainer {
     private String address;
 
     //운동종류
-    @ManyToMany
-    private List<TrainerItem> fieldList;
+
+    private TrainerItem fieldList;
 
     //성별
+    @NotEmpty(message = "성별은 필수항복입니다.")
     private String gender;
 
     //자격증 : certificate 패키지 만들고 list등록
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE)
-    private List<TrainerCertificate> certificate;
+
+    private TrainerCertificate certificate;
 
     //연락처
+    @NotEmpty(message = "연락처는 필수 항목입니다.")
     private String number;
 
     //짧은소개
-    @Column(length = 200)
     private String introAbstract;
 
     //긴소개
-    @Column(columnDefinition = "TEXT")
     private String introDetail;
 
     //레슽가격 - 패키지 하나 더만들고 one to many
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE)
-    private List<TrainerLesson> lesson;
+    @NotEmpty(message="레슨정보는 필수 항목입니다.")
+    private TrainerLesson lesson;
 
     //트레이너 등록일
     @CreatedDate

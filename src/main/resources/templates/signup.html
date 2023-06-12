@@ -7,7 +7,7 @@
             <span>Welcome to</span>
             <span>oGym</span>
         </div>
-        <form class="signup-form" th:object="${userCreateForm}"  action="">
+        <form class="signup-form" th:object="${userCreateForm}"  th:action="@{/user/signup}" method="post">
             <div class="input-box loginId">
                 <label for="loginId"></label>
                 <input th:field="*{loginId}" type="text" placeholder="아이디를 입력해주세요">
@@ -20,7 +20,7 @@
             </div>
             <div class="input-box passwordCheck">
                 <label for="passwordCheck"></label>
-                <input th:field="*{passwordCheck}" type="password" placeholder="입력한 비밀번호를 다시 한번 입력해주세요">
+                <input th:field="*{passwordCheck}" type="password" placeholder="비밀번호를 다시 한번 입력해주세요">
                 <div class="error" id="passwordCheckError"></div>
             </div>
             <div class="input-box nickname">
@@ -31,16 +31,16 @@
             <div class="input-box username">
                 <label for="name"></label>
                 <input th:field="*{name}" type="text" placeholder="이름을 입력해주세요">
-                <div class="error" id="usernameError"></div>
+                <div class="error" id="nameError"></div>
             </div>
             <div class="input-box birthDate">
                 <label for="birthYear"></label>
                 <label for="birthMonth"></label>
                 <label for="birthDay"></label>
                 <div class="three-part">
-                    <input class="margined" th:field="*{birthYear}" type="text" placeholder="생년(4자)">
-                    <input class="margined" th:field="*{birthMonth}" type="text" placeholder="월(2자)">
-                    <input th:field="*{birthDay}" type="text" placeholder="일(2자)">
+                    <input class="margined" th:field="*{birthYear}" type="text" maxlength="4" placeholder="생년(4자)">
+                    <input class="margined" th:field="*{birthMonth}" type="text" maxlength="2" placeholder="월(2자)" oninput="formatTwoDigit(this)">
+                    <input th:field="*{birthDay}" type="text" maxlength="2" placeholder="일(2자)" oninput="formatTwoDigit(this)">
                 </div>
                 <div class="error" id="birthDateError"></div>
             </div>
@@ -68,7 +68,7 @@
             </div>
             <div class="input-box phone">
                 <label for="phone"></label>
-                <input class="phone" th:field="*{phone}" type="number" placeholder="휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)">
+                <input class="phone" th:field="*{phone}" type="number" maxlength="11" placeholder="휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)">
                 <div class="error" id="phoneError"></div>
             </div>
             <input type="hidden" th:field=*{genCode} class="form-control">
@@ -78,4 +78,240 @@
     <!-- signup-form-section end -->
     <!-- 구현 End -->
 </div>
+<script layout:fragment="script" type="text/javascript">
+    function emailConfirm() {
+    $("#alert-fail").css("display", "none");
+    $("#alert-success").css("display", "none");
+    $("#alert-proceeding").css("display", "block");
+    $.ajax({
+        url : "/user/signup/emailConfirm",
+        type : "POST",
+        data : {
+          "email" : $("#email").val()
+        },
+        beforeSend : function() {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+            $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+        },
+        success : function(data) {
+            $("input[name=genCode]").attr("value", data);
+            $("#alert-proceeding").css("display", "none");
+            $("#alert-success").css("display", "block");
+        },
+        error : function(data) {
+            $("#alert-proceeding").css("display", "none");
+            $("#alert-fail").css("display", "block");
+        }
+    })
+  }
+
+  $(document).ready(function () {
+	function validateInput(inputId, errorMessage) {
+		var value = $("#" + inputId).val();
+		if (value === "") {
+			$("#" + inputId + "Error").text(errorMessage);
+		} else {
+			$("#" + inputId + "Error").text("");
+		}
+	}
+
+	function updateEmailUI(emailValue) {
+		var $btn = $(".email .btn");
+		var $modifyBtn = $(".modify-btn");
+
+		if (emailValue !== "") {
+			$btn.css({
+				"background-color": "black",
+				color: "white"
+			});
+			$modifyBtn.show();
+		} else {
+			$btn.css({
+				"background-color": "",
+				color: ""
+			});
+			$modifyBtn.hide();
+		}
+	}
+
+	$(".email input").on("input", function () {
+		var emailValue = $(this).val();
+		updateEmailUI(emailValue);
+	});
+
+	$(".modify-btn").click(function () {
+		$(".email .btn").prop("disabled", false);
+		$(this).prop("disabled", true).hide();
+		$(".email input").prop("disabled", false).val("");
+		updateEmailUI("");
+		clearInterval(timer);
+		$(".email .btn").text("인증번호 발송").css({
+			"background-color": "",
+			color: ""
+		});
+	});
+
+	$(".email .btn").click(function () {
+		var emailValue = $(".email input").val();
+		if (emailValue !== "") {
+			$(this).prop("disabled", true);
+			$(".email input").prop("disabled", true);
+
+			clearInterval(timer);
+			timeRemaining = 180;
+
+			timer = setInterval(updateTimer, 1000);
+		} else {
+			validateInput("email", "이메일을 입력해주세요.");
+		}
+	});
+
+	function emailAuthentication() {
+		var email = $(".email input").val();
+
+		$.ajax({
+			url: "/user/signup/emailConfirm",
+			method: "POST",
+			data: { email: email },
+			success: function (response) {
+				console.log("인증번호 발송 성공!");
+			},
+			error: function (xhr, status, error) {
+				console.error("인증번호 발송 실패: " + error);
+			}
+		});
+	}
+
+	var timer;
+	var timeRemaining = 180;
+
+	function updateTimer() {
+		timeRemaining--;
+
+		if (timeRemaining >= 0) {
+			var minutes = Math.floor(timeRemaining / 60);
+			var seconds = timeRemaining % 60;
+
+			var formattedTime = padZero(minutes) + ":" + padZero(seconds);
+			$(".timer").text(formattedTime);
+
+			// 타이머 버튼 표시
+			$(".timer").css("display", "flex");
+			$(".timer").css("justify-content", "center");
+			$(".timer").css("align-items", "center");
+		} else {
+			clearInterval(timer);
+			$(".email .btn").text("인증번호 발송").prop("disabled", false);
+			$(".modify-btn").prop("disabled", false).show();
+			$(".email input").prop("disabled", false).val("");
+			updateEmailUI("");
+
+			// 타이머 종료 시 타이머 버튼 감추기
+			$(".timer").css("display", "none");
+		}
+	}
+
+	function padZero(number) {
+		return number.toString().padStart(2, "0");
+	}
+
+	$(".modify-btn").click(function () {
+		$(".email .btn").prop("disabled", false);
+		$(this).prop("disabled", true).hide();
+		$(".email input").prop("disabled", false).val("");
+		updateEmailUI("");
+		clearInterval(timer);
+		$(".email .btn").text("인증번호 발송").css({
+			"background-color": "",
+			color: ""
+		});
+
+		$(".timer").css("display", "none");
+	});
+
+	$(".code").on("input", function () {
+		var codeValue = $(this).val();
+		var $btn = $(this).siblings(".btn");
+
+		if (codeValue !== "") {
+			$btn.css({
+				"background-color": "black",
+				color: "white"
+			});
+		} else {
+			$btn.css({
+				"background-color": "",
+				color: ""
+			});
+		}
+	});
+
+	$(".signup-form input").on("input", function () {
+		var $signupbtn = $("#signup-btn");
+		var allInputsFilled = true;
+
+		$(".signup-form input").each(function () {
+			if ($(this).val() === "") {
+				allInputsFilled = false;
+				return false;
+			}
+		});
+
+		if (allInputsFilled) {
+			$signupbtn.css({
+				"background-color": "black",
+				color: "white"
+			});
+		} else {
+			$signupbtn.css({
+				"background-color": "",
+				color: ""
+			});
+		}
+	});
+
+	$("#signup-btn").click(function () {
+		validateInput("loginId", "로그인 ID를 입력해주세요");
+		validateInput("password", "비밀번호를 입력해주세요");
+		validateInput("passwordCheck", "비밀번호가 일치하지 않습니다");
+		validateInput("nickname", "닉네임을 입력해주세요");
+		validateInput("username", "이름을 입력해주세요");
+		validateInput("birthYear", "생년(4자)을 입력해주세요");
+		validateInput("birthMonth", "월(2자)을 입력해주세요");
+		validateInput("birthDay", "일(2자)를 입력해주세요");
+		validateInput("email", "이메일을 입력해주세요");
+		validateInput("code", "발송된 인증번호를 확인해주세요");
+
+		var password = $("#password").val();
+		var passwordCheck = $("#passwordCheck").val();
+		if (passwordCheck === "") {
+			$("#passwordCheckError").text("비밀번호를 입력해주세요");
+		} else if (password !== passwordCheck) {
+			$("#passwordCheckError").text("비밀번호가 일치하지 않습니다");
+		} else {
+			$("#passwordCheckError").text("");
+		}
+
+		if (validateFields()) {
+			// 이메일 인증번호 확인
+			emailCheck();
+
+			// 회원가입 로직 수행
+			// ...
+		}
+	});
+});
+
+
+function formatTwoDigit(input) {
+  let value = input.value.trim();
+  if (value.length === 1) {
+    value = value.padStart(2, '0');
+  }
+  input.value = value;
+}
+
+
+</script>
 </html>

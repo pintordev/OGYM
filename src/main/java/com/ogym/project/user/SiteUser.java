@@ -33,7 +33,7 @@ public class SiteUser {
     private String email;
 
     @Column(unique = true)
-    private int phoneNumber;
+    private String phoneNumber;
 
     private String address;
 

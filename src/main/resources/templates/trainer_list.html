@@ -1,10 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h2>Hello Template</h2>
-</body>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <!-- 구현 Start -->
+    <!-- trainer-header-section start -->
+    <section th:replace="~{trainer_header :: trainer_headerFragment}"></section>
+    <!-- trainer-header-section end -->
+
+    <!-- trainer-list-section start -->
+    <section class="trainer-list-section">
+        <div class="trainer-list-header">
+            <div class="header-left-box">
+                <div>
+                    <span>전체</span>
+                    <span class="comment-number">123</span>
+                </div>
+            </div>
+            <div class="header-right-box">
+                <span>위치</span>
+                <span>성별</span>
+                <span>등록순</span>
+            </div>
+        </div>
+        <div class="trainer-list-body">
+            <div class="trainer-list">
+                <div class="profile-img-box">
+                    <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_8dfc9177_%ED%95%9C%EC%83%81%EC%97%BD.jpg" alt="">
+                </div>
+                <div class="profile-detail-box">
+                    <div class="detail-header">
+                        <span class="trainer-name"><a href="/trainer/detail">한상엽</a></span>
+                        <span class="trainer-address">서울 종로</span>
+                    </div>
+                    <div class="info-abstract">
+                        건강한 삼대운동으로 강하게!
+                    </div>
+                    <div class="info-detail">
+                        <div class="info-lesson">
+                            PT 10회 기준 회당 70,000원
+                        </div>
+                        <div class="delimiter"></div>
+                        <div class="info-center">
+                            몬스터짐 광화문
+                        </div>
+                    </div>
+                    <div class="info-field">
+                        <span>#웨이트</span>
+                        <span>#스트레칭</span>
+                        <span>#재활</span>
+                        <span>#다이어트</span>
+                        <span>#대회준비</span>
+                        <span>#지구력</span>
+                        <span>#건강관리</span>
+                    </div>
+                </div>
+            </div>
+            <div class="trainer-list">
+                <div class="profile-img-box">
+                    <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_8dfc9177_%ED%95%9C%EC%83%81%EC%97%BD.jpg" alt="">
+                </div>
+                <div class="profile-detail-box">
+                    <div class="detail-header">
+                        <span class="trainer-name">한상엽</span>
+                        <span class="trainer-address">서울 종로</span>
+                    </div>
+                    <div class="info-abstract">
+                        건강한 삼대운동으로 강하게!
+                    </div>
+                    <div class="info-detail">
+                        <div class="info-lesson">
+                            PT 10회 기준 회당 70,000원
+                        </div>
+                        <div class="delimiter"></div>
+                        <div class="info-center">
+                            몬스터짐 광화문
+                        </div>
+                    </div>
+                    <div class="info-field">
+                        <span>#웨이트</span>
+                        <span>#스트레칭</span>
+                        <span>#재활</span>
+                        <span>#다이어트</span>
+                        <span>#대회준비</span>
+                        <span>#지구력</span>
+                        <span>#건강관리</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="page-list">
+            <li class="page-start">처음</li>
+            <li class="page-middle"><i class="fa-solid fa-angles-left"></i></li>
+            <li class="page-middle"><i class="fa-solid fa-angle-left"></i></li>
+            <li class="page-middle page-active">1</li>
+            <li class="page-middle">2</li>
+            <li class="page-middle">3</li>
+            <li class="page-middle">4</li>
+            <li class="page-middle">5</li>
+            <li class="page-middle"><i class="fa-solid fa-angle-right"></i></li>
+            <li class="page-middle"><i class="fa-solid fa-angles-right"></i></li>
+            <li class="page-end">끝</li>
+        </ul>
+    </section>
+    <!-- trainer-list-section end -->
+    <!-- 구현 End -->
+</div>
+<script layout:fragment="script" type="text/javascript">
+</script>
 </html>

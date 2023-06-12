@@ -20,6 +20,7 @@ public class UserController {
         return "signup";
     }
 
+    @PostMapping("/signup")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "signup_form";
@@ -27,13 +28,13 @@ public class UserController {
 
         // 비밀번호와 비밀번호 확인에 입력한 문자열이 서로 다르면 다시 입력 하도록
         if (!userCreateForm.getPassword().equals(userCreateForm.getPasswordCheck())) {
-            bindingResult.rejectValue("password2", "passwordInCorrect",
+            bindingResult.rejectValue("passwordCheck", "passwordInCorrect",
                     "입력한 비밀번호가 일치하지 않습니다.");
             return "signup_form";
         }
 
         if (!this.userService.confirmCertificationCode(userCreateForm.getCode(), userCreateForm.getGenCode())) {
-            bindingResult.rejectValue("inputCode", "codeInCorrect",
+            bindingResult.rejectValue("code", "codeInCorrect",
                     "입력한 인증번호가 일치하지 않습니다.");
             return "signup_form";
         }
