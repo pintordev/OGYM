@@ -969,6 +969,218 @@ input[type="number"]::-webkit-inner-spin-button {
     margin-right: 5px;
 }
 
+
+/* trainer-header-section css */
+.trainer-header-section > .header-box {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.trainer-header-section > .header-box > h2 {
+	margin: 40px 0;
+}
+.trainer-header-section > .header-box > .right-box {
+	display: flex;
+}
+.trainer-header-section > .header-box > .right-box > .search-box {
+	font-size: 0;
+	border: 1px solid rgb(128, 128, 128);
+	border-radius: 0.5rem;
+	margin-right: 10px;
+	padding: 0 0 0 10px;
+	display: flex;
+	align-items: center;
+}
+.trainer-header-section > .header-box > .right-box > .search-box > input {
+	width: 230px;
+	border: none;
+}
+
+.trainer-header-section > .trainer-item-box > .trainer-item-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: between;
+	margin: 10px 0;
+}
+.trainer-header-section
+	> .trainer-item-box
+	> .trainer-item-list
+	> .trainer-item-text {
+	width: calc(100% / 5);
+}
+.trainer-header-section
+	> .trainer-item-box
+	> .trainer-item-list
+	> .trainer-item-text
+	> a {
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	border: 1px solid rgb(128, 128, 128);
+	border-radius: 0.3rem;
+	box-sizing: border-box;
+	margin: 5px;
+}
+
+/* .trainer-list-section css */
+.trainer-list-section > .trainer-list-header {
+	margin: 30px 0;
+	display: flex;
+	justify-content: space-between;
+}
+.trainer-list-section > .trainer-list-body > .trainer-list {
+	padding: 30px 15px;
+	display: flex;
+	border-bottom: 1px solid rgb(191, 191, 191);
+}
+.trainer-list-section > .trainer-list-body > .trainer-list > .profile-img-box {
+	display: flex;
+	align-items: center;
+	padding-left: 15px;
+	padding-right: 30px;
+}
+.trainer-list-section
+	> .trainer-list-body
+	> .trainer-list
+	> .profile-img-box
+	> img {
+	height: 120px;
+	border-radius: 50%;
+}
+.trainer-list-section
+	> .trainer-list-body
+	> .trainer-list
+	> .profile-detail-box
+	> .detail-header
+	> .trainer-name {
+	font-weight: bold;
+	font-size: 1.4rem;
+	margin-right: 10px;
+}
+.trainer-list-section
+	> .trainer-list-body
+	> .trainer-list
+	> .profile-detail-box
+	> .detail-header
+	> .trainer-address {
+	font-size: 0.9rem;
+	color: rgb(128, 128, 128);
+}
+.trainer-list-section
+	> .trainer-list-body
+	> .trainer-list
+	> .profile-detail-box
+	> .info-abstract {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-size: 1.2rem;
+}
+.trainer-list-section
+	> .trainer-list-body
+	> .trainer-list
+	> .profile-detail-box
+	> .info-detail {
+	margin-bottom: 20px;
+	font-size: 1.2rem;
+	display: flex;
+}
+.trainer-list-section
+	> .trainer-list-body
+	> .trainer-list
+	> .profile-detail-box
+	> .info-detail
+	> .delimiter {
+	margin: 0 10px;
+	margin-top: 2px;
+	border: 1px solid;
+	height: 0.9rem;
+	align-self: center;
+}
+.trainer-list-section
+	> .trainer-list-body
+	> .trainer-list
+	> .profile-detail-box
+	> .info-field {
+	font-size: 0.9rem;
+	color: rgb(128, 128, 128);
+}
+
+/* trainer-detail-header css */
+.trainer-detail-header {
+	margin-top: 50px;
+}
+.trainer-detail-header > .inner-container {
+	margin: 0 5px;
+	padding: 30px 15px;
+	display: flex;
+	border: solid rgb(191, 191, 191);
+	border-width: 3px 0 3px 0;
+}
+.trainer-detail-header > .inner-container > .profile-img-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-left: 30px;
+	padding-right: 45px;
+}
+.trainer-detail-header > .inner-container > .profile-img-box > img {
+	height: 200px;
+	border-radius: 50%;
+}
+.trainer-detail-header > .inner-container > .profile-img-box > .trainer-name {
+	margin-top: 20px;
+	font-weight: bold;
+	font-size: 2rem;
+}
+.trainer-detail-header
+	> .inner-container
+	> .profile-img-box
+	> .trainer-address {
+	font-size: 1rem;
+	color: rgb(128, 128, 128);
+}
+
+.trainer-detail-header > .inner-container > .profile-abstract-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.trainer-detail-header
+	> .inner-container
+	> .profile-abstract-box
+	> .info-detail
+	> .info-abstract {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	font-weight: bold;
+	font-size: 2rem;
+}
+.trainer-detail-header
+	> .inner-container
+	> .profile-abstract-box
+	> .info-detail
+	> .info-lesson {
+	font-size: 1.6rem;
+}
+.trainer-detail-header
+	> .inner-container
+	> .profile-abstract-box
+	> .info-detail
+	> .info-center {
+	margin-top: 20px;
+	font-weight: bold;
+	font-size: 1rem;
+}
+.trainer-detail-header
+	> .inner-container
+	> .profile-abstract-box
+	> .info-field {
+	font-size: 0.9rem;
+	color: rgb(128, 128, 128);
+}
+
 /* middle-banner-section css */
 .middle-banner-section {
     margin-top: 60px;
