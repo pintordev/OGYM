@@ -48,7 +48,7 @@ public class UserCreateForm {
     @NotEmpty(message = "발송된 인증번호를 입력해주세요")
     private String code;
 
-    @Pattern(regexp = "\\d{11,12}", message = "휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)")
+    @Pattern(regexp = "\\d{11}", message = "휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)")
     private String phone;
 
     private String genCode;
