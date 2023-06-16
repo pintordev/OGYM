@@ -1,5 +1,7 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
   <!-- 구현 Start -->
   <!-- user-find-form-section start -->
   <section class="form user-find-form-section">
@@ -7,126 +9,149 @@
       <span>oGym</span>
     </div>
     <h3>아이디 찾기</h3>
-    <form class="loginId-find-form" action="">
+    <form class="loginId-find-form" th:action="@{/user/find/loginId}" method="post">
       <div class="input-box email">
-        <input id="findIdEmail" type="text" placeholder="회원가입에 사용한 이메일을 입력해주세요">
-        <div class="error" id="findIdError"></div>
+        <input id="findIdEmail" name="findIdEmail" type="text" placeholder="회원가입에 사용한 이메일을 입력해주세요">
+        <div class="error" id="findIdEmailError"></div>
       </div>
-      <button class="btn" id="findId-btn">아이디 찾기</button>
+      <button type="button" class="btn" id="findId-btn">아이디 찾기</button>
     </form>
     <h3>비밀번호 찾기</h3>
     <form class="password-find-form" action="">
       <div class="input-box findPW">
-        <input id="findPWId" type="text" placeholder="로그인 ID를 입력해주세요">
+        <input id="findPWId" name="findPWId" type="text" placeholder="로그인 ID를 입력해주세요">
         <div class="error" id="findPWIdError"></div>
       </div>
       <div class="input-box email">
-        <input id="findPWEmail" type="text" placeholder="회원가입에 사용한 이메일을 입력해주세요">
+        <input id="findPWEmail" name="findPWEmail" type="text" placeholder="회원가입에 사용한 이메일을 입력해주세요">
 
         <div class="error" id="findPWEmailError"></div>
       </div>
-      <button class="btn" id="findPW-btn">비밀번호 찾기</button>
+      <button type="button" class="btn" id="findPW-btn">비밀번호 찾기</button>
     </form>
   </section>
   <!-- user-find-form-section end -->
   <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
-  $(function () {
-	function updateFindIdButtonState() {
-		var findIdEmail = $("#findIdEmail").val();
-		var findIdButton = $("#findId-btn");
 
-		if (findIdEmail.trim() !== "") {
-			findIdButton.css({ background: "black", color: "white" });
-		} else {
-			findIdButton.css({ background: "", color: "" });
-		}
-	}
 
-	$("#findId-btn").click(function () {
-		var findIdEmail = $("#findIdEmail").val();
-		var findIdResult = $("#findIdError");
+$(document).ready(function () {
+  //아이디, 비밀번호 입력하면 로그인버튼 스타일변경, input으로 처리해서 실시간임
+  $("#findIdEmail, #findPWId, #findPWEmail").on("input", function () {
+    var findIdEmail = $("#findIdEmail").val();
+    var findPWId = $("#findPWId").val();
+    var findPWEmail = $("#findPWEmail").val();
 
-		if (!findIdEmail.trim()) {
-			findIdResult.text("이메일을 입력해주세요.");
-			return;
-		}
+    //input 입력 시 아이디찾기 버튼 상태값 변경
+    if (findIdEmail !== "") {
+      $("#findId-btn").css("background-color", "black");
+    } else {
+      $("#findId-btn").css("background-color", "");
+    }
+    //input 입력 시 비밀번호찾기 버튼 상태값 변경
+    if (findPWId !== "" && findPWEmail !== "") {
+      $("#findPW-btn").css("background-color", "black");
+    } else {
+      $("#findPW-btn").css("background-color", "");
+    }
+    //input 입력 시 아이디찾기 버튼 상태값 변경
+    if (findIdEmail !== "") {
+      $("#findIdEmailError").text("");
+    }
+    //input 입력 시 비밀번호찾기 findPWIdError 초기화
+    if (findPWId !== "") {
+      $("#findPWIdError").text("");
+    }
+    //input 입력 시 비밀번호찾기 findPWIdError 초기화
+    if (findPWEmail !== "") {
+      $("#findPWEmailError").text("");
+    }
+  });
+  //아이디 찾기
+  $("#findId-btn").click(function () {
+    var findIdEmail = $("#findIdEmail").val();
+    if (findIdEmail === "") {
+      $("#findIdEmailError").text("이메일을 입력해주세요");
+      return false;
+    }
 
-		$.ajax({
-			url: `API Request URL`,
-			method: "POST",
-			data: { emailId: findIdEmail },
-			success: function (data) {
-				// TODO: API 요청 성공에 대한 처리
-			},
-			error: function (error) {
-				// TODO: API 요청 실패에 대한 처리
-			}
-		});
-	});
+    $.ajax({
+      url: "/user/find",
+      type: "POST",
+      data: {
+        email: findIdEmail
+      },
+      beforeSend: function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function (e, xhr, options) {
+          xhr.setRequestHeader(header, token);
+        });
+      },
+      success: function (data) {
+        if (data !== "") {
+          $("#findIdEmailError")
+            .text("가입된 아이디는 " + data + "입니다.")
+            .css("color", "rgb(50, 210, 50)");
+        }else {
+        $("#findIdEmailError").text("가입된 아이디가 없습니다.");
+        }
+      },
+      error: function (xhr, status, error) {
+      if (xhr.status === 404 && xhr.responseJSON && xhr.responseJSON.message === "DataNotFoundException") {
+        // 백엔드에서 DataNotFoundException을 보낸 경우
+        $("#findIdEmailError").text("가입된 아이디가 없습니다.");
+      }
+      }
+    });
+  });
 
-	$("#findIdEmail").on("input", function () {
-		$("#findIdError").text("");
-		updateFindIdButtonState();
-	});
-
-	function updateFindPWButtonState() {
-		var findPWId = $("#findPWId").val();
-		var findPWEmail = $("#findPWEmail").val();
-		var findPWButton = $("#findPW-btn");
-
-		if (findPWId.trim() !== "" && findPWEmail.trim() !== "") {
-			findPWButton.css({ background: "black", color: "white" });
-		} else {
-			findPWButton.css({ background: "", color: "" });
-		}
-	}
-
-	$("#findPW-btn").click(function () {
-		var findPWId = $("#findPWId").val();
-		var findPWEmail = $("#findPWEmail").val();
-		var findPWIdResult = $("#findPWIdError");
-		var findPWEmailResult = $("#findPWEmailError");
-
-		if (!findPWId.trim() && !findPWEmail.trim()) {
-			findPWIdResult.text("아이디를 입력해주세요.");
-			findPWEmailResult.text("이메일을 입력해주세요.");
-			return;
-		}
-		if (!findPWId.trim()) {
-			findPWIdResult.text("아이디를 입력해주세요.");
-			findPWEmailResult.text("");
-			return;
-		}
-		if (!findPWEmail.trim()) {
-			findPWIdResult.text("");
-			findPWEmailResult.text("이메일을 입력해주세요.");
-			return;
-		}
-
-		$.ajax({
-			url: `API Request URL`,
-			method: "POST",
-			data: { emailId: findPWId, emailPw: findPWEmail },
-			success: function (data) {
-				// TODO: API 요청 성공에 대한 처리
-			},
-			error: function (error) {
-				// TODO: API 요청 실패에 대한 처리
-			}
-		});
-	});
-
-	$("#findPWId").on("input", function () {
-		$("#findPWIdError").text("");
-		updateFindPWButtonState();
-	});
-
-	$("#findPWEmail").on("input", function () {
-		$("#findPWEmailError").text("");
-		updateFindPWButtonState();
-	});
+  //비밀번호 찾기
+  $("#findPW-btn").click(function () {
+    var findPWId = $("#findPWId").val();
+    var findPWEmail = $("#findPWEmail").val();
+    if (findPWId === "" || findPWEmail === "") {
+      if (findPWId === "") {
+        $("#findPWIdError").text("아이디를 입력해주세요").css("color","red");
+      }
+      if (findPWEmail === "") {
+        $("#findPWEmailError").text("이메일을 입력해주세요").css("color","red");
+      }
+      return false;
+    }
+    $("#findPW-btn").text("이메일 발송중").css("font-size", "0.8rem");
+    $.ajax({
+      url: "/user/find",
+      type: "POST",
+      data: {
+        loginId: findPWId,
+        email: findPWEmail
+      },
+      beforeSend: function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function (e, xhr, options) {
+          xhr.setRequestHeader(header, token);
+        });
+      },
+      success: function (data) {
+        $("#findPW-btn").text("비밀번호 찾기").css("font-size", "0.8rem");
+        if (data !== "") {
+          $("#findPWEmailError").text("임시비밀번호를 이메일로 발송했습니다.").css("color", "rgb(50, 210, 50)");
+        } else {
+          $("#findPWEmailError").text("입력한 정보가 일치하지 않습니다.");
+        }
+      },
+      error: function () {
+        console.log(data);
+        $("#findPWEmailError").text(
+          "요청을 처리하는 도중 에러가 발생했습니다."
+        );
+        $("#findPW-btn").text("비밀번호 찾기").css("font-size", "0.8rem");
+      }
+    });
+  });
 });
 
 </script>

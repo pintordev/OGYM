@@ -1,5 +1,7 @@
 package com.ogym.project;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,19 +19,27 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests().requestMatchers(
-                        new AntPathRequestMatcher("/**")).permitAll()
+                        new AntPathRequestMatcher("/**")).permitAll();
+                http.authorizeHttpRequests()
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
+                .usernameParameter("loginId")
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
+
+
+
+
+
         ;
         return http.build();
     }
