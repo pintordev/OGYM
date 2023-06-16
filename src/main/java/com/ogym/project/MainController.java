@@ -1,7 +1,6 @@
 package com.ogym.project;
 
-import com.ogym.project.user.SiteUser;
-import com.ogym.project.user.UserService;
+import com.ogym.project.user.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

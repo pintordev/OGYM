@@ -37,7 +37,7 @@
         </ul>
         <ul th:each="board, loop : ${boardPaging}" class="body" th:classappend="${board.id == presentBoard.id ? 'active' : ''}">
             <li th:text="${boardPaging.getTotalElements - (boardPaging.number * boardPaging.size) - loop.index}" class="no"></li>
-            <li th:text="${board.boardCategory.name}" class="cate"></li>
+            <li th:text="${board.category.name}" class="cate"></li>
             <li class="content">
                 <a th:href="@{|/board/${board.id}|}" th:text="${board.title}"></a>
                 <span th:if="${#lists.size(board.commentList) > 0}" th:text="|[${#lists.size(board.commentList)}]|"></span>

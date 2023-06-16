@@ -1,6 +1,6 @@
 package com.ogym.project.admin;
 
-import com.ogym.project.boardCategory.BoardCategoryService;
+import com.ogym.project.board.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AdminController {
 
-    private final BoardCategoryService boardCategoryService;
+    private final CategoryService boardCategoryService;
 
     @GetMapping("/category")
     public String createBoardCategory() {

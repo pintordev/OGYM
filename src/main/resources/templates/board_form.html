@@ -13,8 +13,8 @@
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="board-write-header">
                 <div>
-                    <select th:field="*{boardCategory}">
-                        <option th:each="boardCategory : ${boardCategoryList}" th:value="${boardCategory.name}" th:text="${boardCategory.name}"></option>
+                    <select th:field="*{category}">
+                        <option th:each="category : ${categoryList}" th:value="${category.name}" th:text="${category.name}"></option>
                     </select>
                 </div>
                 <input type="text" th:field="*{title}" placeholder="제목">
