@@ -17,22 +17,22 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUser create(String username, String password, String email, String birthyear, String birthmonth, String birthday, String phone, @Pattern(regexp = "\\d{11,12}", message = "휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요 (선택)") String userCreateFormPhone) {
+    public SiteUser create(String loginId, String password, String nickname, String username, String phone, String birthyear, String birthmonth, String birthday,
+                           String email) {
         String birthDate = birthyear + birthmonth + birthday;
 
-//        int phoneNumber = 0;
-//        if (phone != null) {
-//            phoneNumber = Integer.parseInt(phone.replaceAll("-", ""));
-//        }
-//
+
         SiteUser user = new SiteUser();
-//        user.setUsername(username);
-//        user.setPassword(passwordEncoder.encode(password));
-//        user.setEmail(email);
-//        user.setBirthDate(birthDate);
-//        user.setPhoneNumber(phoneNumber);
-//        user.setCreateDate(LocalDateTime.now());
-//        this.userRepository.save(user);
+        user.setLoginId(loginId);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setNickname(nickname);
+        user.setUsername(username);
+        user.setBirthDate(birthDate);
+        user.setEmail(email);
+        user.setPhoneNumber(phone);
+        user.setCreateDate(LocalDateTime.now());
+        user.setAuthority(UserRole.USER);
+        this.userRepository.save(user);
         return user;
     }
 
@@ -55,7 +55,17 @@ public class UserService {
 
 
 
+    //email 값으로 데이터베이스에서 siteuser 조회하려는 기능
+    public SiteUser getUserByEmail(String email) {
+        Optional<SiteUser> siteUser = this.userRepository.findByEmail(email);
+        if (siteUser.isPresent()) {
+            return siteUser.get();
+        } else {
+            throw new DataNotFoundException("siteuser not found");
+        }
+    }
 
+    //login 값으로 데이터베이스에서 siteuser 조회하려는 기능
     public SiteUser getUserByLoginId(String loginId) {
         Optional<SiteUser> _siteUser = this.userRepository.findByLoginId(loginId);
         if (_siteUser.isPresent()) {
@@ -64,6 +74,10 @@ public class UserService {
             throw new DataNotFoundException("user not found");
         }
     }
+
+
+
+
 
     public boolean confirmCertificationCode(String inputCode, String genCode) {
         return passwordEncoder.matches(inputCode, genCode);
