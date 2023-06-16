@@ -1,149 +1,90 @@
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:class="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
     <!-- 구현 Start -->
-<body>
-<li class="nav-item">
-    <a class="nav-link" th:href="@{/trainer/register}">트레이너등록</a>
-</li>
-<<form th:action="@{/trainer/register}" th:object="${trainerCreateForm}" method="post">
-    <!--  실명  -->
-    <div class="tr-3">
-        <label for="name" class="form_label">실명
-            <span class="check-field">*</span>
-        </label>
-        <input type="text" th:field = "*{trainerInfo}" class="form-control">
-    </div>
-    <!-- 센터에서사용하는 이름   -->
-    <div class="tr-3">
-        <label for="username" class="form-label">닉네임
-            <span class="check-field">*</span>
-        </label>
-        <input type="text" th:field = "*{name}" class="form-control">
-    </div>
-    <!--   성별 -->
-    <div class="trainer-gender">
-        <label for="form-gender">
-    성별
-    <span class="check-field">*</span>
-</label>
-</div>
-<div class="input-gender">
-    <label>
-        <input type="radio" th:field="*{gender}" class="male">
-        <span class="input_group_radio">남자</span>
-    </label>
-    <label>
-        <input type="radio" th:field="*{gender}" class="female">
-        <span class="input_group_radio">여자</span>
-    </label>
-</div>
-<!-- 지도종목 -->
-<div class="trainer-field">
-    <label class="field-form">
-        지도종목
-        <span class="check-field">*</span>
-    </label>
-</div>
-<div>
-    <label>
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-1">웨이트</span>
-    </label>
-    <label>
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-2">스트레칭</span>
-    </label>
-    <label >
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-3">재활</span>
-    </label>
-    <label>
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-4">다이어트</span>
-    </label>
-    <label>
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-5">대회준비</span>
-    </label>
-    <label >
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-6">인터벌</span>
-    </label>
-    <label >
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-7">지구력</span>
-    </label>
-    <label>
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-8">맨몸운동</span>
-    </label>
-    <label>
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-9">바디프로필</span>
-    </label>
-    <label>
-        <input type="checkbox" name="field" value="">
-        <span class="input-field-10">건강관리</span>
-    </label>
-</div>
+    <form th:action="@{/trainer/register}" th:object="${trainerCreateForm}" method="post">
+        <!--  실명  -->
+        <!--        <div class="tr-3">-->
+        <!--            <label for="trainerInfo" >실명-->
+        <!--                <span class="check-field">*</span>-->
+        <!--            </label>-->
+        <!--            <input type="text" th:field="*{trainerInfo}" class="form-control">-->
+        <!--        </div>-->
+        <!-- 센터에서사용하는 이름   -->
+        <div class="tr-3">
+            <label for="name">닉네임
+                <span class="check-field">*</span>
+            </label>
+            <input type="text" th:field="*{name}">
+        </div>
+        <!--           성별-->
+        <!--        <h2>성별</h2>-->
+        <!--        <div class="tr-3">-->
+        <!--            <input type="radio" th:field="*{gender}" th:value="남자">-->
+        <!--            <label th:for="${#ids.prev('gender')" th:text="남자"></label>-->
+        <!--            <input type="radio" th:field="*{gender}" th:value="여자">-->
+        <!--            <label th:for="${#ids.prev('gender')" th:text="여자"></label>-->
+        <!--        </div>-->
+        <!--         지도종목 -->
 
-<!-- 센터명 -->
-<div class="center">
-    <label for="center">
-        활동중인 센터 명
-        <span class="check-field">*</span>
-    </label>
-</div>
-<div>
-    <input type="text" th:field = "*{center}" class="form-control">
-</div>
-<!-- 센터 주소 -->
-<div class="center-address">
-    <label for="center-address">
-        센터주소
-        <span class="check-field">*</span>
-    </label>
-</div>
-<div class="find-by-address">
-    <input type="text" th:field="*{find-address}">
-    <button type="submit">주소찾기</button>
-    <br>
-    <input type="text" th:field = "*{find-address}">
-</div>
-<!-- 연락 -->
-<div class="contact">
-    <label for="number">휴대폰 번호</label>
-    <input type="text" th:field = "*{number}">
-</div>
 
-<!-- 한줄 소개  -->
-<div>
-    <label for="introAbstract">한줄소개</label>
-    <input type="text" th:field= "*{introAbstract}">
-</div>
+        <!--            단일태그는 testInput-->
+<!--        <div th:each="trainerItem : ${trainerItem}">-->
+<!--            <input type="checkbox" th:field="*{name}" th:value="${trainerItem.name}">-->
+<!--            <label th:for="${#ids.prev('name')}" th:text=${trainerItem.name}></label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <label for="info">레슨정보</label>-->
+<!--                <input type="text" th:field="*{number}">회-->
+<!--                <input type="text" th:field="*{price}">원-->
+<!--            <button type="submit">등록하기</button>-->
+<!--        </div>-->
+<!--          센터-->
 
-<!-- 긴글 소개 -->
-<div>
-    <label for="introDetail">소개글</label>
-</div>
-<div>
-    <textarea name="introDetail" th:field="*{introDetail}" cols="40" rows="5"></textarea>
-</div>
-<!-- 자격증  -->
-<div>
-    <label for="certificate">자격증</label>
-    <input type="text" th:field="*{certificate}">
-</div>
+        <!--         센터 주소 -->
+        <div class="tr-3">
+            <label for="center">
+                활동중인센터
+                <span class="check-field">*</span>
+            </label>
+            <input type="text" th:field="*{center}">
+        </div>
+        <div class="tr-3">
+            <label for="address">
+                주소
+                <span class="check-field">*</span>
+            </label>
+            <input type="text" th:field="*{address}">
 
-<!-- 레슨정보 횟수, 가격 -->
-<div>
-    <label for="lesson">레슨</label>
-    <input type="text" th:field="*{lesson}" >
-</div>
+        </div>
+        <div class="tr-3">
+            <input type="text" th:field="*{address}">
+            <button type="submit">주소찾기</button>
+            <br>
+            <input type="text" th:field="*{address}">
+        </div>
+<!--        <div>-->
+<!--            <label for="number">-->
+<!--                연락처-->
+<!--                <input type="text" th:field="*{number}">-->
+<!--            </label>-->
+<!--        </div>-->
 
-<button type="submit">등록하기</button>
-</form>
-</body>
+
+        <div>
+            <label for="introAbstract"> 짧은 자기소개 </label>
+            <input type="text" th:field="*{introAbstract}">
+
+        </div>
+        <div>
+            <label for="introDetail">자기소개
+            </label>
+            <textarea name="introDetail" id="intro" cols="30" rows="10"></textarea>
+        </div>
+
+        <button type="submit">등록하기</button>
+    </form>
+    </body>
     <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">

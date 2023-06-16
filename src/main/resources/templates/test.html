@@ -1,0 +1,22 @@
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content">
+    <!-- 구현 Start -->
+    <section>
+        <form th:action="@{/test}" th:object=${testForm} method="post">
+            <div role="alert" th:if="${#fields.hasAnyErrors()}">
+                <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+            </div>
+<!--            단일태그는 testInput-->
+            <input type="text" th:field="*{testInput}">
+            <div th:each="boardCategory : ${boardCategoryList}">
+                <input type="checkbox" th:field="*{boardCategoryList}" th:value="${boardCategory.name}">
+                <label th:for="${#ids.prev('boardCategoryList')}" th:text=${boardCategory.name}></label>
+            </div>
+            <button type="submit">제출</button>
+        </form>
+    </section>
+    <!-- 구현 End -->
+</div>
+<script layout:fragment="script" type="text/javascript">
+</script>
+</html>

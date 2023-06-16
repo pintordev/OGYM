@@ -1,11 +1,10 @@
-package com.ogym.project.trainer;
+package com.ogym.project.trainerField;
 
-import com.ogym.project.trainerField.TrainerField;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface TrainerRepository extends JpaRepository<Trainer, Long> {
+public interface TrainerFieldRepository extends JpaRepository<TrainerField, Integer> {
     List<TrainerField> findByOrderByIdAsc();
     TrainerField findByName(String name);
 }

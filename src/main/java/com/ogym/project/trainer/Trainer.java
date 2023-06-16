@@ -1,9 +1,11 @@
 package com.ogym.project.trainer;
 
 
+import com.ogym.project.trainerAddress.TrainerAddress;
 import com.ogym.project.trainerCertificate.TrainerCertificate;
+import com.ogym.project.trainerContact.TrainerContact;
 import com.ogym.project.trainerLesson.TrainerLesson;
-import com.ogym.project.trainerItem.TrainerItem;
+import com.ogym.project.trainerField.TrainerField;
 import com.ogym.project.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,7 +14,6 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class Trainer {
     private Long id;
 
     @OneToOne
-    private SiteUser trainerInfo;
+    private SiteUser userInfo;
 
     //트레이너 이름 : 중복허용가능
     private String name;
@@ -31,22 +32,8 @@ public class Trainer {
     //소속(활동중인센터)
     private String center;
 
-    //(활동중인센터)주소
-    private String address;
-
-    //운동종류
-    @ManyToMany
-    private List<TrainerItem> fieldList;
-
     //성별
     private String gender;
-
-    //자격증 : certificate 패키지 만들고 list등록
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE)
-    private List<TrainerCertificate> certificate;
-
-    //연락처
-    private String number;
 
     //짧은소개
     @Column(length = 200)
@@ -56,11 +43,29 @@ public class Trainer {
     @Column(columnDefinition = "TEXT")
     private String introDetail;
 
+    //운동종류
+    @ManyToMany
+    private List<TrainerField> fieldList;
+
     //레슽가격 - 패키지 하나 더만들고 one to many
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE)
-    private List<TrainerLesson> lesson;
+    private List<TrainerLesson> lessonList;
+
+
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE)
+    private List<TrainerContact> contactList;
+
+    //자격증 : certificate 패키지 만들고 list등록
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE)
+    private List<TrainerCertificate> certificateList;
+
+    //(활동중인센터)주소
+    @OneToOne
+    private TrainerAddress address;
 
     //트레이너 등록일
     @CreatedDate
     private LocalDateTime createDate;
+
+    private LocalDateTime modifyDate;
 }

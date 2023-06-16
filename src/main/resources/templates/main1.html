@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+  .box{
+  width:500px;
+  height : 500px;
+  border:2px solid red;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  font-size:10rem;
+  }
+</style>
+메인 1
+<hr>
+공간1
+<button onclick="count1_updateDisplay()">갱신</button>
+<div class=" box count-1-display">
+    <th:block th:text="${count1}"></th:block>
+</div>
+공간2
+<button onclick="count2_updateDisplay()">갱신</button>
+<div class=" box count-2-display">
+    <th:block th:text="${count2}"></th:block>
+</div>
+<script
+        src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+        crossorigin="anonymous"></script>
+<script>
+<!--        function count1_updateDisplay() {-->
+<!--        fetch('/count1')-->
+<!--            .then(response => response.json())-->
+<!--            .then(json => {-->
+<!--                document.querySelector('.count-1-display').innerHTML = json;-->
+<!--            });-->
+<!--    }-->
+
+<!--    function count2_updateDisplay() {-->
+<!--        fetch('/count2')-->
+<!--            .then(response => response.json())-->
+<!--            .then(json => {-->
+<!--                document.querySelector('.count-2-display').innerHTML = json;-->
+<!--            });-->
+<!--    }-->
+$.ajax({
+type"GET",
+url:"/count1",
+dataType:"json",
+success : fuction(json){
+const json = result.json();
+ $(".count-1-display")
+}
+error:function(err);
+console.log(err);
+
+
+
+
+
+</script>
+</body>
+</html>

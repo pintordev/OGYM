@@ -1,21 +1,24 @@
-package com.ogym.project.trainerLesson;
+package com.ogym.project.trainerContact;
 
 import com.ogym.project.trainer.Trainer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @Entity
-public class TrainerLesson {
+public class TrainerContact {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
-    private Integer number;
+    @Column(length = 20)
+    private String type;
 
-    private Integer price;
+    @Column(length = 50)
+    private String content;
 
     @ManyToOne
     private Trainer trainer;

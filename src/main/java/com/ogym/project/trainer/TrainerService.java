@@ -1,8 +1,12 @@
 package com.ogym.project.trainer;
 
+import com.ogym.project.trainerAddress.TrainerAddress;
 import com.ogym.project.trainerCertificate.TrainerCertificate;
-import com.ogym.project.trainerItem.TrainerItem;
+import com.ogym.project.trainerContact.TrainerContact;
+import com.ogym.project.trainerField.TrainerField;
+import com.ogym.project.trainerField.TrainerFieldRepository;
 import com.ogym.project.trainerLesson.TrainerLesson;
+import com.ogym.project.trainerLesson.TrainerLessonRepository;
 import com.ogym.project.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,29 +20,36 @@ import java.util.List;
 public class TrainerService {
     private final TrainerRepository trainerRepository;
 
-    public Trainer create(SiteUser trainerInfo, String name, String center,
-                          String address, String gender, String number,
-                          String introAbstract, String introDetail,
-                       LocalDateTime createDate)
+
+    public Trainer create(SiteUser userInfo, String name, String center, String gender,
+                          String introAbstract, String introDetail, List<TrainerField> fieldList,
+                          List<TrainerLesson> lessonList, List<TrainerContact> contactList, List<TrainerCertificate> certificateList,
+                          TrainerAddress address )
     {
-        List<TrainerItem> fieldList = new ArrayList<>();
-        List<TrainerCertificate> certificate = new ArrayList<>();
-        List<TrainerLesson> lesson = new ArrayList<>();
         Trainer trainer = new Trainer();
-        trainer.setTrainerInfo(trainerInfo);
+        trainer.setUserInfo(userInfo);
         trainer.setName(name);
         trainer.setCenter(center);
-        trainer.setAddress(address);
         trainer.setGender(gender);
-        trainer.setNumber(number);
         trainer.setIntroAbstract(introAbstract);
         trainer.setIntroDetail(introDetail);
-        trainer.setCreateDate(createDate);
         trainer.setFieldList(fieldList);
-        trainer.setCertificate(certificate);
-        trainer.setLesson(lesson);
+        trainer.setLessonList(lessonList);
+        trainer.setContactList(contactList);
+        trainer.setCertificateList(certificateList);
+        trainer.setAddress(address);
+
+
 
         this.trainerRepository.save(trainer);
         return trainer;
+    }
+    public List<TrainerField> getTrainerItem() {
+
+        return this.trainerRepository.findByOrderByIdAsc();
+    }
+
+    public TrainerField trainerRepository(String name) {
+        return this.trainerRepository.findByName(name);
     }
 }

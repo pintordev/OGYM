@@ -13,10 +13,10 @@ public class TrainerCertificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(length = 50)
     private String name;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String imgUrl;
 
     @ManyToOne
