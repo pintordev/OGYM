@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
+                .usernameParameter("loginId")
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()

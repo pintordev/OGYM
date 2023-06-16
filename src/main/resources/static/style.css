@@ -964,6 +964,7 @@ input[type="number"]::-webkit-inner-spin-button {
     display: flex;
     justify-content: flex-end;
     margin-top:10px;
+
 }
 .comment-modify-section > .comment-modify-form > .modify-btn-box > .btn-sm.cancel {
     margin-right: 5px;
