@@ -3,6 +3,7 @@ package com.ogym.project.trainer.trainer;
 import com.ogym.project.trainer.address.AddressForm;
 import com.ogym.project.trainer.certificate.CertificateForm;
 import com.ogym.project.trainer.contact.ContactForm;
+import com.ogym.project.trainer.field.Field;
 import com.ogym.project.trainer.lesson.LessonForm;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class TrainerForm {
 
     private String introDetail;
 
-    private List<String> fieldList;
+    private List<Field> fieldList;
 
     private List<LessonForm> lessonList;
 
