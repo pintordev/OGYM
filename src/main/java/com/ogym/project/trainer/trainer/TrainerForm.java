@@ -27,7 +27,7 @@ public class TrainerForm {
 
     private String introDetail;
 
-    private List<Field> fieldList;
+    private List<String> fieldList;
 
     private List<LessonForm> lessonList;
 

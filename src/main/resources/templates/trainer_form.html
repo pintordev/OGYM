@@ -2,7 +2,7 @@
       xmlns:class="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
     <!-- 구현 Start -->
-    <form th:action="@{/trainer/register}" th:object="${trainerCreateForm}" method="post">
+    <form th:action="@{/trainer/register}" th:object="${trainerForm}" method="post">
         <!--  실명  -->
         <!--        <div class="tr-3">-->
         <!--            <label for="trainerInfo" >실명-->
@@ -11,76 +11,73 @@
         <!--            <input type="text" th:field="*{trainerInfo}" class="form-control">-->
         <!--        </div>-->
         <!-- 센터에서사용하는 이름   -->
-        <div class="tr-3">
-            <label for="name">닉네임
-                <span class="check-field">*</span>
-            </label>
-            <input type="text" th:field="*{name}">
+        <div class="input-box name">
+            <label for="name">이름 </label>
+            <input type="text" th:field="*{name}" placeholder="이름을 입력해주세요.">
         </div>
-        <!--           성별-->
-        <!--        <h2>성별</h2>-->
-        <!--        <div class="tr-3">-->
-        <!--            <input type="radio" th:field="*{gender}" th:value="남자">-->
-        <!--            <label th:for="${#ids.prev('gender')" th:text="남자"></label>-->
-        <!--            <input type="radio" th:field="*{gender}" th:value="여자">-->
-        <!--            <label th:for="${#ids.prev('gender')" th:text="여자"></label>-->
-        <!--        </div>-->
-        <!--         지도종목 -->
-
-
-        <!--            단일태그는 testInput-->
-<!--        <div th:each="trainerItem : ${trainerItem}">-->
-<!--            <input type="checkbox" th:field="*{name}" th:value="${trainerItem.name}">-->
-<!--            <label th:for="${#ids.prev('name')}" th:text=${trainerItem.name}></label>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="info">레슨정보</label>-->
-<!--                <input type="text" th:field="*{number}">회-->
-<!--                <input type="text" th:field="*{price}">원-->
-<!--            <button type="submit">등록하기</button>-->
-<!--        </div>-->
-<!--          센터-->
-
-        <!--         센터 주소 -->
-        <div class="tr-3">
-            <label for="center">
-                활동중인센터
-                <span class="check-field">*</span>
-            </label>
+        <!--     센터 주소   -->
+        <div class="input-box center">
+            <label for="center">활동중인센터</label>
             <input type="text" th:field="*{center}">
         </div>
-        <div class="tr-3">
-            <label for="address">
-                주소
-                <span class="check-field">*</span>
-            </label>
+        <!--        성별-->
+        <div class="check-box gender">
+            <input type="radio" name="gender_answer" th:fiedl="*{gender}" value="male">남
+            <input type="radio" name="gender_answer" th:fiedl="*{gender}" value="female">여
+        </div>
+        <!--        주소찾기-->
+        <div class="find-address">
+            <label for="address">주소</label>
             <input type="text" th:field="*{address}">
 
         </div>
-        <div class="tr-3">
+        <div class="find-address-1">
             <input type="text" th:field="*{address}">
             <button type="submit">주소찾기</button>
             <br>
             <input type="text" th:field="*{address}">
         </div>
-<!--        <div>-->
-<!--            <label for="number">-->
-<!--                연락처-->
-<!--                <input type="text" th:field="*{number}">-->
-<!--            </label>-->
-<!--        </div>-->
-
-
+        <!--        성별-->
+        <!--        짧은 자기소개-->
         <div>
             <label for="introAbstract"> 짧은 자기소개 </label>
-            <input type="text" th:field="*{introAbstract}">
+            <input type="text" th:field="*{introAbstract}" placeholder="소개">
 
         </div>
         <div>
             <label for="introDetail">자기소개
             </label>
-            <textarea name="introDetail" id="intro" cols="30" rows="10"></textarea>
+            <textarea name="introDetail" id="intro" cols="30" rows="10" placeholder="설명"></textarea>
         </div>
+        <!--         지도종목 -->
+<!--    종목선택-->
+        <div role="alert" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+        </div>
+        <input type="text" th:field="*{fieldList}">
+        <div th:each="field : ${fieldList}">
+            <input type="checkbox" th:field="*{fieldList}" th:value="${fieldList.name}">
+            <label th:for="${#ids.prev('boardCategoryList')}" th:text=${fieldList.name}></label>
+        </div>
+        <!--            단일태그는 testInput-->
+        <!--        <div th:each="trainerItem : ${trainerItem}">-->
+        <!--            <input type="checkbox" th:field="*{name}" th:value="${trainerItem.name}">-->
+        <!--            <label th:for="${#ids.prev('name')}" th:text=${trainerItem.name}></label>-->
+        <!--        </div>-->
+        <!--        <div>-->
+        <!--            <label for="info">레슨정보</label>-->
+        <!--                <input type="text" th:field="*{number}">회-->
+        <!--                <input type="text" th:field="*{price}">원-->
+        <!--            <button type="submit">등록하기</button>-->
+        <!--        </div>-->
+        <!--          센터-->
+        <!--        <div>-->
+        <!--            <label for="number">-->
+        <!--                연락처-->
+        <!--                <input type="text" th:field="*{number}">-->
+        <!--            </label>-->
+        <!--        </div>-->
+
 
         <button type="submit">등록하기</button>
     </form>
@@ -88,5 +85,9 @@
     <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
+$("input[name='gender_answer']:checked").each(function(){
+	console.log($(this).val())
+});
+
 </script>
 </html>

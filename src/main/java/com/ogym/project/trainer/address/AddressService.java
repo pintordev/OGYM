@@ -6,7 +6,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class AddressService {
-    private  final AddressRepository addressRepository;
+    private final AddressRepository addressRepository;
+
+    public Address create(Integer zoneCode, String mainAddress, String subAddress, Double latitude, Double longitude) {
+        Address address = new Address();
+        address.setZoneCode(zoneCode);
+        address.setMainAddress(mainAddress);
+        address.setSubAddress(subAddress);
+        address.setLatitude(latitude);
+        address.setLongitude(longitude);
+        return addressRepository.save(address);
+    }
 
 
 }

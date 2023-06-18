@@ -21,10 +21,13 @@ public class TrainerService {
     private final TrainerRepository trainerRepository;
 
 
-    public Trainer create(String name, String center, String gender,
-                          String introAbstract, String introDetail, List<Field> fieldList,
-                          List<Lesson> lessonList, List<Contact> contactList, List<Certificate> certificateList,
-                          String zoneCode, String mainAddress, String subAddress, String latitude, String longitude)
+    public Trainer create(String name,
+                          String center,
+                          String gender,
+                          String introAbstract,
+                          String introDetail,
+                          List<Field> fieldList
+                       )
     {
         Trainer trainer = new Trainer();
         trainer.setName(name);
@@ -33,24 +36,7 @@ public class TrainerService {
         trainer.setIntroAbstract(introAbstract);
         trainer.setIntroDetail(introDetail);
         trainer.setFieldList(fieldList);
-        trainer.setLessonList(lessonList);
-        trainer.setContactList(contactList);
-        trainer.setCertificateList(certificateList);
 
-        Address address = new Address();
-        address.setZoneCode(zoneCode);
-        address.setMainAddress(mainAddress);
-        address.setSubAddress(subAddress);
-        address.setLatitude(latitude);
-        address.setLongitude(longitude);
-        trainer.setAddress(address);
-
-        List<Lesson> lessonList = new ArrayList<>();
-        for(LessonForm lessonForm : lessonFormList){
-            Lesson lesson = new Lesson();
-            lessonList.add(lesson);
-        }
-        trainer.setLessonList(lessonList);
         this.trainerRepository.save(trainer);
         return trainer;
     }
