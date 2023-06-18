@@ -59,24 +59,7 @@
             <input type="checkbox" th:field="*{fieldList}" th:value="${fieldList.name}">
             <label th:for="${#ids.prev('boardCategoryList')}" th:text=${fieldList.name}></label>
         </div>
-        <!--            단일태그는 testInput-->
-        <!--        <div th:each="trainerItem : ${trainerItem}">-->
-        <!--            <input type="checkbox" th:field="*{name}" th:value="${trainerItem.name}">-->
-        <!--            <label th:for="${#ids.prev('name')}" th:text=${trainerItem.name}></label>-->
-        <!--        </div>-->
-        <!--        <div>-->
-        <!--            <label for="info">레슨정보</label>-->
-        <!--                <input type="text" th:field="*{number}">회-->
-        <!--                <input type="text" th:field="*{price}">원-->
-        <!--            <button type="submit">등록하기</button>-->
-        <!--        </div>-->
-        <!--          센터-->
-        <!--        <div>-->
-        <!--            <label for="number">-->
-        <!--                연락처-->
-        <!--                <input type="text" th:field="*{number}">-->
-        <!--            </label>-->
-        <!--        </div>-->
+
 
 
         <button type="submit">등록하기</button>
