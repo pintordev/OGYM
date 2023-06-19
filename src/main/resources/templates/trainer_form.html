@@ -12,32 +12,38 @@
         <!--        </div>-->
         <!-- 센터에서사용하는 이름   -->
         <div class="input-box name">
-            <label for="name">이름 </label>
-            <input type="text" th:field="*{name}" placeholder="이름을 입력해주세요.">
+            <div>
+                <label for="name">이름 </label>
+                <input type="text" th:field="*{name}" placeholder="이름을 입력해주세요.">
+            </div>
+
         </div>
         <!--     센터 주소   -->
         <div class="input-box center">
-            <label for="center">활동중인센터</label>
-            <input type="text" th:field="*{center}">
+            <div>
+                <label for="center">활동중인센터</label>
+                <input type="text" th:field="*{center}">
+            </div>
         </div>
         <!--        성별-->
         <div class="check-box gender">
-            <input type="radio" name="gender_answer" th:fiedl="*{gender}" value="male">남
-            <input type="radio" name="gender_answer" th:fiedl="*{gender}" value="female">여
+            <input type="radio" th:field="*{gender}" value="남자">
+            <label th:for="${#ids.prev('gender')}">남자</label>
+            <input type="radio" th:field="*{gender}" value="여자">
+            <label th:for="${#ids.prev('gender')}">여자</label>
         </div>
         <!--        주소찾기-->
         <div class="find-address">
+            <div>
             <label for="address">주소</label>
-            <input type="text" th:field="*{address}">
-
-        </div>
-        <div class="find-address-1">
-            <input type="text" th:field="*{address}">
+            </div>
+            <div>우편번호<input type="text" th:field="*{address.ZoneCode}"></div>
+            <div>주소<input type="text" th:field="*{address.mainAddress}"></div>
+            <div>상세주소<input type="text" th:field="*{address.subAddress}"></div>
+            <div>위도<input type="text" th:field="*{address.latitude}"></div>
+            <div>경도<input type="text" th:field="*{address.longitude}"></div>
             <button type="submit">주소찾기</button>
-            <br>
-            <input type="text" th:field="*{address}">
         </div>
-        <!--        성별-->
         <!--        짧은 자기소개-->
         <div>
             <label for="introAbstract"> 짧은 자기소개 </label>
@@ -47,30 +53,48 @@
         <div>
             <label for="introDetail">자기소개
             </label>
-            <textarea name="introDetail" id="intro" cols="30" rows="10" placeholder="설명"></textarea>
+            <textarea th:field="*{introDetail}" cols="30" rows="10" placeholder="설명"></textarea>
         </div>
-        <!--         지도종목 -->
-<!--    종목선택-->
-        <div role="alert" th:if="${#fields.hasAnyErrors()}">
-            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-        </div>
-        <input type="text" th:field="*{fieldList}">
+        <!-- 지도종목 -->
+        <!-- 종목선택 -->
         <div th:each="field : ${fieldList}">
-            <input type="checkbox" th:field="*{fieldList}" th:value="${fieldList.name}">
-            <label th:for="${#ids.prev('boardCategoryList')}" th:text=${fieldList.name}></label>
+            <input type="checkbox" th:field="*{fieldList}" th:value="${field.name}">
+            <label th:for="${#ids.prev('fieldList')}" th:text=${field.name}></label>
         </div>
+        <!-- 레슨정보입력 -->
+        <div class="input-box lesson" th:each="lesson, loop : ${lessonList}">
+            <div>
+            <input type="text" th:value="${lesson.time}" th:field="*{lessonList[__${loop.index}__].time}">회
+            <input type="text" th:value="${lesson.price}" th:field="*{lessonList[__${loop.index}__].price}">원
+            </div>
+        </div>
+        <!-- 자격증 정보 입력 -->
+        <div class="input-box certificate" th:each="certificate, loop : ${certificateList}">
+            <div>
+                자격증이름 <input type="text" th:value="${certificate.name}" th:field="*{certificateList[__${loop.index}__].name}">
 
-
-
+                사진  <input type="url" th:value="${certificate.imgUrl}" th:field="*{certificateList[__${loop.index}__].imgUrl}">
+        </div>
+        </div>
+<!--        연락처 정보 입력-->
+        <div class="input-box contact" th:each="contact, loop : ${contactList}">
+            <div>
+            <input type="text" th:value="${contact.type}" th:field="*{contactList[__${loop.index}__].type}">연락처종류
+            <input type="text" th:value="${contact.content}" th:field="*{contactList[__${loop.index}__].content}">내용
+            </div>
+        </div>
+        <br>
         <button type="submit">등록하기</button>
     </form>
-    </body>
+
     <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
 $("input[name='gender_answer']:checked").each(function(){
 	console.log($(this).val())
 });
+
+
 
 </script>
 </html>

@@ -4,6 +4,7 @@ import com.ogym.project.trainer.address.Address;
 import com.ogym.project.trainer.address.AddressForm;
 import com.ogym.project.trainer.address.AddressService;
 import com.ogym.project.trainer.certificate.CertificateForm;
+import com.ogym.project.trainer.contact.Contact;
 import com.ogym.project.trainer.contact.ContactForm;
 import com.ogym.project.trainer.contact.ContactService;
 import com.ogym.project.trainer.field.Field;
@@ -44,7 +45,20 @@ public class TrainerController {
     @GetMapping("/register")
     public String register(Model model, TrainerForm trainerForm) {
         List<Field> fieldList = this.fieldService.getList();
-        model.addAttribute("FieldList",fieldList);
+        model.addAttribute("fieldList",fieldList);
+
+        List<LessonForm> lessonList = new ArrayList<>();
+        List<CertificateForm> certificateList = new ArrayList<>();
+        List<ContactForm> contactList = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            lessonList.add(new LessonForm());
+            certificateList.add(new CertificateForm());
+            contactList.add(new ContactForm());
+        }
+        model.addAttribute("lessonList", lessonList);
+        model.addAttribute("certificateList", certificateList);
+        model.addAttribute("contactList", contactList);
         return "trainer_form";
     }
 
@@ -67,8 +81,11 @@ public class TrainerController {
         System.out.println("introDetail = " + trainerForm.getIntroDetail());
         System.out.println("zoneCodeAddress = " + trainerForm.getAddress().getZoneCode());
         System.out.println("MainAddress = " + trainerForm.getAddress().getMainAddress());
+        System.out.println("subAddress = " + trainerForm.getAddress().getSubAddress());
+        System.out.println("latitude = " + trainerForm.getAddress().getLatitude());
+        System.out.println("longitude = " + trainerForm.getAddress().getLongitude());
 
-        System.out.println("LatitudeAddress = " + trainerForm.getAddress().getLatitude());
+
 
         int index = 0;
         for (LessonForm lessonForm : trainerForm.getLessonList()) {
@@ -80,11 +97,9 @@ public class TrainerController {
             System.out.printf("contact #%d : type = %s, content = %s\n", ++index, contactForm.getType(), contactForm.getContent());
         }
 
-
-
         index = 0;
         for (CertificateForm certificateForm : trainerForm.getCertificateList()) {
-            System.out.printf("contact #%d : type = %s, content = %s\n", ++index, certificateForm.getName(), certificateForm.getImgUrl());
+            System.out.printf("name #%d : name = %s, content = %s\n", ++index, certificateForm.getName(), certificateForm.getImgUrl());
         }
 
         // Form 데이터를 실제 객체로 변환
@@ -96,13 +111,20 @@ public class TrainerController {
         for (String field : trainerForm.getFieldList()) {
             System.out.printf("field #%d : name = %s\n", ++index, field);
         }
+
+        index = 0;
+        for(ContactForm contactForm : trainerForm.getContactList()){
+            System.out.printf("field #%d : type = %s content = %s", ++index , contactForm.getType(), contactForm.getContent());
+        }
         // 트레이너 기본 정보 저장
         Trainer trainer = this.trainerService.create(trainerForm.getName(), trainerForm.getCenter(),
                 trainerForm.getGender(), trainerForm.getIntroAbstract(),
                 trainerForm.getIntroDetail(), fieldList);
 
         // 레슨 정보 저장
+        index = 0;
         for (LessonForm lessonForm : trainerForm.getLessonList()) {
+
             this.lessonService.create(lessonForm.getTime(), lessonForm.getPrice(), trainer);
         }
 

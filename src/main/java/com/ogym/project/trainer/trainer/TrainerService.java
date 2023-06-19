@@ -12,6 +12,7 @@ import com.ogym.project.user.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class TrainerService {
         trainer.setIntroAbstract(introAbstract);
         trainer.setIntroDetail(introDetail);
         trainer.setFieldList(fieldList);
-
+        trainer.setCreateDate(LocalDateTime.now());
         this.trainerRepository.save(trainer);
         return trainer;
     }
