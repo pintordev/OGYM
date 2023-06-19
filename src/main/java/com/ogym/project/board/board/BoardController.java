@@ -9,11 +9,13 @@ import com.ogym.project.user.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequestMapping("/board")
@@ -57,6 +59,7 @@ public class BoardController {
         return "board_detail";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/write")
     public String writeBoard(Model model,
                              BoardForm boardForm) {
@@ -67,9 +70,10 @@ public class BoardController {
         return "board_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
     public String writeBoard(Model model,
-                             @Valid BoardForm boardForm, BindingResult bindingResult) {
+                             @Valid BoardForm boardForm, BindingResult bindingResult, Principal principal) {
 
         // If exists Form Validation Error
         if (bindingResult.hasErrors()) {
@@ -80,13 +84,14 @@ public class BoardController {
 
         // Write Board
         Category category = this.categoryService.getCategory(boardForm.getCategory());
-        SiteUser author = this.userService.getUserByLoginId("ogym_admin");
+        SiteUser author = this.userService.getUserByLoginId(principal.getName());
         Board board = this.boardService.create(boardForm.getTitle(), boardForm.getContent(), author, category);
 
         // Redirect to created board detail
         return String.format("redirect:/board/%s", board.getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String modifyBoard(Model model,
                               BoardForm boardForm,
@@ -103,6 +108,7 @@ public class BoardController {
         return "board_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modifyBoard(Model model,
                               @Valid BoardForm boardForm, BindingResult bindingResult,
@@ -124,6 +130,7 @@ public class BoardController {
         return String.format("redirect:/board/%s", board.getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String deleteBoard(@PathVariable("id") Long id) {
 

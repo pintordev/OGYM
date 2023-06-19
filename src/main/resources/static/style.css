@@ -682,6 +682,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .board-detail-section > .board-detail-body > .vote-btn {
 	margin: 30px auto 0 auto;
 }
+.board-detail-section > .board-detail-body > .vote-btn.voted {
+	background-color: black;
+}
 
 /* board-comment-section css */
 .board-comment-section > .board-comment-header {

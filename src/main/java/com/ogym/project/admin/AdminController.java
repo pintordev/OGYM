@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AdminController {
 
-    private final CategoryService boardCategoryService;
+    private final CategoryService categoryService;
 
     @GetMapping("/category")
     public String createBoardCategory() {
@@ -22,7 +22,7 @@ public class AdminController {
 
     @PostMapping("/category")
     public String createBoardCategory(@RequestParam String name) {
-        this.boardCategoryService.create(name);
+        this.categoryService.create(name);
         return "redirect:/admin/category";
     }
 }

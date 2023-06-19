@@ -19,11 +19,14 @@
           <div th:text="${presentBoard.author.nickname}" class="profile-name"></div>
           <div th:text="${#temporals.format(presentBoard.createDate, 'yy.MM.dd HH:mm')}" class="create-date"></div>
           <div th:if="${presentBoard.modifyDate != null}" th:text="|(수정됨 ${@commonUtil.timeDifference(presentBoard.modifyDate)})|" class="modify-date"></div>
-          <div class="modify-btn">
+          <div class="modify-btn" sec:authorize="isAuthenticated()"
+               th:if="${presentBoard.author != null and #authentication.getPrincipal().getUsername() == presentBoard.author.loginId}">
             <!-- sec:authorize 추가 작성자 판단 여부 추가 -->
             <a class="icon-btn" th:href="@{|/board/modify/${presentBoard.id}|}"><i class="fa-solid fa-eraser"></i></a>
           </div>
-          <div class="delete-btn" th:data-uri="|/board/delete/${presentBoard.id}|">
+          <div class="delete-btn" sec:authorize="isAuthenticated()"
+               th:if="${presentBoard.author != null and #authentication.getPrincipal().getUsername() == presentBoard.author.loginId}"
+               th:data-uri="|/board/delete/${presentBoard.id}|">
             <!-- sec:authorize 추가 작성자 판단 여부 추가 -->
             <a class="icon-btn"><i class="fa-solid fa-trash"></i></a>
           </div>
@@ -48,7 +51,13 @@
       <div class="board-detail-content">
 			<span th:utext="${@commonUtil.markdown(presentBoard.content)}"></span>
       </div>
-      <div class="vote-btn btn">
+      <div class="vote-btn btn" sec:authorize="isAuthenticated()"
+           th:classappend="${#sets.contains(presentBoard.voter, @commonUtil.usernameToUser(#authentication.getPrincipal().getUsername())) ? 'voted' : ''}"
+           th:data-element="board" th:data-id="${presentBoard.id}">
+        <span><i class="fa-solid fa-thumbs-up"></i></span>
+        <span th:text="${#lists.size(presentBoard.voter)}"></span>
+      </div>
+      <div class="vote-btn btn" sec:authorize="isAnonymous()">
         <span><i class="fa-solid fa-thumbs-up"></i></span>
         <span th:text="${#lists.size(presentBoard.voter)}"></span>
       </div>
@@ -214,7 +223,12 @@
     });
 
     $(".vote-btn").click(function() {
-        confirm("정말 추천하시겠습니까?");
+        alert(this.dataset.element + "-" + this.dataset.id);
+        if ($(this).hasClass("voted")) {
+          confirm("정말 추천을 취소하시겠습니까?");
+        } else {
+          confirm("정말 추천하시겠습니까?");
+        }
     });
 
     $(".delete-btn").click(function() {
@@ -240,6 +254,5 @@
     $(".reComment-write-cancel").click(function() {
         $(this).parent().parent().parent().removeClass("active");
     });
-
 </script>
 </html>
