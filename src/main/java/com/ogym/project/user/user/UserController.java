@@ -113,33 +113,32 @@ public class UserController {
     }
 
 
-    //아이디찾기, 비밀번호 찾기 둘다 쓸 수 있또록 만듬
+    //아이디찾기, 비밀번호 찾기 둘다 쓸 수 있도록 만듬
     @PostMapping("/find")
     @ResponseBody
     //프론트에서 받아온 email, loginId 값을 담아온다
     public String findUser(@RequestParam(value = "email", required = false) String email,
                            @RequestParam(value = "loginId", required = false) String loginId) {
         try {
-            //email과 loginId 둘중 하나라도 없는경우 아이디만 반환하도록
-            //프론트에서 아이디나 이메일 중 없는 경우 오류메세지 출력 후 false 값을 줘서 중단시킴
+            //아이디찾기 loginId만 입력됐을때 없는경우 아이디만 반환하도록 진행
             if (email != null && loginId == null) {
                 SiteUser user = userService.getUserByEmail(email);
                 return user.getLoginId();
-                //email, loginId 둘다 값이 있을 경우 로직
+            //비밀번호찾기 email, loginId 둘다 값이 있을 경우 로직
             } else if (email != null && loginId != null) {
-                SiteUser user = userService.getUserByLoginId(loginId);
-                if (user != null && user.getEmail().equals(email)) {
-                    //임시 비밀번호 생성. genCode 생성로직 가져다씀. 임의 조합 8자리
+                SiteUser user = userService.getUserByLoginAndEmail(loginId, email);
+                if (user != null) {
                     String tempPassword = userService.genConfirmCode(8);
                     //임시 비밀번호 발송, 이후 기존 비밀번호를 임시비밀번호로 교체하는것도 추가해야함
                     this.userEmailService.mailSend(email, "임시 비밀번호 발송", tempPassword);
                     System.out.println(tempPassword);
+                    this.userService.modifyPassword(tempPassword, user);
                     return "임시 비밀번호를 이메일로 발송했습니다.";
                 } else {
-                    return "입력한 정보가 일치하지 않습니다.";
+                    return "";
                 }
             } else {
-                return "이메일 또는 로그인 ID를 입력해주세요.";
+                return "";
             }
         } catch (DataNotFoundException e) {
             return "";

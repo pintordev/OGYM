@@ -73,8 +73,15 @@ public class UserService {
             throw new DataNotFoundException("user not found");
         }
     }
+    //login 값으로 데이터베이스에서 siteuser 조회하려는 기능
+    public SiteUser getUserByLoginAndEmail(String loginId, String email) {
+        return this.userRepository.findByLoginIdAndEmail(loginId, email);
+    }
 
-
+    public void modifyPassword(String password, SiteUser user) {
+        user.setPassword(passwordEncoder.encode(password));
+        this.userRepository.save(user);
+    }
 
 
 
