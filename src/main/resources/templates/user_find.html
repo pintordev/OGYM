@@ -137,10 +137,11 @@ $(document).ready(function () {
       },
       success: function (data) {
         $("#findPW-btn").text("비밀번호 찾기").css("font-size", "0.8rem");
+        console.log(data);
         if (data !== "") {
-          $("#findPWEmailError").text("임시비밀번호를 이메일로 발송했습니다.").css("color", "rgb(50, 210, 50)");
-        } else {
-          $("#findPWEmailError").text("입력한 정보가 일치하지 않습니다.");
+        $("#findPWEmailError").text("임시 비밀번호를 이메일로 발송했습니다.").css("color", "rgb(50, 210, 50)");
+      } else {
+        $("#findPWEmailError").text("입력한 정보가 일치하지 않습니다.");
         }
       },
       error: function () {

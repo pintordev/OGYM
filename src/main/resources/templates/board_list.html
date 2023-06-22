@@ -3,20 +3,20 @@
     <div class="list-header">
         <div class="left-box">
             <div class="list-paging-box">
-                <select>
-                    <option value="20">20개씩 보기</option>
-                    <option value="50">50개씩 보기</option>
-                    <option value="100">100개씩 보기</option>
+                <select id="boardPageSize" name="boardPageSize" th:value="${bPageSize}" th:onchange="_bPageSize()">
+                    <option value="20" th:selected="${bPageSize} == 20">20개씩 보기</option>
+                    <option value="50" th:selected="${bPageSize} == 50">50개씩 보기</option>
+                    <option value="100" th:selected="${bPageSize} == 100">100개씩 보기</option>
                 </select>
             </div>
             <div class="sort-button-box">
-                <button class="sort-btn" id="comment-sort-list">
+                <button class="sort-btn" id="comment-sort-list" th:onclick="_bSort(this)" th:data-sort="createDate">
                     <i class="fa-solid fa-list"></i>
                 </button>
-                <button class="sort-btn" id="comment-sort-vote">
+                <button class="sort-btn" id="comment-sort-vote" th:onclick="_bSort(this)" th:data-sort="vote">
                     <i class="fa-solid fa-thumbs-up"></i>
                 </button>
-                <button class="sort-btn" id="comment-sort-comment">
+                <button class="sort-btn" id="comment-sort-comment" th:onclick="_bSort(this)" th:data-sort="comment">
                     <i class="fa-solid fa-comment-dots"></i>
                 </button>
             </div>
@@ -39,7 +39,7 @@
             <li th:text="${boardPaging.getTotalElements - (boardPaging.number * boardPaging.size) - loop.index}" class="no"></li>
             <li th:text="${board.category.name}" class="cate"></li>
             <li class="content">
-                <a th:href="@{|/board/${board.id}|}" th:text="${board.title}"></a>
+                <a class="a-hover" th:onclick="_goDetail(this)" th:data-uri="|/board/${board.id}|" th:text="${board.title}"></a>
                 <span th:if="${#lists.size(board.commentList) > 0}" th:text="|[${#lists.size(board.commentList)}]|"></span>
             </li>
             <li class="author">
@@ -51,30 +51,39 @@
         </ul>
     </div>
     <div class="list-footer">
-        <ul class="page-list">
-            <li class="page-start">처음</li>
-            <li class="page-middle"><i class="fa-solid fa-angles-left"></i></li>
-            <li class="page-middle"><i class="fa-solid fa-angle-left"></i></li>
-            <li class="page-middle page-active">1</li>
-            <li class="page-middle">2</li>
-            <li class="page-middle">3</li>
-            <li class="page-middle">4</li>
-            <li class="page-middle">5</li>
-            <li class="page-middle"><i class="fa-solid fa-angle-right"></i></li>
-            <li class="page-middle"><i class="fa-solid fa-angles-right"></i></li>
-            <li class="page-end">끝</li>
+        <ul class="page-list" th:if="${!boardPaging.isEmpty()}">
+            <li class="page-start" th:classappend="${boardPaging.number != 0} ? 'page-active' : 'disabled'"
+                th:onclick="_bPaging(this)" th:data-page="${0}">처음</li>
+            <li class="page-middle" th:classappend="${boardPaging.number - 10 >= 0} ? 'page-active' : 'disabled'"
+                th:onclick="_bPaging(this)" th:data-page="${boardPaging.number - 10}"><i class="fa-solid fa-angles-left"></i></li>
+            <li class="page-middle" th:classappend="${boardPaging.hasPrevious} ? 'page-active' : 'disabled'"
+                th:onclick="_bPaging(this)" th:data-page="${boardPaging.number - 1}"><i class="fa-solid fa-angle-left"></i></li>
+            <li class="page-middle" th:each="page : ${#numbers.sequence(0, boardPaging.totalPages-1)}"
+                th:if="${page >= boardPaging.number - 2 and page <= boardPaging.number + 2 and boardPaging.number > 1 and boardPaging.number < boardPaging.totalPages-2}"
+                th:classappend="${page != boardPaging.number} ? 'page-active' : 'disabled page-now'"
+                th:onclick="_bPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+            <li class="page-middle" th:each="page : ${#numbers.sequence(0, boardPaging.totalPages-1)}"
+                th:if="${(boardPaging.number <= 1 and page <= 4) or (boardPaging.number >= boardPaging.totalPages-2 and page >= boardPaging.totalPages-5)}"
+                th:classappend="${page != boardPaging.number} ? 'page-active' : 'disabled page-now'"
+                th:onclick="_bPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+            <li class="page-middle" th:classappend="${boardPaging.hasNext} ? 'page-active' : 'disabled'"
+                th:onclick="_bPaging(this)" th:data-page="${boardPaging.number + 1}"><i class="fa-solid fa-angle-right"></i></li>
+            <li class="page-middle" th:classappend="${boardPaging.number + 10 <= boardPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                th:onclick="_bPaging(this)" th:data-page="${boardPaging.number + 10}"><i class="fa-solid fa-angles-right"></i></li>
+            <li class="page-end" th:classappend="${boardPaging.number != boardPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                th:onclick="_bPaging(this)" th:data-page="${boardPaging.totalPages-1}">끝</li>
         </ul>
         <div class="search-box">
-            <select>
-                <option value="all">전체</option>
-                <option value="title">제목</option>
-                <option value="content">내용</option>
-                <option value="titleandcontent">제목+내용</option>
-                <option value="author">작성자</option>
-                <option value="comment">답글</option>
+            <select id="boardSearch" name="boardSearch" th:value="${bSearch}">
+                <option value="all" th:selected="${bSearch} == all">전체</option>
+                <option value="title" th:selected="${bSearch} == title">제목</option>
+                <option value="content" th:selected="${bSearch} == content">내용</option>
+                <option value="title_content" th:selected="${bSearch} == title_content">제목+내용</option>
+                <option value="author" th:selected="${bSearch} == author">작성자</option>
+                <option value="comment" th:selected="${bSearch} == comment">답글</option>
             </select>
-            <input type="text" placeholder="검색어를 입력해주세요.">
-            <a href="#" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <input type="text" id="boardKeyword" name="boardKeyword" th:value="${bKw}" placeholder="검색어를 입력해주세요.">
+            <a th:onclick="_bSearch()" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
         </div>
     </div>
 </section>

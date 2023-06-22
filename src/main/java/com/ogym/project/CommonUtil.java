@@ -1,16 +1,23 @@
 package com.ogym.project;
 
+import com.ogym.project.user.user.SiteUser;
+import com.ogym.project.user.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@RequiredArgsConstructor
 @Component
 public class CommonUtil {
+
+    private final UserService userService;
 
     public String markdown(String markdown) {
 
@@ -30,5 +37,9 @@ public class CommonUtil {
         if (diff.getSeconds() < 60 * 60 * 24) return diff.toHours() + "시간 전";
         if (diff.getSeconds() < 60 * 60 * 24 * 7) return diff.toDays() + "일 전";
         return oldDate.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
+    }
+
+    public SiteUser usernameToUser(String loginId) {
+        return this.userService.getUserByLoginId(loginId);
     }
 }

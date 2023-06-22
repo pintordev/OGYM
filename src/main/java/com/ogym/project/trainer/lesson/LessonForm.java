@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LessonForm {
-    private String time;
-    private String price;
+    private Integer time;
+    private Integer price;
 }
