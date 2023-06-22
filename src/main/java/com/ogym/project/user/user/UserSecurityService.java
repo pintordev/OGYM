@@ -28,8 +28,6 @@ public class UserSecurityService implements UserDetailsService {
         }
         SiteUser siteUser = _siteUser.get();
 
-        System.out.println("여기 들어옴");
-
         List<GrantedAuthority> authorityList = new ArrayList<>();
         authorityList.add(new SimpleGrantedAuthority(siteUser.getAuthority().getValue()));
 

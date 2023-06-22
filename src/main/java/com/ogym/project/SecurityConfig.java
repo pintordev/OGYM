@@ -19,12 +19,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests().requestMatchers(
-                        new AntPathRequestMatcher("/**")).permitAll();
-                http.authorizeHttpRequests()
+                        new AntPathRequestMatcher("/**")).permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
