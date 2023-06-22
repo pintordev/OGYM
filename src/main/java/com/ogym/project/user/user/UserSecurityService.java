@@ -28,11 +28,13 @@ public class UserSecurityService implements UserDetailsService {
         }
         SiteUser siteUser = _siteUser.get();
 
-        System.out.println("여기 들어옴");
-
         List<GrantedAuthority> authorityList = new ArrayList<>();
         authorityList.add(new SimpleGrantedAuthority(siteUser.getAuthority().getValue()));
 
         return new User(siteUser.getLoginId(), siteUser.getPassword(), authorityList);
+        //보통 Spring Security에서 사용자의 인증 정보와 함께 사용자의 추가 정보를 담는 클래스 User 를 리턴할시 자동으로
+        // principal로  변경됨.
+
+
     }
 }

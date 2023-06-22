@@ -23,6 +23,9 @@ a {
 	color: inherit;
 	text-decoration: none;
 }
+a.a-hover:hover {
+    cursor: pointer;
+}
 input:focus,
 select:focus,
 option:focus,
@@ -120,6 +123,12 @@ section.form {
 	border-bottom: 1px solid rgb(128, 128, 128);
 	border-left: 1px solid rgb(128, 128, 128);
 }
+.page-list > li:hover {
+    cursor: pointer;
+}
+.page-list > li.disabled:hover {
+    cursor: default;
+}
 .page-list > li.page-start {
 	border-top-left-radius: 0.5rem;
 	border-bottom-left-radius: 0.5rem;
@@ -132,6 +141,11 @@ section.form {
 .page-list > li.page-active {
 	color: rgba(0, 0, 0);
 	font-weight: bold;
+}
+.page-list > li.page-now {
+	color: rgba(255, 255, 255);
+	font-weight: bold;
+	background-color: rgb(128, 128, 128);
 }
 .editor-toolbar {
     border: 1px solid rgb(128, 128, 128);
@@ -610,6 +624,9 @@ input[type="number"]::-webkit-inner-spin-button {
 	height: 28px;
 	padding-left: 10px;
 }
+.board-list-section > .list-footer > .search-box > .search-btn:hover {
+    cursor: pointer;
+}
 
 /* board-detail-section css */
 .board-detail-section {
@@ -778,7 +795,14 @@ input[type="number"]::-webkit-inner-spin-button {
 	> .vote-btn {
 	margin-right: 5px;
 }
-
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .comment-box
+	> .comment-btn-box
+	> .vote-btn.voted {
+	background-color: black;
+}
 .board-comment-section
 	> .board-comment-list
 	> .comment
@@ -900,6 +924,15 @@ input[type="number"]::-webkit-inner-spin-button {
 	> .reComment-btn-box
 	> .vote-btn {
 	margin-right: 5px;
+}
+.board-comment-section
+	> .board-comment-list
+	> .comment
+	> .reComment
+	> .reComment-box
+	> .reComment-btn-box
+	> .vote-btn.voted {
+	background-color: black;
 }
 
 .board-comment-section

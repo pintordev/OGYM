@@ -8,8 +8,56 @@
     <!-- board-list-section start -->
     <section th:replace="~{board_list :: board_listFragment}"></section>
     <!-- board-list-section end -->
+
+    <!-- several parameters input part start; bPageSize, bPage, bKw, bSort, bCategory -->
+    <form th:action="@{/board}" method="get" id="parameterForm">
+        <input type="hidden" id="bPageSize" name="bPageSize" th:value="${bPageSize}">
+        <input type="hidden" id="bPage" name="bPage" th:value="${bPage}">
+        <input type="hidden" id="bSearch" name="bSearch" th:value="${bSearch}">
+        <input type="hidden" id="bKw" name="bKw" th:value="${bKw}">
+        <input type="hidden" id="bSort" name="bSort" th:value="${bSort}">
+        <input type="hidden" id="bCategory" name="bCategory" th:value="${bCategory}">
+    </form>
+    <!-- several parameters input part end -->
     <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
+    function _bSort(_this) {
+        $("#bSort").val(_this.dataset.sort);
+        $("#parameterForm").submit();
+    }
+
+    function _bPageSize() {
+        $("#bPage").val(0);
+        $("#bPageSize").val($("#boardPageSize").val());
+        $("#parameterForm").submit();
+    }
+
+    function _bPaging(_this) {
+        if (!$(_this).hasClass("disabled")) {
+            $("#bPage").val(_this.dataset.page);
+            $("#parameterForm").submit();
+        }
+    }
+
+    function _bSearch() {
+        $("#bPage").val(0);
+        $("#bSearch").val($("#boardSearch").val());
+        $("#bKw").val($("#boardKeyword").val());
+        $("#parameterForm").submit();
+    }
+
+    function _bCategory(_this) {
+        if (_this.dataset.count > 0) {
+            $("#bPage").val(0);
+            $("#bCategory").val(_this.dataset.category);
+            $("#parameterForm").submit();
+        }
+    }
+
+    function _goDetail(_this) {
+        $("#parameterForm").attr("action", _this.dataset.uri);
+        $("#parameterForm").submit();
+    }
 </script>
 </html>
