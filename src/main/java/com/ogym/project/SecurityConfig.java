@@ -2,7 +2,7 @@ package com.ogym.project;
 
 
 import com.ogym.project.handler.LoginFailHandler;
-import com.ogym.project.handler.LoginSuccessHandler;
+import com.ogym.project.handler.CustomAuthSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final LoginSuccessHandler loginSuccessHandler;
+    private final CustomAuthSuccessHandler loginSuccessHandler;
     private final LoginFailHandler loginFailHandler;
 
 
