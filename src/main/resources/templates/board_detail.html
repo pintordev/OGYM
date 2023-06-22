@@ -1,258 +1,404 @@
 <html layout:decorate="~{layout}">
 <script layout:fragment="simplemde" type="text/javascript" th:src="@{/simplemde.min.js}"></script>
 <div layout:fragment="content">
-  <!-- 구현 Start -->
-  <!-- board-header-section start -->
-  <section th:replace="~{board_header :: board_headerFragment}"></section>
-  <!-- board-header-section end -->
+    <!-- 구현 Start -->
+    <!-- board-header-section start -->
+    <section th:replace="~{board_header :: board_headerFragment}"></section>
+    <!-- board-header-section end -->
 
-  <!-- board-detail-section start -->
-  <section class="board-detail-section">
-    <div class="board-detail-header">
-      <div class="title-box">
-        <div th:text="${presentBoard.category.name}" class="title-category"></div>
-        <div th:text="${presentBoard.title}" class="title-subject"></div>
-      </div>
-      <div class="sub-box">
-        <div class="sub-left-box">
-          <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
-          <div th:text="${presentBoard.author.nickname}" class="profile-name"></div>
-          <div th:text="${#temporals.format(presentBoard.createDate, 'yy.MM.dd HH:mm')}" class="create-date"></div>
-          <div th:if="${presentBoard.modifyDate != null}" th:text="|(수정됨 ${@commonUtil.timeDifference(presentBoard.modifyDate)})|" class="modify-date"></div>
-          <div class="modify-btn" sec:authorize="isAuthenticated()"
-               th:if="${presentBoard.author != null and #authentication.getPrincipal().getUsername() == presentBoard.author.loginId}">
-            <!-- sec:authorize 추가 작성자 판단 여부 추가 -->
-            <a class="icon-btn" th:href="@{|/board/modify/${presentBoard.id}|}"><i class="fa-solid fa-eraser"></i></a>
-          </div>
-          <div class="delete-btn" sec:authorize="isAuthenticated()"
-               th:if="${presentBoard.author != null and #authentication.getPrincipal().getUsername() == presentBoard.author.loginId}"
-               th:data-uri="|/board/delete/${presentBoard.id}|">
-            <!-- sec:authorize 추가 작성자 판단 여부 추가 -->
-            <a class="icon-btn"><i class="fa-solid fa-trash"></i></a>
-          </div>
-        </div>
-        <div class="sub-right-box">
-          <div class="view-count">
-            <span class="icon"><i class="fa-solid fa-eye"></i></span>
-            <span th:text="${presentBoard.hit}"></span>
-          </div>
-          <div class="vote-count">
-            <span class="icon"><i class="fa-solid fa-thumbs-up"></i></span>
-            <span th:text="${#lists.size(presentBoard.voter)}"></span>
-          </div>
-          <div class="comment-count">
-            <span class="icon"><i class="fa-solid fa-comment-dots"></i></span>
-            <span th:text="${#lists.size(presentBoard.commentList)}"></span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="board-detail-body">
-      <div class="board-detail-content">
-			<span th:utext="${@commonUtil.markdown(presentBoard.content)}"></span>
-      </div>
-      <div class="vote-btn btn" sec:authorize="isAuthenticated()"
-           th:classappend="${#sets.contains(presentBoard.voter, @commonUtil.usernameToUser(#authentication.getPrincipal().getUsername())) ? 'voted' : ''}"
-           th:data-element="board" th:data-id="${presentBoard.id}">
-        <span><i class="fa-solid fa-thumbs-up"></i></span>
-        <span th:text="${#lists.size(presentBoard.voter)}"></span>
-      </div>
-      <div class="vote-btn btn" sec:authorize="isAnonymous()">
-        <span><i class="fa-solid fa-thumbs-up"></i></span>
-        <span th:text="${#lists.size(presentBoard.voter)}"></span>
-      </div>
-    </div>
-  </section>
-  <!-- board-detail-section end -->
-
-  <!-- board-comment-section start -->
-  <section class="board-comment-section">
-    <div class="board-comment-header">
-      <div class="header-left-box">
-        <div>
-          <span>답글</span>
-          <span th:text="${#lists.size(presentBoard.commentList)}" class="comment-number"></span>
-        </div>
-        <div class="sort-button-box">
-          <button class="sort-btn">
-            <i class="fa-solid fa-list"></i>
-          </button>
-          <button class="sort-btn">
-            <i class="fa-solid fa-thumbs-up"></i>
-          </button>
-          <button class="sort-btn">
-            <i class="fa-solid fa-comment-dots"></i>
-          </button>
-        </div>
-      </div>
-      <div class="header-right-box">
-        <button id="comment-write-btn" class="icon-btn"><i class="fa-solid fa-pen-to-square"></i></button>
-      </div>
-    </div>
-    <div class="comment-write-box">
-      <form th:object="${commentForm}" th:action="@{/comment/write}" method="post" class="comment-write-form">
-        <textarea th:field="*{content}"></textarea>
-        <input type="hidden" id="boardId" name="boardId" th:value="${presentBoard.id}">
-        <div class="write-btn-box">
-          <button type="button" id="comment-write-cancel" class="btn-sm cancel">취소</button>
-          <button type="submit" class="btn-sm">저장하기</button>
-        </div>
-      </form>
-    </div>
-    <div th:if="${#lists.size(presentBoard.commentList) > 0}" th:each="comment : ${presentBoard.commentList}" class="board-comment-list">
-      <div th:id="|comment_${comment.id}|" class="comment">
-        <div class="comment-box">
-          <div class="comment-profile-box">
-            <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
-            <div class="profile-name" th:text="${comment.author.nickname}"></div>
-            <div class="create-date" th:text="${@commonUtil.timeDifference(comment.createDate)}"></div>
-            <div th:if="${comment.modifyDate != null}" th:text="|(수정됨 ${@commonUtil.timeDifference(comment.modifyDate)})|" class="modify-date"></div>
-            <div class="modify-btn">
-              <!-- sec:authorize 추가 작성자 판단 여부 추가 -->
-              <a class="icon-btn" th:href="@{|/comment/modify/${comment.id}|}"><i class="fa-solid fa-eraser"></i></a>
+    <!-- board-detail-section start -->
+    <section class="board-detail-section" id="board_detail">
+        <div class="board-detail-header">
+            <div class="title-box">
+                <div th:text="${presentBoard.category.name}" class="title-category"></div>
+                <div th:text="${presentBoard.title}" class="title-subject"></div>
             </div>
-            <div class="delete-btn" th:data-uri="|/comment/delete/${comment.id}|">
-              <!-- sec:authorize 추가 작성자 판단 여부 추가 -->
-              <a class="icon-btn"><i class="fa-solid fa-trash"></i></a>
-            </div>
-          </div>
-          <div class="comment-content-box">
-              <span th:utext="${@commonUtil.markdown(comment.content)}"></span>
-          </div>
-          <div class="comment-btn-box">
-            <div class="vote-btn btn-sm">
-              <span><i class="fa-solid fa-thumbs-up"></i></span>
-              <span th:text="${#lists.size(comment.voter)}"></span>
-            </div>
-            <div class="reComment-write-btn btn-sm">
-              <span>댓글</span>
-            </div>
-          </div>
-          <div class="reComment-write-box">
-            <form th:object="${reCommentForm}" th:action="@{/reComment/write}" method="post" class="reComment-write-form">
-              <textarea th:field="*{content}"></textarea>
-              <input type="hidden" id="commentId" name="commentId" th:value="${comment.id}">
-              <div class="write-btn-box">
-                <button type="button" class="reComment-write-cancel btn-sm cancel">취소</button>
-                <button type="submit" class="btn-sm">저장하기</button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div th:if="${#lists.size(comment.reCommentList) > 0}" th:each="reComment : ${comment.reCommentList}" class="reComment">
-          <div th:id="|reComment_${reComment.id}|" class="reComment-box">
-            <div class="reComment-profile-box">
-              <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
-              <div class="profile-name" th:text="${reComment.author.nickname}"></div>
-              <div class="create-date" th:text="${@commonUtil.timeDifference(reComment.createDate)}"></div>
-              <div th:if="${reComment.modifyDate != null}" th:text="|(수정됨 ${@commonUtil.timeDifference(reComment.modifyDate)})|" class="modify-date"></div>
-              <div class="modify-btn">
-                <!-- sec:authorize 추가 작성자 판단 여부 추가 -->
-                <a class="icon-btn" th:href="@{|/reComment/modify/${reComment.id}|}"><i class="fa-solid fa-eraser"></i></a>
-              </div>
-              <div class="delete-btn" th:data-uri="|/reComment/delete/${reComment.id}|">
-                <!-- sec:authorize 추가 작성자 판단 여부 추가 -->
-                <a class="icon-btn"><i class="fa-solid fa-trash"></i></a>
-              </div>
-            </div>
-            <div class="reComment-referer-box" th:if="${reComment.parent != null}">
-              <a th:href="@{|#reComment_${reComment.parent.id}|}" th:text="|@${reComment.parent.author.nickname}|"></a>
-            </div>
-            <div class="reComment-content-box">
-              <span th:utext="${@commonUtil.markdown(reComment.content)}"></span>
-            </div>
-            <div class="reComment-btn-box">
-              <div class="vote-btn btn-sm">
-                <span><i class="fa-solid fa-thumbs-up"></i></span>
-                <span th:text="${#lists.size(reComment.voter)}"></span>
-              </div>
-              <div class="reComment-write-btn btn-sm">
-                <span>댓글</span>
-              </div>
-            </div>
-            <div class="reComment-write-box">
-              <form th:object="${reCommentForm}" th:action="@{/reComment/write}" method="post" class="reComment-write-form">
-                <textarea th:field="*{content}"></textarea>
-                <input type="hidden" id="reCommentId" name="reCommentId" th:value="${reComment.id}">
-                <div class="write-btn-box">
-                  <button type="button" class="reComment-write-cancel btn-sm cancel">취소</button>
-                  <button type="submit" class="btn-sm">저장하기</button>
+            <div class="sub-box">
+                <div class="sub-left-box">
+                    <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+                    <div th:text="${presentBoard.author.nickname}" class="profile-name"></div>
+                    <div th:text="${#temporals.format(presentBoard.createDate, 'yy.MM.dd HH:mm')}"
+                         class="create-date"></div>
+                    <div th:if="${presentBoard.modifyDate != null}"
+                         th:text="|(수정됨 ${@commonUtil.timeDifference(presentBoard.modifyDate)})|"
+                         class="modify-date"></div>
+                    <div class="modify-btn" sec:authorize="isAuthenticated()"
+                         th:if="${presentBoard.author != null and #authentication.getPrincipal().getUsername() == presentBoard.author.loginId}">
+                        <a class="icon-btn" th:href="@{|/board/modify/${presentBoard.id}|}">
+                            <i class="fa-solid fa-eraser"></i>
+                        </a>
+                    </div>
+                    <div class="delete-btn" sec:authorize="isAuthenticated()" th:onclick="_delete(this)"
+                         th:if="${presentBoard.author != null and #authentication.getPrincipal().getUsername() == presentBoard.author.loginId}"
+                         th:data-uri="|/board/delete/${presentBoard.id}|">
+                        <a class="icon-btn"><i class="fa-solid fa-trash"></i></a>
+                    </div>
                 </div>
-              </form>
+                <div class="sub-right-box">
+                    <div class="view-count">
+                        <span class="icon"><i class="fa-solid fa-eye"></i></span>
+                        <span th:text="${presentBoard.hit}"></span>
+                    </div>
+                    <div class="vote-count">
+                        <span class="icon"><i class="fa-solid fa-thumbs-up"></i></span>
+                        <span th:text="${#lists.size(presentBoard.voter)}"></span>
+                    </div>
+                    <div class="comment-count">
+                        <span class="icon"><i class="fa-solid fa-comment-dots"></i></span>
+                        <span th:text="${#lists.size(presentBoard.commentList)}"></span>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-    <div>
-      <ul class="page-list">
-        <li class="page-start">처음</li>
-        <li class="page-middle"><i class="fa-solid fa-angles-left"></i></li>
-        <li class="page-middle"><i class="fa-solid fa-angle-left"></i></li>
-        <li class="page-middle page-active">1</li>
-        <li class="page-middle">2</li>
-        <li class="page-middle">3</li>
-        <li class="page-middle">4</li>
-        <li class="page-middle">5</li>
-        <li class="page-middle"><i class="fa-solid fa-angle-right"></i></li>
-        <li class="page-middle"><i class="fa-solid fa-angles-right"></i></li>
-        <li class="page-end">끝</li>
-      </ul>
-    </div>
-  </section>
-  <!-- board-comment-section end -->
+        <div class="board-detail-body">
+            <div class="board-detail-content">
+                <span th:utext="${@commonUtil.markdown(presentBoard.content)}"></span>
+            </div>
+            <div class="vote-btn btn" th:id="|board_${presentBoard.id}_vote|" sec:authorize="isAuthenticated()"
+                 th:classappend="${#sets.contains(presentBoard.voter, @commonUtil.usernameToUser(#authentication.getPrincipal().getUsername())) ? 'voted' : ''}"
+                 th:data-target="|#board_detail|" th:data-uri="|/board/vote/${presentBoard.id}|"
+                 th:onclick="_vote(this)">
+                <span><i class="fa-solid fa-thumbs-up"></i></span>
+                <span th:text="${#lists.size(presentBoard.voter)}"></span>
+            </div>
+            <div class="vote-btn btn" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                <span><i class="fa-solid fa-thumbs-up"></i></span>
+                <span th:text="${#lists.size(presentBoard.voter)}"></span>
+            </div>
+        </div>
+    </section>
+    <!-- board-detail-section end -->
 
-  <!-- middle-banner-section start -->
-  <section class="middle-banner-section">
-    <img th:src="@{/image/middle-banner-1.jpg}" alt="">
-  </section>
-  <!-- middle-banner-section end -->
+    <!-- board-comment-section start -->
+    <section class="board-comment-section" id="board_comment">
+        <div class="board-comment-header">
+            <div class="header-left-box">
+                <div>
+                    <span>답글</span>
+                    <span th:text="${#lists.size(presentBoard.commentList)}" class="comment-number"></span>
+                </div>
+                <div class="sort-button-box">
+                    <button class="sort-btn" id="comment-sort-list" th:onclick="_cSort(this)" th:data-sort="createDate">
+                        <i class="fa-solid fa-list"></i>
+                    </button>
+                    <button class="sort-btn" id="comment-sort-vote" th:onclick="_cSort(this)" th:data-sort="vote">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                    </button>
+                    <button class="sort-btn" id="comment-sort-comment" th:onclick="_cSort(this)" th:data-sort="reComment">
+                        <i class="fa-solid fa-comment-dots"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="header-right-box" sec:authorize="isAuthenticated()">
+                <button class="icon-btn" th:onclick="_writeCommentBtn()"><i class="fa-solid fa-pen-to-square"></i></button>
+            </div>
+            <div class="header-right-box" sec:authorize="isAnonymous()">
+                <button class="icon-btn" th:onclick="_anonymous()"><i class="fa-solid fa-pen-to-square"></i></button>
+            </div>
+        </div>
+        <div class="comment-write-box">
+            <form th:object="${commentForm}" th:action="@{/comment/write}" method="post" class="comment-write-form">
+                <textarea th:field="*{content}"></textarea>
+                <input type="hidden" id="boardId" name="boardId" th:value="${presentBoard.id}">
+                <div class="write-btn-box">
+                    <button type="button" class="btn-sm cancel" th:onclick="_cancelWriteComment()">취소</button>
+                    <button type="submit" class="btn-sm">저장하기</button>
+                </div>
+            </form>
+        </div>
+        <div th:if="${#lists.size(presentBoard.commentList) > 0}" th:each="comment : ${commentPaging}" class="board-comment-list">
+            <div th:id="|comment_${comment.id}|" class="comment">
+                <div class="comment-box">
+                    <div class="comment-profile-box">
+                        <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+                        <div class="profile-name" th:text="${comment.author.nickname}"></div>
+                        <div class="create-date" th:text="${@commonUtil.timeDifference(comment.createDate)}"></div>
+                        <div th:if="${comment.modifyDate != null}"
+                             th:text="|(수정됨 ${@commonUtil.timeDifference(comment.modifyDate)})|"
+                             class="modify-date"></div>
+                        <div class="modify-btn" sec:authorize="isAuthenticated()"
+                            th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.loginId}">
+                            <a class="icon-btn" th:href="@{|/comment/modify/${comment.id}|}">
+                                <i class="fa-solid fa-eraser"></i>
+                            </a>
+                        </div>
+                        <div class="delete-btn" sec:authorize="isAuthenticated()" th:onclick="_delete(this)"
+                             th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.loginId}"
+                             th:data-uri="|/comment/delete/${comment.id}|">
+                            <a class="icon-btn"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                    </div>
+                    <div class="comment-content-box">
+                        <span th:utext="${@commonUtil.markdown(comment.content)}"></span>
+                    </div>
+                    <div class="comment-btn-box">
+                        <div class="vote-btn btn-sm" id="comment_vote" sec:authorize="isAuthenticated()"
+                             th:classappend="${#sets.contains(comment.voter, @commonUtil.usernameToUser(#authentication.getPrincipal().getUsername())) ? 'voted' : ''}"
+                             th:data-target="|#comment_${comment.id} #comment_vote|" th:data-uri="|/comment/vote/${comment.id}|"
+                             th:onclick="_vote(this)">
+                            <span><i class="fa-solid fa-thumbs-up"></i></span>
+                            <span th:text="${#lists.size(comment.voter)}"></span>
+                        </div>
+                        <div class="vote-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                            <span><i class="fa-solid fa-thumbs-up"></i></span>
+                            <span th:text="${#lists.size(comment.voter)}"></span>
+                        </div>
+                        <div class="reComment-write-btn btn-sm" sec:authorize="isAuthenticated()" th:onclick="_writeReCommentBtn(this)">
+                            <span>댓글</span>
+                        </div>
+                        <div class="reComment-write-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                            <span>댓글</span>
+                        </div>
+                    </div>
+                    <div class="reComment-write-box">
+                        <form th:object="${reCommentForm}" th:action="@{/reComment/write}" method="post"
+                              class="reComment-write-form">
+                            <textarea th:field="*{content}"></textarea>
+                            <input type="hidden" id="commentId" name="commentId" th:value="${comment.id}">
+                            <div class="write-btn-box">
+                                <button type="button" class="reComment-write-cancel btn-sm cancel" th:onclick="_cancelWriteReComment(this)">취소</button>
+                                <button type="submit" class="btn-sm">저장하기</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div th:if="${#lists.size(comment.reCommentList) > 0}" th:each="reComment : ${comment.reCommentList}"
+                     class="reComment">
+                    <div th:id="|reComment_${reComment.id}|" class="reComment-box">
+                        <div class="reComment-profile-box">
+                            <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
+                            <div class="profile-name" th:text="${reComment.author.nickname}"></div>
+                            <div class="create-date"
+                                 th:text="${@commonUtil.timeDifference(reComment.createDate)}"></div>
+                            <div th:if="${reComment.modifyDate != null}"
+                                 th:text="|(수정됨 ${@commonUtil.timeDifference(reComment.modifyDate)})|"
+                                 class="modify-date"></div>
+                            <div class="modify-btn" sec:authorize="isAuthenticated()"
+                                 th:if="${reComment.author != null and #authentication.getPrincipal().getUsername() == reComment.author.loginId}">
+                                <a class="icon-btn" th:href="@{|/reComment/modify/${reComment.id}|}">
+                                    <i class="fa-solid fa-eraser"></i></a>
+                            </div>
+                            <div class="delete-btn" sec:authorize="isAuthenticated()" th:onclick="_delete(this)"
+                                 th:if="${reComment.author != null and #authentication.getPrincipal().getUsername() == reComment.author.loginId}"
+                                 th:data-uri="|/reComment/delete/${reComment.id}|">
+                                <a class="icon-btn"><i class="fa-solid fa-trash"></i></a>
+                            </div>
+                        </div>
+                        <div class="reComment-referer-box" th:if="${reComment.parent != null}">
+                            <a th:href="@{|#reComment_${reComment.parent.id}|}"
+                               th:text="|@${reComment.parent.author.nickname}|"></a>
+                        </div>
+                        <div class="reComment-content-box">
+                            <span th:utext="${@commonUtil.markdown(reComment.content)}"></span>
+                        </div>
+                        <div class="reComment-btn-box">
+                            <div class="vote-btn btn-sm" id="reComment_vote" sec:authorize="isAuthenticated()"
+                                 th:classappend="${#sets.contains(reComment.voter, @commonUtil.usernameToUser(#authentication.getPrincipal().getUsername())) ? 'voted' : ''}"
+                                 th:data-target="|#reComment_${reComment.id} #reComment_vote|" th:data-uri="|/reComment/vote/${reComment.id}|"
+                                 th:onclick="_vote(this)">
+                                <span><i class="fa-solid fa-thumbs-up"></i></span>
+                                <span th:text="${#lists.size(reComment.voter)}"></span>
+                            </div>
+                            <div class="vote-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                                <span><i class="fa-solid fa-thumbs-up"></i></span>
+                                <span th:text="${#lists.size(reComment.voter)}"></span>
+                            </div>
+                            <div class="reComment-write-btn btn-sm" sec:authorize="isAuthenticated()" th:onclick="_writeReCommentBtn(this)">
+                                <span>댓글</span>
+                            </div>
+                            <div class="reComment-write-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                                <span>댓글</span>
+                            </div>
+                        </div>
+                        <div class="reComment-write-box">
+                            <form th:object="${reCommentForm}" th:action="@{/reComment/write}" method="post"
+                                  class="reComment-write-form">
+                                <textarea th:field="*{content}"></textarea>
+                                <input type="hidden" id="reCommentId" name="reCommentId" th:value="${reComment.id}">
+                                <div class="write-btn-box">
+                                    <button type="button" class="reComment-write-cancel btn-sm cancel" th:onclick="_cancelWriteReComment(this)">취소</button>
+                                    <button type="button" class="btn-sm" th:onclick="_">저장하기</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="page-list" th:if="${!commentPaging.isEmpty()}">
+                <li class="page-start" th:classappend="${commentPaging.number != 0} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${0}">처음</li>
+                <li class="page-middle" th:classappend="${commentPaging.number - 10 >= 0} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.number - 10}"><i class="fa-solid fa-angles-left"></i></li>
+                <li class="page-middle" th:classappend="${commentPaging.hasPrevious} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.number - 1}"><i class="fa-solid fa-angle-left"></i></li>
+                <li class="page-middle" th:each="page : ${#numbers.sequence(0, commentPaging.totalPages-1)}"
+                    th:if="${page >= commentPaging.number - 2 and page <= commentPaging.number + 2 and commentPaging.number > 1 and commentPaging.number < commentPaging.totalPages-2}"
+                    th:classappend="${page != commentPaging.number} ? 'page-active' : 'disabled page-now'"
+                    th:onclick="_cPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+                <li class="page-middle" th:each="page : ${#numbers.sequence(0, commentPaging.totalPages-1)}"
+                    th:if="${(commentPaging.number <= 1 and page <= 4) or (commentPaging.number >= commentPaging.totalPages-2 and page >= commentPaging.totalPages-5)}"
+                    th:classappend="${page != commentPaging.number} ? 'page-active' : 'disabled page-now'"
+                    th:onclick="_cPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+                <li class="page-middle" th:classappend="${commentPaging.hasNext} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.number + 1}"><i class="fa-solid fa-angle-right"></i></li>
+                <li class="page-middle" th:classappend="${commentPaging.number + 10 <= commentPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.number + 10}"><i class="fa-solid fa-angles-right"></i></li>
+                <li class="page-end" th:classappend="${commentPaging.number != commentPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.totalPages-1}">끝</li>
+            </ul>
+        </div>
+    </section>
+    <!-- board-comment-section end -->
 
-  <!-- board-list-section start -->
-  <section th:replace="~{board_list :: board_listFragment}"></section>
-  <!-- board-list-section end -->
-  <!-- 구현 End -->
+    <!-- middle-banner-section start -->
+    <section class="middle-banner-section">
+        <img th:src="@{/image/middle-banner-1.jpg}" alt="">
+    </section>
+    <!-- middle-banner-section end -->
+
+    <!-- board-list-section start -->
+    <section th:replace="~{board_list :: board_listFragment}"></section>
+    <!-- board-list-section end -->
+
+    <!-- several parameters input part start; bPageSize, bPage, bKw, bSort, bCategory -->
+    <form th:action="@{|/board/${presentBoard.id}|}" method="get" id="parameterForm">
+        <input type="hidden" id="bPageSize" name="bPageSize" th:value="${bPageSize}">
+        <input type="hidden" id="bPage" name="bPage" th:value="${bPage}">
+        <input type="hidden" id="bSearch" name="bSearch" th:value="${bSearch}">
+        <input type="hidden" id="bKw" name="bKw" th:value="${bKw}">
+        <input type="hidden" id="bSort" name="bSort" th:value="${bSort}">
+        <input type="hidden" id="bCategory" name="bCategory" th:value="${bCategory}">
+        <input type="hidden" id="cPage" name="cPage" th:value="${cPage}">
+        <input type="hidden" id="cSort" name="cSort" th:value="${cSort}">
+    </form>
+    <!-- several parameters input part end -->
+    <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type='text/javascript'>
-    $("textarea").each(function() {
-        let simpleMde = new SimpleMDE({
-        element: this,
-        placeholder: "내용을 입력해주세요",
-        hideIcons: ["guide", "fullscreen", "side-by-side"]
+    function _reset() {
+        $("textarea").each(function() {
+            if (!$(this).hasClass("editor-loaded")) {
+                let simpleMde = new SimpleMDE({
+                    element: this,
+                    placeholder: "내용을 입력해주세요",
+                    hideIcons: ["guide", "fullscreen", "side-by-side"]
+                });
+                $("this").addClass("editor-loaded");
+            }
         });
+    }
+
+    $(function() {
+        _reset();
     });
 
-    $(".vote-btn").click(function() {
-        alert(this.dataset.element + "-" + this.dataset.id);
-        if ($(this).hasClass("voted")) {
-          confirm("정말 추천을 취소하시겠습니까?");
-        } else {
-          confirm("정말 추천하시겠습니까?");
+    function _anonymous() {
+        if(confirm("로그인이 필요한 서비스입니다.\n확인을 누르시면 로그인 페이지로 이동합니다.")) {
+            location.href = "/user/login";
         }
-    });
+    }
 
-    $(".delete-btn").click(function() {
+    function _delete(_this) {
         if(confirm("정말 삭제하시겠습니까?")) {
-          location.href = this.dataset.uri;
+            location.href = _this.getAttribute("data-uri");
         }
-    });
+    }
 
-    $("#comment-write-btn").click(function() {
+    function _vote(_this) {
+      var isVote;
+      if ($(_this).hasClass("voted")) {
+        isVote = confirm("정말 추천을 취소하시겠습니까?");
+      } else {
+        isVote = confirm("정말 추천하시겠습니까?");
+      }
+      if (isVote) {
+        $.ajax({
+          url: _this.getAttribute("data-uri"),
+          type: "GET",
+          beforeSend : function() {
+          var token = $("meta[name='_csrf']").attr("content");
+          var header = $("meta[name='_csrf_header']").attr("content");
+          $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+          },
+          success: function(fragment) {
+            $(_this.getAttribute("data-target")).replaceWith(fragment);
+          },
+          error: function(response) {
+            alert(response.responseJSON.message);
+          }
+        });
+      }
+    }
+
+    function _writeCommentBtn() {
         $("div.comment-write-box").addClass("active");
         $("div.board-comment-header").addClass("expended");
-    });
+    }
 
-    $("#comment-write-cancel").click(function() {
+    function _cancelWriteComment() {
         $("div.comment-write-box").removeClass("active");
         $("div.board-comment-header").removeClass("expended");
-    });
+    }
 
-    $(".reComment-write-btn").click(function() {
-        $(this).parent().next().addClass("active");
-    });
+    function _writeReCommentBtn(_this) {
+        $(_this).parent().next().addClass("active");
+    }
 
-    $(".reComment-write-cancel").click(function() {
-        $(this).parent().parent().parent().removeClass("active");
-    });
+    function _cancelWriteReComment(_this) {
+        $(_this).parent().parent().parent().removeClass("active");
+    }
+
+    function _bSort(_this) {
+        $("#bSort").val(_this.dataset.sort);
+        $("#parameterForm").submit();
+    }
+
+    function _bPageSize() {
+        $("#bPage").val(0);
+        $("#bPageSize").val($("#boardPageSize").val());
+        $("#parameterForm").submit();
+    }
+
+    function _bPaging(_this) {
+        if (!$(_this).hasClass("disabled")) {
+            $("#bPage").val(_this.dataset.page);
+            $("#parameterForm").submit();
+        }
+    }
+
+    function _bSearch() {
+        $("#bPage").val(0);
+        $("#bSearch").val($("#boardSearch").val());
+        $("#bKw").val($("#boardKeyword").val());
+        $("#parameterForm").submit();
+    }
+
+    function _bCategory(_this) {
+        if (_this.dataset.count > 0) {
+            $("#bPage").val(0);
+            $("#bCategory").val(_this.dataset.category);
+            $("#parameterForm").submit();
+        }
+    }
+
+    function _goDetail(_this) {
+        $("#parameterForm").attr("action", _this.dataset.uri);
+        $("#parameterForm").submit();
+    }
+
+    function _cPaging(_this) {
+        if (!$(_this).hasClass("disabled")) {
+            $("#cPage").val(_this.dataset.page);
+            $("#parameterForm").submit();
+        }
+    }
+
+    function _cSort(_this) {
+        $("#cSort").val(_this.dataset.sort);
+        $("#parameterForm").submit();
+    }
+
 </script>
 </html>

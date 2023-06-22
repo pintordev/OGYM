@@ -50,4 +50,13 @@ public class ReCommentService {
             throw new DataNotFoundException("reComment not found");
         }
     }
+
+    public void vote(ReComment reComment, SiteUser voter) {
+        if (reComment.getVoter().contains(voter)) {
+            reComment.getVoter().remove(voter);
+        } else {
+            reComment.getVoter().add(voter);
+        }
+        this.reCommentRepository.save(reComment);
+    }
 }

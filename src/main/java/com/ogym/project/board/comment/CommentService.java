@@ -4,6 +4,9 @@ import com.ogym.project.DataNotFoundException;
 import com.ogym.project.board.board.Board;
 import com.ogym.project.user.user.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,6 +44,19 @@ public class CommentService {
         this.commentRepository.delete(comment);
     }
 
+    public Page<Comment> getList(Board presentBoard, int cPage, String cSort) {
+
+        Pageable pageable = PageRequest.of(cPage, 10);
+
+        if (cSort.equals("vote")) {
+            return this.commentRepository.findAllByBoardOrderByVoterCount(presentBoard.getId(), pageable);
+        } else if (cSort.equals("reComment")) {
+            return this.commentRepository.findAllByBoardOrderByReCommentCount(presentBoard.getId(), pageable);
+        } else {
+            return this.commentRepository.findAllByBoardOrderByCreateDate(presentBoard.getId(), pageable);
+        }
+    }
+
     public Comment getComment(Long id) {
         Optional<Comment> oc = this.commentRepository.findById(id);
         if (oc.isPresent()) {
@@ -48,5 +64,14 @@ public class CommentService {
         } else {
             throw new DataNotFoundException("comment not found");
         }
+    }
+
+    public void vote(Comment comment, SiteUser voter) {
+        if (comment.getVoter().contains(voter)) {
+            comment.getVoter().remove(voter);
+        } else {
+            comment.getVoter().add(voter);
+        }
+        this.commentRepository.save(comment);
     }
 }
