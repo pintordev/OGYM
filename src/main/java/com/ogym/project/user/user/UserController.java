@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ogym.project.DataNotFoundException;
 import com.ogym.project.user.kakao.KakaoProfile;
 import com.ogym.project.user.kakao.OAuthToken;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -13,13 +16,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.UUID;
+import com.ogym.project.handler.LoginSuccessHandler;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -28,17 +34,22 @@ public class UserController {
 
     private final UserService userService;
     private final UserEmailService userEmailService;
-
+    private final LoginSuccessHandler loginSuccessHandler;
 
     @GetMapping("/signup")
-    public String signup(UserCreateForm userCreateForm) {
+    public String signup(UserCreateForm userCreateForm
+                      )
+    {
         return "signup_form";
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+    public String signup(@Valid UserCreateForm userCreateForm,
+                         BindingResult bindingResult,
+                         HttpServletRequest request,
+                         HttpServletResponse response)
+                         throws IOException, ServletException {
         System.out.println("들어옴");
-
         System.out.println("loginId = " + userCreateForm.getLoginId());
         System.out.println("password = " + userCreateForm.getPassword());
         System.out.println("passwordCheck = " + userCreateForm.getPasswordCheck());
@@ -59,6 +70,8 @@ public class UserController {
             return "signup_form";
         }
 
+
+
         // 비밀번호와 비밀번호 확인에 입력한 문자열이 서로 다르면 다시 입력 하도록
         if (!userCreateForm.getPassword().equals(userCreateForm.getPasswordCheck())) {
             System.out.println("password confirm error");
@@ -78,6 +91,7 @@ public class UserController {
 
         userService.create(userCreateForm.getLoginId(), userCreateForm.getPassword(), userCreateForm.getNickname(), userCreateForm.getUsername(), userCreateForm.getPhone(), userCreateForm.getBirthYear(),
                 userCreateForm.getBirthMonth(), userCreateForm.getBirthDay(), userCreateForm.getEmail());
+        loginSuccessHandler.onAuthenticationSuccess(request, response, null);
 
         return "redirect:/user/login";
     }
@@ -103,7 +117,13 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request, Model model) {
+
+        String uri = request.getHeader("Referer");
+        if(uri != null && !uri.contains("login")){
+            System.out.println(uri);
+            request.getSession().setAttribute("prePage",uri);
+        }
         return "login";
     }
 

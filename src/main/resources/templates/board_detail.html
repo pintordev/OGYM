@@ -1,4 +1,4 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml">
 <script layout:fragment="simplemde" type="text/javascript" th:src="@{/simplemde.min.js}"></script>
 <div layout:fragment="content">
   <!-- 구현 Start -->
@@ -177,6 +177,8 @@
                 <div class="write-btn-box">
                   <button type="button" class="reComment-write-cancel btn-sm cancel">취소</button>
                   <button type="submit" class="btn-sm">저장하기</button>
+                  <span th:unless="${#authentication.principal.authenticated}">로그인이 필요한 서비스입니다.</span>
+
                 </div>
               </form>
             </div>

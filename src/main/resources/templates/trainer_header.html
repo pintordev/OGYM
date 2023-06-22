@@ -1,5 +1,5 @@
 <!-- trainer-header-section start -->
-<section th:fragment="trainer_headerFragment" class="trainer-header-section">
+<section th:fragment="trainer_headerFragment" class="trainer-header-section" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="header-box">
         <h2>트레이너</h2>
         <div class="right-box">
@@ -9,6 +9,8 @@
             </div>
             <div class="register-btn-box">
                 <a class="btn" href="/trainer/register">트레이너 등록하기</a>
+                <span th:if="${not #authentication.principal.authenticated}">로그인이 필요한 서비스입니다.</span>
+
             </div>
         </div>
     </div>
