@@ -8,17 +8,17 @@ import com.ogym.project.user.kakao.KakaoProfile;
 import com.ogym.project.user.kakao.OAuthToken;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RequestMapping("/user")
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         System.out.println("들어옴");
 
         System.out.println("loginId = " + userCreateForm.getLoginId());
@@ -79,6 +79,10 @@ public class UserController {
         userService.create(userCreateForm.getLoginId(), userCreateForm.getPassword(), userCreateForm.getNickname(), userCreateForm.getUsername(), userCreateForm.getPhone(), userCreateForm.getBirthYear(),
                 userCreateForm.getBirthMonth(), userCreateForm.getBirthDay(), userCreateForm.getEmail());
 
+        //RedirectAttributes는 리다이렉트 후에도 데이터를 전달하고 유지하기 위함.
+        //addFalshAttrribute메서드를 사용하여 데이터를 추가하면, 리다이렉트 이후에도 데이터가 유지되며 한 번만 사용할 수 있어 해당 코드 사용
+        //다른걸로는 addAttribute로 전달한 값은 url뒤에  붙으며, 리프레시해도 데이터가 유지되는데 휘발성을 생각해 addFalshAttrribute메서드 사용
+        redirectAttributes.addFlashAttribute("signupSuccess", true);
         return "redirect:/user/login";
     }
 
@@ -89,6 +93,62 @@ public class UserController {
         System.out.println(genCode);
         this.userEmailService.mailSend(email, "이메일 인증", genCode);
         return this.userService.getEmailConfirmCode(genCode);
+    }
+
+    @GetMapping("/signup/loginId")
+    @ResponseBody
+    public String loginIdDuplicate(@RequestParam("loginId") String loginId) {
+        System.out.println(loginId);
+
+        if (loginId.matches("\\s*") || loginId.matches("[ㄱ-ㅎㅏ-ㅣ가-힣]+")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 아이디입니다.");
+        }
+
+        if (!this.userService.isLoginIdDuplicate(loginId)) {
+            return "사용 가능한 아이디입니다.";
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 아이디입니다.");
+        }
+    }
+
+    @GetMapping("/signup/nickname")
+    @ResponseBody
+    public String nicknameDuplicate(@RequestParam("nickname") String nickname) {
+        System.out.println(nickname);
+
+        if (nickname.matches("\\s*") || nickname.matches("[ㄱ-ㅎㅏ-ㅣ]+")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 닉네임입니다.");
+        }
+
+        if (!this.userService.isNickNameDuplicate(nickname)) {
+            return "사용 가능한 닉네임입니다.";
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 닉네임입니다.");
+        }
+    }
+
+    @GetMapping("/signup/email")
+    @ResponseBody
+    public String emailDuplicate(@RequestParam("email") String email) {
+        System.out.println(email);
+
+        if (!this.userService.isEmailDuplicate(email)) {
+            return "사용 가능한 이메일입니다.";
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 이메일입니다.");
+        }
+    }
+
+    @GetMapping("/signup/phoneNumber")
+    @ResponseBody
+    public String phoneNumberDuplicate(@RequestParam("phone") String phoneNumber) {
+        System.out.println(phoneNumber);
+
+        if (!this.userService.isPhoneNumberDuplicate(phoneNumber)) {
+            return "사용 가능한 번호입니다.";
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 번호입니다.");
+        }
     }
 
 
@@ -105,6 +165,27 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    @GetMapping("/login/authenticate")
+    @ResponseBody
+    public String idAndPasswordAuthenticate(@RequestParam("loginId") String loginId, @RequestParam("password") String  password) {
+        System.out.println(loginId);
+        System.out.println(password);
+        System.out.println();
+
+        if (this.userService.authenticateLoginIdAndPassword(loginId, password)) {
+            return "";
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "아이디, 비밀번호를 다시 확인해주세요");
+        }
+    }
+
+    @GetMapping("/log/loginDate")
+    public String loginDate(Principal principal) {
+        SiteUser user = this.userService.getUser(principal.getName());
+        this.userService.updateLoginDate(user);
+        return "redirect:/";
     }
 
     @GetMapping("/find")

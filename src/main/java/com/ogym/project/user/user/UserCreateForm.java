@@ -11,11 +11,11 @@ import lombok.Setter;
 @Setter
 public class UserCreateForm {
     @Column(unique = true)
-    @NotEmpty(message = "로그인 ID를 입력해주세요")
+    @NotEmpty(message = "로그인 ID를 입력해주세요(영문 대소문자, 숫자 조합)")
     @Pattern(regexp = "(?=.*[A-Za-z])[A-Za-z0-9_-]{4,20}")
     private String loginId;
 
-    @NotEmpty(message = "비밀번호를 입력해주세요")
+    @NotEmpty(message = "비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 조합)")
     @Pattern(regexp = "(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*\\(\\)\\-_=+\\[\\{\\]}\\|;:'\",<.>\\/?])[A-Za-z\\d!@#$%^&*\\(\\)\\-_=+\\[\\{\\]}\\|;:'\",<.>\\/?]{8,30}")
     private String password;
 
@@ -29,7 +29,7 @@ public class UserCreateForm {
     private String nickname;
 
     @NotEmpty(message = "이름을 입력해주세요")
-    @Pattern(regexp = "(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣\\d]{2,}")
+    @Pattern(regexp = "(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣]{2,}")
     private String username;
 
     @NotEmpty

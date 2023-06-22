@@ -10,12 +10,12 @@
         <form class="signup-form" th:object="${userCreateForm}" th:action="@{/user/signup}" method="post">
             <div class="input-box loginId">
                 <label for="loginId"></label>
-                <input th:field="*{loginId}" type="text" placeholder="아이디를 입력해주세요">
+                <input class="loginId" th:field="*{loginId}" name="loginId" type="text" placeholder="아이디를 입력해주세요(영문 대소문자, 숫자 조합)">
                 <div class="error" id="loginIdError"></div>
             </div>
             <div class="input-box password">
                 <label for="password"></label>
-                <input th:field="*{password}" type="password" placeholder="비밀번호를 입력해주세요">
+                <input th:field="*{password}" type="password" placeholder="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 조합)">
                 <div class="error" id="passwordError"></div>
             </div>
             <div class="input-box passwordCheck">
@@ -25,7 +25,7 @@
             </div>
             <div class="input-box nickname">
                 <label for="nickname"></label>
-                <input th:field="*{nickname}" type="text" placeholder="닉네임을 입력해주세요">
+                <input th:field="*{nickname}" name="nickname" type="text" placeholder="닉네임을 입력해주세요">
                 <div class="error" id="nicknameError"></div>
             </div>
             <div class="input-box username">
@@ -35,7 +35,7 @@
             </div>
             <div class="input-box phone">
                 <label for="phone"></label>
-                <input class="phone" th:field="*{phone}" type="text" maxlength="11" placeholder="휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요">
+                <input class="phone" th:field="*{phone}" type="text" maxlength="11" pattern="\d*" placeholder="휴대폰 번호에서 '-' 를 제외하고 숫자만 입력해주세요">
                 <div class="error" id="phoneError"></div>
             </div>
             <div class="input-box birthDate">
@@ -43,9 +43,9 @@
                 <label for="birthMonth"></label>
                 <label for="birthDay"></label>
                 <div class="three-part">
-                    <input class="margined" th:field="*{birthYear}" type="text" maxlength="4" placeholder="생년(4자)">
-                    <input class="margined" th:field="*{birthMonth}" type="text" maxlength="2" placeholder="월(2자)">
-                    <input th:field="*{birthDay}" type="text" maxlength="2" placeholder="일(2자)">
+                    <input class="margined" th:field="*{birthYear}" type="text" pattern="\d*" maxlength="4"  placeholder="생년(4자)">
+                    <input class="margined" th:field="*{birthMonth}" type="text" pattern="\d*" maxlength="2" placeholder="월(2자)">
+                    <input th:field="*{birthDay}" type="text" pattern="\d*" maxlength="2" placeholder="일(2자)">
                 </div>
                 <div class="error" id="birthDateError"></div>
             </div>
@@ -86,6 +86,7 @@ $(document).ready(function () {
     $("#email").prop("disabled", true);
     $(".timer").css("display", "flex");
     $(".timer").text("이메일 발송중").css("font-size", "0.8rem");
+    timeRemain = 180;
     clearInterval(timer);
     $.ajax({
       url: "/user/signup/emailConfirm",
@@ -104,11 +105,114 @@ $(document).ready(function () {
       },
       error: function (data) {
         $(".timer").css("display", "none");
-        alert("인증이 실패했습니다.");
+        alert("인증에 실패했습니다");
         $("#email").prop("disabled", false);
       }
     });
   });
+
+
+  $("#loginId").on("blur", function() {
+      var loginId = $(this).val();
+
+      if (loginId.trim() === "") {
+        $("#loginIdError").text("").css("color", "red");
+      } else if (loginId.match(/[ㄱ-ㅎㅏ-ㅣ]/)) {
+        $("#loginIdError").text("사용할 수 없는 아이디입니다.").css("color", "red");
+      } else {
+        $.ajax({
+          url: "signup/loginId",
+          method: "GET",
+          data: { loginId: loginId },
+          success: function(data) {
+            console.log(data);
+            $("#loginIdError").text(data).css("color", "rgb(50, 210, 50)");
+          },
+          error: function(xhr, status, error) {
+              $("#loginIdError").text(xhr.responseJSON.message).css("color", "red");
+          }
+        });
+      }
+    });
+
+
+  $("#nickname").on("blur", function() {
+      var nickname = $(this).val();
+      if (nickname.trim() === "") {
+        $("#nicknameError").text("").css("color", "red");
+      } else if (nickname.match(/[ㄱ-ㅎㅏ-ㅣ]+/g)) {
+        $("#nicknameError").text("사용할 수 없는 닉네임입니다").css("color", "red");
+      } else {
+        $.ajax({
+          url: "signup/nickname",
+          type: "GET",
+          data: { nickname: nickname },
+          success: function(data) {
+            console.log(data);
+            if (data === "") {
+              $("#nicknameError").text("");
+            } else {
+              $("#nicknameError").text(data).css("color", "rgb(50, 210, 50)");
+            }
+          },
+          error: function(xhr, status, error) {
+              $("#nicknameError").text(xhr.responseJSON.message).css("color", "red");
+          }
+        });
+      }
+    });
+
+    $("#phone").on("blur", function() {
+      var phone = $(this).val();
+      if (phone.trim() === "") {
+        $("#phoneError").text("").css("color", "red");
+      } else {
+        $.ajax({
+          url: "signup/phoneNumber",
+          type: "GET",
+          data: { phone: phone },
+          success: function(data) {
+            console.log(data);
+            if (data === "") {
+              $("#phoneError").text("");
+            } else {
+              $("#phoneError").text(data).css("color", "rgb(50, 210, 50)");
+            }
+          },
+          error: function(xhr, status, error) {
+              $("#phoneError").text(xhr.responseJSON.message).css("color", "red");
+          }
+        });
+      }
+    });
+
+    $("#email").keyup(function() {
+      var email = $(this).val();
+      if (email.trim() === "") {
+        $("#emailError").text("").css("color", "red");
+      } else {
+        $.ajax({
+          url: "signup/email",
+          type: "GET",
+          data: { email: email },
+          success: function(data) {
+            console.log(data);
+            if (data === "") {
+              $("#emailError").text("");
+            } else {
+              $("#emailError").text("").css("color", "rgb(50, 210, 50)");
+              $("#email-btn").prop("disabled", false);
+            }
+          },
+          error: function(xhr, status, error) {
+              $("#emailError").text(xhr.responseJSON.message).css("color", "red");
+              $("#email-btn").prop("disabled", true);
+          }
+        });
+      }
+    });
+
+
 
   //input은 해당 개체의 input이 변경될때 이벤트 발생
   //email input 입력시 email-btn 스타일과, modify-btn 숨김, 보임
@@ -123,6 +227,7 @@ $(document).ready(function () {
   });
 
   $(".modify-btn").click(function () {
+    $("#emailError, #codeError").text("")
     $("#email, #code").val("").prop("disabled", false);
     $("#email-btn, #code-btn")
       .prop("disabled", false)
@@ -130,6 +235,15 @@ $(document).ready(function () {
     $(".modify-btn").hide();
     $(".timer").css("display", "none");
     timeRemain = 180;
+  });
+
+  //html에 pattern을 "\d*"로 바꾸면 숫자만 입력되지만 브라우저에따라 문자나 소수점이 들어갈 수 있어 이 처리가 필요하다고함
+  $("#phone, #birthYear, #birthMonth, #birthDay").on("input", function() {
+    // 입력값에서 숫자 이외의 문자 제거
+    $(this).val(function(index, value) {
+      // /는 감싸는기호, \D 0-9 제외한 문자, g는 전역검색, 즉 문자는 ""으로 치환하는 함수
+      return value.replace(/\D/g, "");
+    });
   });
 
   $("#birthMonth, #birthDay").blur(function () {
@@ -284,7 +398,7 @@ $(document).ready(function () {
       $("#birthDateError").text("");
     }
   });
-
+  //회원가입 버튼 이벤트
   $(".btn-long").click(function () {
     var hasError = false;
 
@@ -292,10 +406,16 @@ $(document).ready(function () {
       $("#codeError").text("인증번호를 입력해주세요");
       $("#code").focus();
       hasError = true;
+    } else if ($("#codeError").text() === "" || $("#codeError").text().includes("일치하지")) {
+      $("#codeError").focus();
+      hasError = true;
     }
 
     if ($("#email").val() === "") {
       $("#emailError").text("이메일을 입력해주세요");
+      $("#email").focus();
+      hasError = true;
+      }else if ($("#emailError").text().includes("사용중인")) {
       $("#email").focus();
       hasError = true;
     }
@@ -321,16 +441,26 @@ $(document).ready(function () {
       $("#phoneError").text("휴대폰번호를 입력해주세요");
       $("#phone").focus();
       hasError = true;
+    }else if ($("#phoneError").text().includes("사용중인")) {
+      $("#phone").focus();
+      hasError = true;
     }
 
     if ($("#username").val() === "") {
       $("#usernameError").text("이름을 입력해주세요");
       $("#username").focus();
       hasError = true;
+    } else if (username.match(/[ㄱ-ㅎㅏ-ㅣ0-9]/)) {
+      $("#usernameError").text("한글, 영문명을 입력해주세요.").css("color", "red");
+      $("#username").focus();
+      hasError = true;
     }
 
     if ($("#nickname").val() === "") {
       $("#nicknameError").text("닉네임을 입력해주세요");
+      $("#nickname").focus();
+      hasError = true;
+    } else if ($("#nicknameError").text().includes("사용중인") || $("#nicknameError").text().includes("사용할")) {
       $("#nickname").focus();
       hasError = true;
     }
@@ -351,6 +481,9 @@ $(document).ready(function () {
 
     if ($("#loginId").val() === "") {
       $("#loginIdError").text("아이디를 입력해주세요");
+      $("#loginId").focus();
+      hasError = true;
+    }else if ($("#loginIdError").text().includes("사용중인") || $("#loginIdError").text().includes("사용할")) {
       $("#loginId").focus();
       hasError = true;
     }
@@ -375,6 +508,7 @@ $(document).ready(function () {
     }
     $("#email, #code").prop("disabled", false);
     $(".signup-form").submit();
+    sessionStorage.setItem("signupSuccess", "true");
   });
 });
 </script>

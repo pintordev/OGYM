@@ -273,6 +273,7 @@ input[type="number"]::-webkit-inner-spin-button {
 	top: 50%;
 	transform: translate(0, -50%);
 	display: none;
+	cursor : pointer;
 }
 
 .signup-form-section > .signup-form > .input-box > .error {
