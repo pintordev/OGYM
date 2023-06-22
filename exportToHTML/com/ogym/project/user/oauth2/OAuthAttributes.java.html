@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>OAuthAttributes.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+OAuthAttributes.java</font>
+</center></td></tr></table>
+<pre><span class="s0">//package com.ogym.project.user.oauth2;</span>
+<span class="s0">//</span>
+<span class="s0">//import groovy.transform.builder.Builder;</span>
+<span class="s0">//import lombok.Getter;</span>
+<span class="s0">//import lombok.RequiredArgsConstructor;</span>
+<span class="s0">//import org.springframework.security.core.userdetails.User;</span>
+<span class="s0">//</span>
+<span class="s0">//import java.util.Map;</span>
+<span class="s0">//</span>
+<span class="s0">//@Getter</span>
+<span class="s0">//@Builder</span>
+<span class="s0">//@RequiredArgsConstructor</span>
+<span class="s0">//public class OAuthAttributes {</span>
+<span class="s0">//    private final Map&lt;String, Object&gt; attributes;</span>
+<span class="s0">//    private final String nameAttributeKey;</span>
+<span class="s0">//    private final String name;</span>
+<span class="s0">//    private final String email;</span>
+<span class="s0">//    private final String picture;</span>
+<span class="s0">//    private final String gender;</span>
+<span class="s0">//    private final String age;</span>
+<span class="s0">//</span>
+<span class="s0">//    public static OAuthAttributes of(String registrationId, Map&lt;String, Object&gt; attributes) {</span>
+<span class="s0">//        if(&quot;naver&quot;.equals(registrationId)) {</span>
+<span class="s0">//            return ofNaver(&quot;id&quot;, attributes);</span>
+<span class="s0">//        }</span>
+<span class="s0">//        else {</span>
+<span class="s0">//            return ofNaver(&quot;id&quot;, attributes);</span>
+<span class="s0">//        }</span>
+<span class="s0">//    }</span>
+<span class="s0">//</span>
+<span class="s0">//</span>
+<span class="s0">//    private static OAuthAttributes ofNaver(String userNameAttributeName, Map&lt;String, Object&gt; attributes) {</span>
+<span class="s0">//        Map&lt;String, Object&gt; response = (Map&lt;String, Object&gt;) attributes.get(&quot;response&quot;);</span>
+<span class="s0">//</span>
+<span class="s0">//        return OAuthAttributes.builder()</span>
+<span class="s0">//                .name((String) response.get(&quot;nickname&quot;))</span>
+<span class="s0">//                .email((String) response.get(&quot;email&quot;))</span>
+<span class="s0">//                .picture((String) response.get(&quot;profile_image&quot;))</span>
+<span class="s0">//                .gender((String) response.get(&quot;gender&quot;))</span>
+<span class="s0">//                .age((String) response.get(&quot;age&quot;))</span>
+<span class="s0">//                .attributes(response)</span>
+<span class="s0">//                .nameAttributeKey(userNameAttributeName)</span>
+<span class="s0">//                .build();</span>
+<span class="s0">//    }</span>
+<span class="s0">//</span>
+<span class="s0">////    public User toEntity() {</span>
+<span class="s0">////        return User.builder()</span>
+<span class="s0">////                .name(name)</span>
+<span class="s0">////                .email(email)</span>
+<span class="s0">////                .picture(picture)</span>
+<span class="s0">////                .gender(gender)</span>
+<span class="s0">////                .age(age)</span>
+<span class="s0">////                .role(Role.GUEST)</span>
+<span class="s0">////                .build();</span>
+<span class="s0">////    }</span>
+<span class="s0">//}</span></pre>
+</body>
+</html>
