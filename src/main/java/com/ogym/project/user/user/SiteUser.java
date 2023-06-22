@@ -1,5 +1,6 @@
 package com.ogym.project.user.user;
 
+import groovy.transform.builder.Builder;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Builder
 public class SiteUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +43,8 @@ public class SiteUser {
     private LocalDateTime createDate;
 
     private LocalDateTime lastLoginDate;
+
+    private String provider;
+
+    private String providerId;
 }

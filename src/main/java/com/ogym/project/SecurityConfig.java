@@ -1,7 +1,9 @@
 package com.ogym.project;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ogym.project.handler.LoginFailHandler;
+import com.ogym.project.handler.CustomAuthSuccessHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,27 +16,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@Configuration
+
+
 @EnableWebSecurity
+@Configuration
 @EnableMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomAuthSuccessHandler loginSuccessHandler;
+    private final LoginFailHandler loginFailHandler;
+
 
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests().requestMatchers(
-                        new AntPathRequestMatcher("/**")).permitAll();
-                http.authorizeHttpRequests()
+                        new AntPathRequestMatcher("/**")).permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailHandler)
                 .usernameParameter("loginId")
-                .defaultSuccessUrl("/")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
+                .permitAll();
         ;
         return http.build();
     }

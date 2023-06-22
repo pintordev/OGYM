@@ -2,20 +2,15 @@
 <section th:fragment="board_headerFragment" class="board-header-section">
   <h2><a href="/board">커뮤니티</a></h2>
   <div class="category-box">
-    <h3>인기 카테고리</h3>
+    <h3>카테고리</h3>
     <div class="category-list">
-      <div class="category-text"><a href="#">#category-1 (1)</a></div>
-      <div class="category-text"><a href="#">#category-2 (2)</a></div>
-      <div class="category-text"><a href="#">#category-3 (3)</a></div>
-      <div class="category-text"><a href="#">#category-4 (4)</a></div>
-      <div class="category-text"><a href="#">#category-5 (5)</a></div>
-      <div class="category-text"><a href="#">#category-6 (6)</a></div>
-      <div class="category-text"><a href="#">#category-7 (7)</a></div>
-      <div class="category-text"><a href="#">#category-8 (8)</a></div>
-      <div class="category-text"><a href="#">#category-9 (9)</a></div>
-      <div class="category-text"><a href="#">#category-10 (10)</a></div>
-      <div class="category-text"><a href="#">#category-11 (11)</a></div>
-      <div class="category-text"><a href="#">#category-12 (12)</a></div>
+      <div class="category-text" th:each="category : ${categoryList}"
+           th:if="${#maps.containsKey(bcc, category)}">
+        <a class="a-hover" th:onclick="_bCategory(this)"
+           th:data-category="${category.name}"
+           th:data-count="${bcc.get(category)}"
+           th:text="|#${category.name} (${bcc.get(category)})|"></a>
+      </div>
     </div>
   </div>
 </section>
