@@ -106,8 +106,8 @@
                 </div>
             </form>
         </div>
-        <div th:if="${#lists.size(presentBoard.commentList) > 0}" th:each="comment : ${commentPaging}" class="board-comment-list">
-            <div th:id="|comment_${comment.id}|" class="comment">
+        <div th:if="${#lists.size(presentBoard.commentList) > 0}" th:each="comment : ${commentPaging}" class="board-comment-list" th:id="|board_comment_list_${comment.id}|">
+            <div id="comment_detail" class="comment">
                 <div class="comment-box">
                     <div class="comment-profile-box">
                         <div class="profile-logo"><i class="fa-solid fa-circle-user"></i></div>
@@ -134,7 +134,7 @@
                     <div class="comment-btn-box">
                         <div class="vote-btn btn-sm" id="comment_vote" sec:authorize="isAuthenticated()"
                              th:classappend="${#sets.contains(comment.voter, @commonUtil.usernameToUser(#authentication.getPrincipal().getUsername())) ? 'voted' : ''}"
-                             th:data-target="|#comment_${comment.id} #comment_vote|" th:data-uri="|/comment/vote/${comment.id}|"
+                             th:data-target="|#board_comment_list_${comment.id} #comment_vote|" th:data-uri="|/comment/vote/${comment.id}|"
                              th:onclick="_vote(this)">
                             <span><i class="fa-solid fa-thumbs-up"></i></span>
                             <span th:text="${#lists.size(comment.voter)}"></span>
@@ -157,7 +157,8 @@
                             <input type="hidden" id="commentId" name="commentId" th:value="${comment.id}">
                             <div class="write-btn-box">
                                 <button type="button" class="reComment-write-cancel btn-sm cancel" th:onclick="_cancelWriteReComment(this)">취소</button>
-                                <button type="submit" class="btn-sm">저장하기</button>
+                                <button type="button" class="btn-sm" th:onclick="_writeReComment(this)"
+                                        th:data-target="|#board_comment_list_${comment.id} > #comment_detail|" th:data-uri="|/reComment/write|">저장하기</button>
                             </div>
                         </form>
                     </div>
@@ -217,7 +218,8 @@
                                 <input type="hidden" id="reCommentId" name="reCommentId" th:value="${reComment.id}">
                                 <div class="write-btn-box">
                                     <button type="button" class="reComment-write-cancel btn-sm cancel" th:onclick="_cancelWriteReComment(this)">취소</button>
-                                    <button type="button" class="btn-sm" th:onclick="_">저장하기</button>
+                                    <button type="button" class="btn-sm" th:onclick="_writeReComment(this)"
+                                            th:data-target="|#board_comment_list_${comment.id} > #comment_detail|" th:data-uri="|/reComment/write|">저장하기</button>
                                 </div>
                             </form>
                         </div>
@@ -315,7 +317,7 @@
       }
       if (isVote) {
         $.ajax({
-          url: _this.getAttribute("data-uri"),
+          url: _this.dataset.uri,
           type: "GET",
           beforeSend : function() {
           var token = $("meta[name='_csrf']").attr("content");
@@ -323,13 +325,39 @@
           $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
           },
           success: function(fragment) {
-            $(_this.getAttribute("data-target")).replaceWith(fragment);
+            $(_this.dataset.target).replaceWith(fragment);
           },
           error: function(response) {
             alert(response.responseJSON.message);
           }
         });
       }
+    }
+
+    function _writeReComment(_this) {
+        // 댓글 ajax form 제출 로직
+        // 폼 제출, 댓글 저장, 해당 답글이 있는 댓글 영역을 치
+        alert(_this.dataset.uri);
+        alert($(_this.dataset.target).children("#comment_detail").attr("id"));
+        alert($(_this).parent().parent().attr("class"));
+        alert(($(_this).parent().parent() + " > div.CodeMirror.cm-s-paper.CodeMirror-wrap > div.CodeMirror-scroll > div.CodeMirror-sizer > div > div > div > div.CodeMirror-code > pre > span").text());
+        $.ajax({
+          url: _this.dataset.uri,
+          type: "POST",
+          data: $(_this).parent().parent().serialize(),
+          beforeSend : function() {
+          var token = $("meta[name='_csrf']").attr("content");
+          var header = $("meta[name='_csrf_header']").attr("content");
+          $(document).ajaxSend(function(e, xhr, options) { xhr.setRequestHeader(header, token); });
+          },
+          success: function(fragment) {
+            $(_this.dataset.target).replaceWith(fragment);
+          },
+          error: function(response) {
+            console.log(response);
+            alert(response.responseJSON.message);
+          }
+        });
     }
 
     function _writeCommentBtn() {
