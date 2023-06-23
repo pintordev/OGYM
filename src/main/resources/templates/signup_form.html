@@ -10,27 +10,27 @@
         <form class="signup-form" th:object="${userCreateForm}" th:action="@{/user/signup}" method="post">
             <div class="input-box loginId">
                 <label for="loginId"></label>
-                <input class="loginId" th:field="*{loginId}" name="loginId" type="text" placeholder="아이디를 입력해주세요(영문 대소문자, 숫자 조합)">
+                <input class="loginId" th:field="*{loginId}" name="loginId" type="text" minlength = "4" maxlength = "20" placeholder="아이디를 입력해주세요(영문 대소문자, 숫자 조합) 최소 4, 최대 20자">
                 <div class="error" id="loginIdError"></div>
             </div>
             <div class="input-box password">
                 <label for="password"></label>
-                <input th:field="*{password}" type="password" placeholder="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 조합)">
+                <input th:field="*{password}" type="password" minlength = "8" maxlength = "30" placeholder="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 포함) 최소 8, 최대 30자">
                 <div class="error" id="passwordError"></div>
             </div>
             <div class="input-box passwordCheck">
                 <label for="passwordCheck"></label>
-                <input th:field="*{passwordCheck}" type="password" placeholder="비밀번호를 다시 한번 입력해주세요">
+                <input th:field="*{passwordCheck}" type="password" minlength = "8" maxlength = "30" placeholder="비밀번호를 다시 한번 입력해주세요">
                 <div class="error" id="passwordCheckError"></div>
             </div>
             <div class="input-box nickname">
                 <label for="nickname"></label>
-                <input th:field="*{nickname}" name="nickname" type="text" placeholder="닉네임을 입력해주세요">
+                <input th:field="*{nickname}" name="nickname" type="text" minlength = "2" maxlength = "15" placeholder="닉네임을 입력해주세요(한글, 영문 대소문자, 숫자 조합) 최소 2, 최대 15자">
                 <div class="error" id="nicknameError"></div>
             </div>
             <div class="input-box username">
                 <label for="username"></label>
-                <input th:field="*{username}" type="text" placeholder="이름을 입력해주세요">
+                <input th:field="*{username}" type="text" minlength = "2" placeholder="이름을 입력해주세요(한글, 영문명)">
                 <div class="error" id="usernameError"></div>
             </div>
             <div class="input-box phone">
@@ -43,7 +43,7 @@
                 <label for="birthMonth"></label>
                 <label for="birthDay"></label>
                 <div class="three-part">
-                    <input class="margined" th:field="*{birthYear}" type="text" pattern="\d*" maxlength="4"  placeholder="생년(4자)">
+                    <input class="margined" th:field="*{birthYear}" type="text" pattern="\d*" minlength = "4" maxlength = "4"  placeholder="생년(4자)">
                     <input class="margined" th:field="*{birthMonth}" type="text" pattern="\d*" maxlength="2" placeholder="월(2자)">
                     <input th:field="*{birthDay}" type="text" pattern="\d*" maxlength="2" placeholder="일(2자)">
                 </div>
@@ -114,35 +114,40 @@ $(document).ready(function () {
 
   $("#loginId").on("blur", function() {
       var loginId = $(this).val();
+      if (loginId.length < 4) {
+        $("#loginIdError").text("최소 4자리 이상 입력해주세요").css("color", "red");
+      }
 
-      if (loginId.trim() === "") {
-        $("#loginIdError").text("").css("color", "red");
-      } else if (loginId.match(/[ㄱ-ㅎㅏ-ㅣ]/)) {
-        $("#loginIdError").text("사용할 수 없는 아이디입니다.").css("color", "red");
-      } else {
-        $.ajax({
-          url: "signup/loginId",
-          method: "GET",
-          data: { loginId: loginId },
-          success: function(data) {
-            console.log(data);
-            $("#loginIdError").text(data).css("color", "rgb(50, 210, 50)");
-          },
-          error: function(xhr, status, error) {
-              $("#loginIdError").text(xhr.responseJSON.message).css("color", "red");
+      if (!loginId.match(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/)) {
+       $("#loginIdError").text("영문과 숫자를 최소 한 개 이상 포함해주세요").css("color", "red");
+       } else if (loginId.length >= 4) {
+            $.ajax({
+              url: "signup/loginId",
+              method: "GET",
+              data: { loginId: loginId },
+              success: function(data) {
+                console.log(data);
+                $("#loginIdError").text(data).css("color", "rgb(50, 210, 50)");
+              },
+              error: function(xhr, status, error) {
+                  $("#loginIdError").text(xhr.responseJSON.message).css("color", "red");
+              }
+            });
           }
-        });
+       if (loginId.length === 0) {
+        $("#loginIdError").text("")
       }
     });
 
 
   $("#nickname").on("blur", function() {
       var nickname = $(this).val();
-      if (nickname.trim() === "") {
-        $("#nicknameError").text("").css("color", "red");
-      } else if (nickname.match(/[ㄱ-ㅎㅏ-ㅣ]+/g)) {
+      if (nickname.length < 2) {
+        $("#nicknameError").text("최소 2자리 이상 입력해주세요").css("color", "red");
+      }
+      if (!nickname.match(/(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣\d]+/g)) {
         $("#nicknameError").text("사용할 수 없는 닉네임입니다").css("color", "red");
-      } else {
+      } else if (nickname.length >= 2) {
         $.ajax({
           url: "signup/nickname",
           type: "GET",
@@ -160,13 +165,14 @@ $(document).ready(function () {
           }
         });
       }
+      if (nickname.length === 0) {
+        $("#nicknameError").text("");
+      }
     });
 
     $("#phone").on("blur", function() {
       var phone = $(this).val();
-      if (phone.trim() === "") {
-        $("#phoneError").text("").css("color", "red");
-      } else {
+      if(phone.length >= 11) {
         $.ajax({
           url: "signup/phoneNumber",
           type: "GET",
@@ -184,6 +190,9 @@ $(document).ready(function () {
           }
         });
       }
+      if (phone.length === 0) {
+        $("#phoneError").text("");
+        }
     });
 
     $("#email").keyup(function() {
@@ -212,6 +221,29 @@ $(document).ready(function () {
       }
     });
 
+    $("#username").on("blur", function () {
+      var username = $("#username").val();
+      if(!username.match(/(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣]/)) {
+        $("#usernameError").text("한글, 영문명을 입력해주세요.").css("color", "red");
+      } else {
+        $("#usernameError").text("");
+      }
+     if(username.length === 0 ) {
+     $("#usernameError").text("");
+     }
+    });
+
+    $("#birthYear").on("blur", function () {
+      var birthYear = $("#birthYear").val();
+      if(birthYear.length < 4) {
+        $("#birthDateError").text("생년(4자)을 확인해주세요.").css("color", "red");
+      } else {
+        $("#birthDateError").text("");
+      }
+      if(birthYear.length === 0){
+      $("#birthDateError").text("");
+      }
+    });
 
 
   //input은 해당 개체의 input이 변경될때 이벤트 발생
@@ -277,9 +309,15 @@ $(document).ready(function () {
   $("#password").keyup(function () {
     var password = $(this).val();
     var passwordCheck = $("#passwordCheck").val();
-    if (password.length >= 0) {
-      $("#passwordError").text("");
+    if (!password.match(/(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*\(\)\-_=+\[\{\]}\|;:'",<.>\/?])[A-Za-z\d!@#$%^&*\(\)\-_=+\[\{\]}\|;:'",<.>\/?]+/g)) {
+        $("#passwordError").text("영문, 숫자, 특수문자가 포함돼야 합니다").css("color", "red");
+    } else{
+    $("#passwordError").text("");
     }
+    if(password.length < 8) {
+        $("#passwordError").text("최소 8자리를 입력해주세요").css("color", "red");
+        }
+
     if (password === passwordCheck && password !== "") {
       $("#passwordCheckError")
         .text("비밀번호가 일치합니다")
@@ -295,6 +333,9 @@ $(document).ready(function () {
       $("#passwordCheckError")
         .text("비밀번호가 일치하지 않습니다.")
         .css("color", "red");
+    }
+    if (password.length === 0){
+      $("#passwordError").text("");
     }
   });
 
