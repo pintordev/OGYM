@@ -48,18 +48,17 @@ public class ReCommentController {
 
         // If exists Form Validation Error
         if (bindingResult.hasErrors()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "내용이 입력되지 않았습니다");
+            model.addAttribute("presentBoard", presentBoard);
+            model.addAttribute("commentForm", new CommentForm());
+            return "board_detail";
         }
 
         // Write Comment
         SiteUser author = this.userService.getUserByLoginId(principal.getName());
         ReComment reComment = this.reCommentService.create(reCommentForm.getContent(), author, comment, parent);
 
-        // Send fragment to be refreshed
-        model.addAttribute("comment", comment);
-        model.addAttribute("reCommentForm", new ReCommentForm());
-
-        return "board_detail :: #comment_detail";
+        // Redirect to created board detail
+        return String.format("redirect:/board/%s#comment_%s", presentBoard.getId(), comment.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
