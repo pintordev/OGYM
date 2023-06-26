@@ -47,7 +47,7 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         }
         redirectStrategy.sendRedirect(request, response, uri);
     }
-
+//fadfsdfadsf
     protected void clearSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
