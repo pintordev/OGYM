@@ -134,9 +134,9 @@ $(document).ready(function () {
               }
             });
           }
-       if (loginId.length === 0) {
-        $("#loginIdError").text("")
-      }
+          else {
+          $("#loginIdError").text("");
+          }
     });
 
 
@@ -165,9 +165,6 @@ $(document).ready(function () {
           }
         });
       }
-      if (nickname.length === 0) {
-        $("#nicknameError").text("");
-      }
     });
 
     $("#phone").on("blur", function() {
@@ -190,9 +187,6 @@ $(document).ready(function () {
           }
         });
       }
-      if (phone.length === 0) {
-        $("#phoneError").text("");
-        }
     });
 
     $("#email").keyup(function() {
@@ -228,9 +222,6 @@ $(document).ready(function () {
       } else {
         $("#usernameError").text("");
       }
-     if(username.length === 0 ) {
-     $("#usernameError").text("");
-     }
     });
 
     $("#birthYear").on("blur", function () {
@@ -239,9 +230,6 @@ $(document).ready(function () {
         $("#birthDateError").text("생년(4자)을 확인해주세요.").css("color", "red");
       } else {
         $("#birthDateError").text("");
-      }
-      if(birthYear.length === 0){
-      $("#birthDateError").text("");
       }
     });
 
@@ -442,12 +430,13 @@ $(document).ready(function () {
   //회원가입 버튼 이벤트
   $(".btn-long").click(function () {
     var hasError = false;
+    var username = $("#username").val();
 
     if ($("#code").val() === "") {
       $("#codeError").text("인증번호를 입력해주세요");
       $("#code").focus();
       hasError = true;
-    } else if ($("#codeError").text() === "" || $("#codeError").text().includes("일치하지")) {
+    } else if (!$("#codeError").text().includes("완료")) {
       $("#codeError").focus();
       hasError = true;
     }
@@ -544,9 +533,11 @@ $(document).ready(function () {
       $("#passwordCheck").focus();
       hasError = true;
     }
+
     if (hasError) {
       return false;
     }
+
     $("#email, #code").prop("disabled", false);
     $(".signup-form").submit();
     sessionStorage.setItem("signupSuccess", "true");
