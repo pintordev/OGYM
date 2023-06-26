@@ -56,23 +56,30 @@ $(document).ready(function () {
       $("#findPW-btn").css("background-color", "");
     }
     //input 입력 시 아이디찾기 버튼 상태값 변경
-    if (findIdEmail !== "") {
+    if (findIdEmail === "") {
+      $("#findIdEmailError").text("");
+    } else{
       $("#findIdEmailError").text("");
     }
     //input 입력 시 비밀번호찾기 findPWIdError 초기화
     if (findPWId !== "") {
       $("#findPWIdError").text("");
+    }else{
+      $("#findPWIdError").text("");
     }
     //input 입력 시 비밀번호찾기 findPWIdError 초기화
     if (findPWEmail !== "") {
       $("#findPWEmailError").text("");
+    }else{
+      $("#findPWEmailError").text("");
     }
   });
+
   //아이디 찾기
   $("#findId-btn").click(function () {
     var findIdEmail = $("#findIdEmail").val();
     if (findIdEmail === "") {
-      $("#findIdEmailError").text("이메일을 입력해주세요");
+      $("#findIdEmailError").text("이메일을 입력해주세요").css("color","red");
       return false;
     }
 
