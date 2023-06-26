@@ -1,38 +1,22 @@
 <!-- trainer-header-section start -->
-<section th:fragment="trainer_headerFragment" class="trainer-header-section"
-         xmlns:th="http://www.w3.org/1999/xhtml">
+<section th:fragment="trainer_headerFragment" class="trainer-header-section" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="header-box">
-        <h2>트레이너</h2>
+        <h2><a href="/trainer">트레이너</a></h2>
         <div class="right-box">
             <div class="search-box">
                 <input type="text" placeholder="지역/소속/트레이너 이름을 검색해주세요.">
                 <a href="#" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
-            <div class="register-btn-box" sec:authorize="isAuthenticated()">
-                <a class="btn" href="/trainer/register">트레이너 등록하기</a>
-            </div>
-            <div class="register-btn-box" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
-                <a class="btn a-hover" >트레이너 등록하기</a>
+            <div class="register-btn-box">
+                <button class="btn" onclick="location.href='/trainer/register'">트레이너 등록하기</button>
             </div>
         </div>
     </div>
     <div class="trainer-item-box">
         <h3>트레이닝 종목</h3>
         <div class="trainer-item-list">
-            <div class="trainer-item-text"><a href="#">웨이트</a></div>
-            <div class="trainer-item-text"><a href="#">스트레칭</a></div>
-            <div class="trainer-item-text"><a href="#">재활</a></div>
-            <div class="trainer-item-text"><a href="#">다이어트</a></div>
-            <div class="trainer-item-text"><a href="#">대회준비</a></div>
-            <div class="trainer-item-text"><a href="#">인터벌</a></div>
-            <div class="trainer-item-text"><a href="#">지구력</a></div>
-            <div class="trainer-item-text"><a href="#">맨몸운동</a></div>
-            <div class="trainer-item-text"><a href="#">바디프로필</a></div>
-            <div class="trainer-item-text"><a href="#">건강관리</a></div>
+            <div class="trainer-item-text" th:each="field : ${fieldList}"><a href="#" th:text="${field.name}"></a></div>
         </div>
     </div>
-
-
-
 </section>
 <!-- trainer-header-section end -->

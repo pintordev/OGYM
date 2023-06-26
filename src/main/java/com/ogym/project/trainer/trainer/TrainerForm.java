@@ -14,14 +14,10 @@ import java.util.List;
 @Getter
 @Setter
 public class TrainerForm {
-    //유저이름
-
+    @NotEmpty
     private String username;
 
-    @NotEmpty(message = "트레이너이름을 입력해주세요.")
-    private String name;
-
-    @NotEmpty(message = "할동중인 센터를 입력해주세요.")
+    @NotEmpty
     private String center;
 
     @NotEmpty
@@ -45,6 +41,6 @@ public class TrainerForm {
     @NotEmpty
     private List<CertificateForm> certificateList;
 
-
+    @NotEmpty
     private AddressForm address;
 }

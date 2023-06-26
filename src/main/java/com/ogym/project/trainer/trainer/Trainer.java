@@ -26,8 +26,8 @@ public class Trainer {
     @OneToOne
     private SiteUser userInfo;
 
-    //트레이너 이름 : 중복허용가능
-    private String name;
+//    //트레이너 이름 : 중복허용가능
+//    private String name;
 
     //소속(활동중인센터)
     private String center;

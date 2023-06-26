@@ -39,7 +39,8 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         if (savedRequest != null) {
             uri = savedRequest.getRedirectUrl();
         } else if (prevPage != null && !prevPage.equals("")) {
-            if (prevPage.contains("/user/login")) {//수정한부분
+
+            if (prevPage.contains("/user/signup")) {
                 uri = "/index";
             } else {
                 uri = prevPage;

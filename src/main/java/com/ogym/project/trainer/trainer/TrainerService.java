@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +23,7 @@ public class TrainerService {
     private final TrainerRepository trainerRepository;
 
 
-    public Trainer create(String name,
+    public Trainer create(SiteUser userInfo,
                           String center,
                           String gender,
                           String introAbstract,
@@ -31,7 +32,7 @@ public class TrainerService {
                        )
     {
         Trainer trainer = new Trainer();
-        trainer.setName(name);
+        trainer.setUserInfo(userInfo);
         trainer.setCenter(center);
         trainer.setGender(gender);
         trainer.setIntroAbstract(introAbstract);
@@ -40,5 +41,10 @@ public class TrainerService {
         trainer.setCreateDate(LocalDateTime.now());
         this.trainerRepository.save(trainer);
         return trainer;
+    }
+
+    public boolean isRegistered(SiteUser userInfo) {
+        Optional<Trainer> ot = this.trainerRepository.findByUserInfo(userInfo);
+        return ot.isPresent();
     }
 }

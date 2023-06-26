@@ -29,6 +29,7 @@ public class SecurityConfig {
     private final PrincipalOauth2UserService principalOauth2UserService;
 
 
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests().requestMatchers(
@@ -45,6 +46,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .permitAll()
+                // OAuth 로그인
                 .and()
                 .oauth2Login()
                 .loginPage("/user/login")

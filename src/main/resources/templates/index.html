@@ -3,9 +3,86 @@
     <!-- 구현 Start -->
     <!-- top-banner-section start -->
     <section class="top-banner-section">
-        <img th:src="@{/image/top-banner-1.jpeg}" alt="">
+        <div class="container">
+            <div class="swiper">
+                <div class="img-box">
+                    <img src="https://cdn.monsterzym.com/images/design/themes/responsive/media/images/addons/my_changes/pc/main_202305/main_keyvisual_20230608_pc_1.jpg?v=2" alt="">
+                </div>
+                <div class="img-box">
+                    <img src="https://cdn.monsterzym.com/images/design/themes/responsive/media/images/addons/my_changes/pc/main_202305/main_keyvisual_20230601_pc_1.jpg" alt="">
+                </div>
+                <div class="img-box">
+                    <img src="https://cdn.monsterzym.com/images/design/themes/responsive/media/images/addons/my_changes/pc/main_202305/main_keyvisual_20230525_pc_1.jpg" alt="">
+                </div>
+                <div class="img-box">
+                    <img src="https://cdn.monsterzym.com/images/design/themes/responsive/media/images/addons/my_changes/pc/main_202305/main_keyvisual_pc_1.jpg" alt="">
+                </div>
+                <div class="img-box">
+                    <img src="https://cdn.monsterzym.com/images/design/themes/responsive/media/images/addons/my_changes/pc/main_202305/main_keyvisual_20230608_pc_1.jpg?v=2" alt="">
+                </div>
+                <div class="img-box">
+                    <img src="https://cdn.monsterzym.com/images/design/themes/responsive/media/images/addons/my_changes/pc/main_202305/main_keyvisual_20230601_pc_1.jpg" alt="">
+                </div>
+                <div class="img-box">
+                    <img src="https://cdn.monsterzym.com/images/design/themes/responsive/media/images/addons/my_changes/pc/main_202305/main_keyvisual_20230525_pc_1.jpg" alt="">
+                </div>
+                <div class="img-box">
+                    <img src="https://cdn.monsterzym.com/images/design/themes/responsive/media/images/addons/my_changes/pc/main_202305/main_keyvisual_pc_1.jpg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="cover cover-left">
+            <button class="left-btn">
+                <i class="fa-solid fa-circle-left"></i>
+            </button>
+        </div>
+        <div class="cover cover-right">
+            <button class="right-btn">
+                <i class="fa-solid fa-circle-right"></i>
+            </button>
+        </div>
     </section>
     <!-- top-banner-section end -->
     <!-- 구현 End -->
 </div>
+<script layout:fragment="script" type="text/javascript">
+    var slide = setInterval(slider, 4000);
+
+    $("div.swiper").hover(
+        function () {
+            clearInterval(slide);
+        },
+        function () {
+            slide = setInterval(slider, 4000);
+        }
+    );
+
+    $(".cover-right > .right-btn").click(function () {
+        $(".swiper").clearQueue();
+        slider();
+        clearInterval(slide);
+        slide = setInterval(slider, 4000);
+    });
+
+    $(".cover-left > .left-btn").click(function () {
+        $(".swiper").clearQueue();
+        reverseSlider();
+        clearInterval(slide);
+        slide = setInterval(slider, 4000);
+    });
+
+    function slider() {
+        $(".swiper > .img-box").first().clone().appendTo(".swiper");
+        $(".swiper > .img-box").first().remove();
+        $(".swiper").animate({ left: "-2000px" }, 0);
+        $(".swiper").stop().animate({ left: "-3000px" }, 1000);
+    }
+
+    function reverseSlider() {
+        $(".swiper > .img-box").last().clone().prependTo(".swiper");
+        $(".swiper > .img-box").last().remove();
+        $(".swiper").animate({ left: "-4000px" }, 0);
+        $(".swiper").stop().animate({ left: "-3000px" }, 1000);
+    }
+</script>
 </html>

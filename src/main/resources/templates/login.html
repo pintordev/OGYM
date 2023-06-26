@@ -62,6 +62,14 @@
 </div>
 <script layout:fragment="script" type="text/javascript">
 $(document).ready(function() {
+  //회원가입 후 redirect로 longin 됐을때만 실행
+  var signupSuccess = sessionStorage.getItem("signupSuccess");
+  console.log("signupSuccess:", signupSuccess)
+  if (signupSuccess === "true") {
+  alert("회원가입이 성공적으로 완료되었습니다.");
+  sessionStorage.removeItem("signupSuccess");
+  }
+
 
   //아이디, 비밀번호 입력하면 로그인버튼 스타일변경, input으로 처리해서 실시간임
   $("#loginId, #password").on("input", function() {
@@ -94,7 +102,28 @@ $(document).ready(function() {
     }
     return false;
     }
-    $(".login-form").submit();
+
+    $.ajax({
+      url: "login/authenticate",
+      method: "GET",
+      data: {
+        loginId: loginId,
+        password: password
+      },
+      beforeSend: function(xhr) {
+      var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+      xhr.setRequestHeader(header, token);
+      },
+      success: function(data) {
+          if(data === ""){
+            $(".login-form").submit();
+          }
+      },
+      error: function (xhr, status, error) {
+            alert(xhr.responseJSON.message);
+      }
+  });
   });
 });
 
