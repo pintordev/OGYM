@@ -3,6 +3,7 @@ package com.ogym.project;
 
 import com.ogym.project.handler.LoginFailHandler;
 import com.ogym.project.handler.CustomAuthSuccessHandler;
+import com.ogym.project.user.oauth2.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private final CustomAuthSuccessHandler loginSuccessHandler;
     private final LoginFailHandler loginFailHandler;
+    private  final PrincipalOauth2UserService principalOauth2UserService;
 
 
 
@@ -43,8 +45,16 @@ public class SecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
-                .permitAll();
-        ;
+                .permitAll()
+                // OAuth 로그인
+                .and()
+                .oauth2Login()
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/")
+                .userInfoEndpoint()
+                .userService(principalOauth2UserService)
+                ;
+
         return http.build();
     }
 
