@@ -12,7 +12,7 @@ import lombok.Setter;
 public class UserCreateForm {
     @Column(unique = true)
     @NotEmpty(message = "로그인 ID를 입력해주세요(영문 대소문자, 숫자 조합)")
-    @Pattern(regexp = "(?=.*[A-Za-z])[A-Za-z0-9_-]{4,20}")
+    @Pattern(regexp = "(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{4,20}")
     private String loginId;
 
     @NotEmpty(message = "비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 조합)")

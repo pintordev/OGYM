@@ -103,14 +103,14 @@ public class UserController {
     public String loginIdDuplicate(@RequestParam("loginId") String loginId) {
         System.out.println(loginId);
 
-        if (loginId.matches("\\s*") || loginId.matches("[ㄱ-ㅎㅏ-ㅣ가-힣]+")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 아이디입니다.");
+        if (!loginId.matches("^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "영문과 숫자를 최소 한 개 이상 포함해주세요");
         }
 
         if (!this.userService.isLoginIdDuplicate(loginId)) {
             return "사용 가능한 아이디입니다.";
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 아이디입니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 아이디입니다");
         }
     }
 
@@ -120,13 +120,13 @@ public class UserController {
         System.out.println(nickname);
 
         if (nickname.matches("\\s*") || nickname.matches("[ㄱ-ㅎㅏ-ㅣ]+")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 닉네임입니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 닉네임입니다");
         }
 
         if (!this.userService.isNickNameDuplicate(nickname)) {
             return "사용 가능한 닉네임입니다.";
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 닉네임입니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 닉네임입니다");
         }
     }
 
@@ -138,7 +138,7 @@ public class UserController {
         if (!this.userService.isEmailDuplicate(email)) {
             return "사용 가능한 이메일입니다.";
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 이메일입니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 이메일입니다");
         }
     }
 
@@ -150,7 +150,7 @@ public class UserController {
         if (!this.userService.isPhoneNumberDuplicate(phoneNumber)) {
             return "사용 가능한 번호입니다.";
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 번호입니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 번호입니다");
         }
     }
 
@@ -161,7 +161,7 @@ public class UserController {
         if(this.userService.confirmCertificationCode(code, genCode)) {
             return "success";
         } else {
-            throw new RuntimeException("인증코드가 일치하지 않습니다.");
+            throw new RuntimeException("인증코드가 일치하지 않습니다");
         }
     }
 
@@ -221,7 +221,7 @@ public class UserController {
                     this.userEmailService.mailSend(email, "임시 비밀번호 발송", tempPassword);
                     System.out.println(tempPassword);
                     this.userService.modifyPassword(tempPassword, user);
-                    return "임시 비밀번호를 이메일로 발송했습니다.";
+                    return "임시 비밀번호를 이메일로 발송했습니다";
                 } else {
                     return "";
                 }
