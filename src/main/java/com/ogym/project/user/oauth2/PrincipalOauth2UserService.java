@@ -94,6 +94,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 .authorities(new ArrayList<>())
                 .build();
 
-        return PrincipalDetails.create(userDetails, oAuth2User.getAttributes(), socialAccountRepository);
+        System.out.println("여기까지 옴");
+
+        return new User(user.getLoginId(), user.getPassword(), authorityList);
     }
 }
