@@ -39,6 +39,7 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         if (savedRequest != null) {
             uri = savedRequest.getRedirectUrl();
         } else if (prevPage != null && !prevPage.equals("")) {
+
             if (prevPage.contains("/user/signup")) {
                 uri = "/index";
             } else {
@@ -47,7 +48,6 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         }
         redirectStrategy.sendRedirect(request, response, uri);
     }
-
     protected void clearSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {

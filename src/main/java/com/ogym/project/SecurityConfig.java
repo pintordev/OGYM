@@ -26,7 +26,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
     private final CustomAuthSuccessHandler loginSuccessHandler;
     private final LoginFailHandler loginFailHandler;
-    private  final PrincipalOauth2UserService principalOauth2UserService;
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
 
 
@@ -53,8 +53,7 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/")
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService)
-                ;
-
+        ;
         return http.build();
     }
 
