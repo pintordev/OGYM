@@ -34,20 +34,19 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             request.getSession().removeAttribute("prevPage");
         }
 
-        String uri = "/user/login"; // 수정된 부분
+        String uri = "/user/login";
 
         if (savedRequest != null) {
             uri = savedRequest.getRedirectUrl();
         } else if (prevPage != null && !prevPage.equals("")) {
-            if (prevPage.contains("/user/login")) {
-                uri = "/index"; // 수정된 부분
+            if (prevPage.contains("/user/login")) {//수정한부분
+                uri = "/index";
             } else {
                 uri = prevPage;
             }
         }
         redirectStrategy.sendRedirect(request, response, uri);
     }
-//fadfsdfadsf
     protected void clearSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
