@@ -40,12 +40,18 @@ public class TrainerController {
     private final UserService userService;
 
     @GetMapping("")
-    public String main() {
+    public String main(Model model) {
+        List<Field> fieldList = this.fieldService.getList();
+        model.addAttribute("fieldList", fieldList);
+
         return "trainer_list";
     }
 
     @GetMapping("/detail")
-    public String detail() {
+    public String detail(Model model) {
+        List<Field> fieldList = this.fieldService.getList();
+        model.addAttribute("fieldList", fieldList);
+
         return "trainer_detail";
     }
 
@@ -54,10 +60,10 @@ public class TrainerController {
     public String register(Model model, TrainerForm trainerForm, Principal principal) {
 
         SiteUser userInfo = this.userService.getUserByLoginId(principal.getName());
-        model.addAttribute("username", userInfo.getUsername());
+        trainerForm.setUsername(userInfo.getUsername());
 
         List<Field> fieldList = this.fieldService.getList();
-        model.addAttribute("fieldList",fieldList);
+        model.addAttribute("fieldList", fieldList);
 
         List<LessonForm> lessonList = new ArrayList<>();
         List<CertificateForm> certificateList = new ArrayList<>();
@@ -83,6 +89,7 @@ public class TrainerController {
         int length;
 
         System.out.println("들어옴");
+        System.out.println("username = " + trainerForm.getUsername());
         System.out.println("center = " + trainerForm.getCenter());
         System.out.println("gender = " + trainerForm.getGender());
         System.out.println("introAbstract = " + trainerForm.getIntroAbstract());
@@ -119,8 +126,6 @@ public class TrainerController {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult);
 
-            model.addAttribute("username", userInfo.getUsername());
-
             List<Field> fieldList = this.fieldService.getList();
             model.addAttribute("fieldList", fieldList);
 
@@ -157,15 +162,11 @@ public class TrainerController {
             }
             model.addAttribute("contactList", contactList);
 
-            System.out.println("error");
             return "trainer_form";
         }
 
         if (this.trainerService.isRegistered(userInfo)) {
-            bindingResult.rejectValue("siteuser", "duplicated",
-                    "이미 트레이너로 등록된 계정입니다.");
-
-            model.addAttribute("username", userInfo.getUsername());
+            bindingResult.rejectValue("username", "duplicated", "이미 트레이너로 등록된 계정입니다.");
 
             List<Field> fieldList = this.fieldService.getList();
             model.addAttribute("fieldList", fieldList);
@@ -203,7 +204,6 @@ public class TrainerController {
             }
             model.addAttribute("contactList", contactList);
 
-            System.out.println("error");
             return "trainer_form";
         }
 
@@ -239,8 +239,16 @@ public class TrainerController {
             }
         }
 
+        // 주소 저장
+        AddressForm addressForm = trainerForm.getAddress();
+        Address address = this.addressService.create(addressForm.getZoneCode(), addressForm.getMainAddress(), addressForm.getSubAddress(), addressForm.getLatitude(), addressForm.getLongitude(), trainer);
+        if (addressForm.getZoneCode() != null && !addressForm.getMainAddress().equals("")
+                && addressForm.getLatitude() !=null && addressForm.getLongitude() != null) {
+        }
+
         return "redirect:/trainer";
     }
 }
+
 
 

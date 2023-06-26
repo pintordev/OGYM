@@ -1,7 +1,7 @@
 <html layout:decorate="~{layout}">
 <script layout:fragment="simplemde" type="text/javascript" th:src="@{/simplemde.min.js}"></script>
 <script layout:fragment="api_address" type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script layout:fragment="api_map" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1cfff8a090a4615c9bacd5933a522f6"></script>
+<script layout:fragment="api_map" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1cfff8a090a4615c9bacd5933a522f6&libraries=services"></script>
 <div layout:fragment="content">
     <!-- 구현 Start -->
     <!-- trainer-form-section start -->
@@ -14,7 +14,8 @@
             <ul>
                 <li class="type">이름</li>
                 <li class="content">
-                    <input type="text" th:value="${username}" disabled placeholder="이름을 입력해주세요.">
+                    <input type="text" th:value="${trainerForm.username}" disabled placeholder="이름을 입력해주세요.">
+                    <input type="hidden" th:field="*{username}" placeholder="이름을 입력해주세요.">
                 </li>
             </ul>
             <ul>
@@ -132,6 +133,7 @@
                 </li>
             </ul>
         </form>
+        <div id="map" style="width:500px;height:400px;"></div>
     </section>
     <!-- trainer-form-section end -->
     <!-- 구현 End -->
@@ -157,11 +159,19 @@
                 $(".zoneCode").val(data.zonecode);
                 $(".mainAddress").val(mainAddress);
                 $(".subAddress").focus();
+
+                var geocoder = new kakao.maps.services.Geocoder();
+
+                geocoder.addressSearch(mainAddress, function(result, status) {
+                     if (status === kakao.maps.services.Status.OK) {
+                        $(".latitude").val(result[0].y);
+                        $(".longitude").val(result[0].x);
+                    }
+                });
             }
         }).open();
-
-        // 여기서 위도, 경도 받아오는 함수 실행..
     }
+
 
 </script>
 </html>

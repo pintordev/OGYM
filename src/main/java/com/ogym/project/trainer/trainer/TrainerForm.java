@@ -14,6 +14,8 @@ import java.util.List;
 @Getter
 @Setter
 public class TrainerForm {
+    @NotEmpty
+    private String username;
 
     @NotEmpty
     private String center;
@@ -39,5 +41,6 @@ public class TrainerForm {
     @NotEmpty
     private List<CertificateForm> certificateList;
 
+    @NotEmpty
     private AddressForm address;
 }
