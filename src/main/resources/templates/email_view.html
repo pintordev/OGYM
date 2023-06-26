@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Confirmation</title>
+    <script>
+        function generateRandomCode() {
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var code = '';
+            for (var i = 0; i < 8; i++) {
+                var randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters.charAt(randomIndex);
+            }
+            return code;
+        }
+    </script>
+</head>
+<body>
+<h1>Email Confirmation</h1>
+<p>Hello,</p>
+<p>Please click the following link to confirm your email:</p>
+<a id="confirmationLink" href="#">Confirm Email</a>
+<p>If you didn't request this confirmation, you can ignore this email.</p>
+<script>
+    var confirmationCode = generateRandomCode();
+    var confirmationLink = document.getElementById("confirmationLink");
+    confirmationLink.href = "http://example.com/confirm?code=" + confirmationCode;
+    confirmationLink.textContent = "Confirm Email";
+</script>
+</body>
+</html>

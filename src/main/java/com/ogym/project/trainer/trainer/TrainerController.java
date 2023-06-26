@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 @RequestMapping("/trainer")
 @RequiredArgsConstructor
 @Controller
@@ -47,7 +50,7 @@ public class TrainerController {
     @GetMapping("/register")
     public String register(Model model, TrainerForm trainerForm) {
         List<Field> fieldList = this.fieldService.getList();
-        model.addAttribute("fieldList",fieldList);
+        model.addAttribute("fieldList", fieldList);
 
         List<LessonForm> lessonList = new ArrayList<>();
         List<CertificateForm> certificateList = new ArrayList<>();
@@ -73,6 +76,13 @@ public class TrainerController {
             List<Field> fieldList = this.fieldService.getList();
             model.addAttribute("fieldList", fieldList);
             System.out.println("error");
+            return "trainer_form";
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = authentication.isAuthenticated();
+        if (!isLoggedIn) {
+            model.addAttribute("popupMessage", "로그인이 필요한 서비스입니다.");
+
             return "trainer_form";
         }
         System.out.println("들어옴");
@@ -125,12 +135,12 @@ public class TrainerController {
         }
 
         // 연락처 정보 저장
-        for(ContactForm contactForm : trainerForm.getContactList()){
+        for (ContactForm contactForm : trainerForm.getContactList()) {
             this.contactService.create(contactForm.getType(), contactForm.getContent(), trainer);
         }
 
         // 자격증 정보 저장
-        for(CertificateForm certificateForm : trainerForm.getCertificateList()){
+        for (CertificateForm certificateForm : trainerForm.getCertificateList()) {
             this.certificateService.create(certificateForm.getName(), certificateForm.getImgUrl(), trainer);
         }
 

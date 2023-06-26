@@ -1,4 +1,4 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
     <!-- 구현 Start -->
     <!-- trainer-header-section start -->
@@ -102,7 +102,14 @@
     </section>
     <!-- trainer-list-section end -->
     <!-- 구현 End -->
+    <!-- 디스플레이 메시지 -->
+
 </div>
 <script layout:fragment="script" type="text/javascript">
+    function _anonymous() {
+        if(confirm("로그인이 필요한 서비스입니다.\n확인을 누르시면 로그인 페이지로 이동합니다.")) {
+            location.href = "/user/login";
+        }
+    }
 </script>
 </html>
