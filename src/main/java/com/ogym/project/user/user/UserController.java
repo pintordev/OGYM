@@ -1,8 +1,5 @@
 package com.ogym.project.user.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ogym.project.DataNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,16 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.UUID;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -94,7 +87,7 @@ public class UserController {
     public String emailConfirm(@RequestParam("email") String email) {
         String genCode = this.userService.genConfirmCode(8);
         System.out.println(genCode);
-        this.userEmailService.mailSend(email, "이메일 인증", genCode);
+        this.userEmailService.mailSend(email, "이메일 인증", "인증 코드", genCode);
         return this.userService.getEmailConfirmCode(genCode);
     }
 
@@ -103,14 +96,14 @@ public class UserController {
     public String loginIdDuplicate(@RequestParam("loginId") String loginId) {
         System.out.println(loginId);
 
-        if (!loginId.matches("^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "영문과 숫자를 최소 한 개 이상 포함해주세요");
+        if (loginId.matches("\\s*") || loginId.matches("[ㄱ-ㅎㅏ-ㅣ가-힣]+")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 아이디입니다.");
         }
 
         if (!this.userService.isLoginIdDuplicate(loginId)) {
             return "사용 가능한 아이디입니다.";
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 아이디입니다");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 아이디입니다.");
         }
     }
 
@@ -120,13 +113,13 @@ public class UserController {
         System.out.println(nickname);
 
         if (nickname.matches("\\s*") || nickname.matches("[ㄱ-ㅎㅏ-ㅣ]+")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 닉네임입니다");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 닉네임입니다.");
         }
 
         if (!this.userService.isNickNameDuplicate(nickname)) {
             return "사용 가능한 닉네임입니다.";
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 닉네임입니다");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 닉네임입니다.");
         }
     }
 
@@ -138,7 +131,7 @@ public class UserController {
         if (!this.userService.isEmailDuplicate(email)) {
             return "사용 가능한 이메일입니다.";
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 이메일입니다");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 이메일입니다.");
         }
     }
 
@@ -150,7 +143,7 @@ public class UserController {
         if (!this.userService.isPhoneNumberDuplicate(phoneNumber)) {
             return "사용 가능한 번호입니다.";
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 번호입니다");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 번호입니다.");
         }
     }
 
@@ -161,7 +154,7 @@ public class UserController {
         if(this.userService.confirmCertificationCode(code, genCode)) {
             return "success";
         } else {
-            throw new RuntimeException("인증코드가 일치하지 않습니다");
+            throw new RuntimeException("인증코드가 일치하지 않습니다.");
         }
     }
 
@@ -218,10 +211,10 @@ public class UserController {
                 if (user != null) {
                     String tempPassword = userService.genConfirmCode(8);
                     //임시 비밀번호 발송, 이후 기존 비밀번호를 임시비밀번호로 교체하는것도 추가해야함
-                    this.userEmailService.mailSend(email, "임시 비밀번호 발송", tempPassword);
+                    this.userEmailService.mailSend(email, "임시 비밀번호 발송", "임시 비밀번호",  tempPassword);
                     System.out.println(tempPassword);
                     this.userService.modifyPassword(tempPassword, user);
-                    return "임시 비밀번호를 이메일로 발송했습니다";
+                    return "임시 비밀번호를 이메일로 발송했습니다.";
                 } else {
                     return "";
                 }

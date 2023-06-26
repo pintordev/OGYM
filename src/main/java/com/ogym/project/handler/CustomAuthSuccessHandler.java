@@ -13,7 +13,6 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
-
 import java.io.IOException;
 
 @Component
@@ -35,14 +34,13 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             request.getSession().removeAttribute("prevPage");
         }
 
-        String uri = "/";
+        String uri = "/user/login";
 
         if (savedRequest != null) {
             uri = savedRequest.getRedirectUrl();
         } else if (prevPage != null && !prevPage.equals("")) {
-            // 회원가입 - 로그인으로 넘어온 경우 "/"로 redirect
-            if (prevPage.contains("/auth/join")) {
-                uri = "/";
+            if (prevPage.contains("/user/signup")) {
+                uri = "/index";
             } else {
                 uri = prevPage;
             }

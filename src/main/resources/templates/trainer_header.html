@@ -1,14 +1,15 @@
 <!-- trainer-header-section start -->
 <section th:fragment="trainer_headerFragment" class="trainer-header-section" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="header-box">
-        <h2><a href="/trainer">트레이너</a></h2>
+        <h2>트레이너</h2>
         <div class="right-box">
             <div class="search-box">
                 <input type="text" placeholder="지역/소속/트레이너 이름을 검색해주세요.">
                 <a href="#" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
             <div class="register-btn-box">
-                <button class="btn" onclick="location.href='/trainer/register'">트레이너 등록하기</button>
+                <a class="btn" href="/trainer/register">트레이너 등록하기</a>
+
             </div>
         </div>
     </div>
