@@ -1,100 +1,167 @@
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:class="http://www.w3.org/1999/xhtml">
+<html layout:decorate="~{layout}">
+<script layout:fragment="simplemde" type="text/javascript" th:src="@{/simplemde.min.js}"></script>
+<script layout:fragment="api_address" type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script layout:fragment="api_map" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1cfff8a090a4615c9bacd5933a522f6"></script>
 <div layout:fragment="content">
     <!-- 구현 Start -->
-    <form th:action="@{/trainer/register}" th:object="${trainerForm}" method="post">
-        <!--  실명  -->
-        <!--        <div class="tr-3">-->
-        <!--            <label for="trainerInfo" >실명-->
-        <!--                <span class="check-field">*</span>-->
-        <!--            </label>-->
-        <!--            <input type="text" th:field="*{trainerInfo}" class="form-control">-->
-        <!--        </div>-->
-        <!-- 센터에서사용하는 이름   -->
-        <div class="input-box name">
-            <div>
-                <label for="name">이름 </label>
-                <input type="text" th:field="*{name}" placeholder="이름을 입력해주세요.">
-            </div>
-
+    <!-- trainer-form-section start -->
+    <section class="trainer-form-section form-medium">
+        <div class="logo-box">
+            <span>Road to</span>
+            <span>WrestleMania VIXIV</span>
         </div>
-        <!--     센터 주소   -->
-        <div class="input-box center">
-            <div>
-                <label for="center">활동중인센터</label>
-                <input type="text" th:field="*{center}">
-            </div>
-        </div>
-        <!--        성별-->
-        <div class="check-box gender">
-            <input type="radio" th:field="*{gender}" value="남자">
-            <label th:for="${#ids.prev('gender')}">남자</label>
-            <input type="radio" th:field="*{gender}" value="여자">
-            <label th:for="${#ids.prev('gender')}">여자</label>
-        </div>
-        <!--        주소찾기-->
-        <div class="find-address">
-            <div>
-            <label for="address">주소</label>
-            </div>
-            <div>우편번호<input type="text" th:field="*{address.ZoneCode}"></div>
-            <div>주소<input type="text" th:field="*{address.mainAddress}"></div>
-            <div>상세주소<input type="text" th:field="*{address.subAddress}"></div>
-            <div>위도<input type="text" th:field="*{address.latitude}"></div>
-            <div>경도<input type="text" th:field="*{address.longitude}"></div>
-            <button type="submit">주소찾기</button>
-        </div>
-        <!--        짧은 자기소개-->
-        <div>
-            <label for="introAbstract"> 짧은 자기소개 </label>
-            <input type="text" th:field="*{introAbstract}" placeholder="소개">
-
-        </div>
-        <div>
-            <label for="introDetail">자기소개
-            </label>
-            <textarea th:field="*{introDetail}" cols="30" rows="10" placeholder="설명"></textarea>
-        </div>
-        <!-- 지도종목 -->
-        <!-- 종목선택 -->
-        <div th:each="field : ${fieldList}">
-            <input type="checkbox" th:field="*{fieldList}" th:value="${field.name}">
-            <label th:for="${#ids.prev('fieldList')}" th:text=${field.name}></label>
-        </div>
-        <!-- 레슨정보입력 -->
-        <div class="input-box lesson" th:each="lesson, loop : ${lessonList}">
-            <div>
-            <input type="text" th:value="${lesson.time}" th:field="*{lessonList[__${loop.index}__].time}">회
-            <input type="text" th:value="${lesson.price}" th:field="*{lessonList[__${loop.index}__].price}">원
-            </div>
-        </div>
-        <!-- 자격증 정보 입력 -->
-        <div class="input-box certificate" th:each="certificate, loop : ${certificateList}">
-            <div>
-                자격증이름 <input type="text" th:value="${certificate.name}" th:field="*{certificateList[__${loop.index}__].name}">
-
-                사진  <input type="url" th:value="${certificate.imgUrl}" th:field="*{certificateList[__${loop.index}__].imgUrl}">
-        </div>
-        </div>
-<!--        연락처 정보 입력-->
-        <div class="input-box contact" th:each="contact, loop : ${contactList}">
-            <div>
-            <input type="text" th:value="${contact.type}" th:field="*{contactList[__${loop.index}__].type}">연락처종류
-            <input type="text" th:value="${contact.content}" th:field="*{contactList[__${loop.index}__].content}">내용
-            </div>
-        </div>
-        <br>
-        <button type="submit">등록하기</button>
-    </form>
-
+        <form class="trainer-form" th:action="@{/trainer/register}" th:object="${trainerForm}" method="post">
+            <ul>
+                <li class="type">이름</li>
+                <li class="content">
+                    <input type="text" th:value="${username}" disabled placeholder="이름을 입력해주세요.">
+                </li>
+            </ul>
+            <ul>
+                <li class="type">소속 센터</li>
+                <li class="content">
+                    <input type="text" th:field="*{center}" placeholder="활동중인 소속 센터 이름을 입력해주세요.">
+                </li>
+            </ul>
+            <ul>
+                <li class="type">성별</li>
+                <li class="content">
+                    <div class="check-box check-male">
+                        <input class="select-input" type="radio" th:field="*{gender}" value="남자">
+                        <label th:for="${#ids.prev('gender')}">남자</label>
+                    </div>
+                    <div class="check-box check-female">
+                        <input class="select-input" type="radio" th:field="*{gender}" value="여자">
+                        <label th:for="${#ids.prev('gender')}">여자</label>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="type">주소</li>
+                <li class="content">
+                    <div class="address-box">
+                        <div>
+                            <input onclick="_zoneCode()" type="text" class="zoneCode" th:field="*{address.zoneCode}"
+                                   placeholder="우편번호를 입력해주세요.">
+                            <button class="btn" type="button" onclick="_zoneCode()">우편번호 찾기</button>
+                        </div>
+                        <div class="address-input">
+                            <input type="text" class="mainAddress" th:field="*{address.mainAddress}" placeholder="주소를 입력해주세요.">
+                        </div>
+                        <div>
+                            <input type="text" class="subAddress" th:field="*{address.subAddress}" placeholder="상세주소를 입력해주세요.">
+                        </div>
+                        <input type="hidden" class="latitude" th:field="*{address.latitude}">
+                        <input type="hidden" class="longitude" th:field="*{address.longitude}">
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="type">간략한 소개</li>
+                <li class="content">
+                    <input type="text" th:field="*{introAbstract}" placeholder="간략한 소개를 입력해주세요.">
+                </li>
+            </ul>
+            <ul>
+                <li class="type">자세한 소개</li>
+                <li class="content">
+                    <div class="introDetail-box">
+                        <textarea type="text" th:field="*{introDetail}" placeholder="자세한 소개를 입력해주세요."></textarea>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="type">트레이닝 종목</li>
+                <li class="content field">
+                    <div class="check-box check-field" th:each="field : ${fieldList}">
+                        <input class="select-input" type="checkbox" th:field="*{fieldList}" th:value="${field.name}">
+                        <label th:for="${#ids.prev('fieldList')}" th:text=${field.name}></label>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="type">레슨 비용</li>
+                <li class="content lesson">
+                    <div class="lesson-box" th:each="lesson, loop : ${lessonList}">
+                        <div class="lesson-time">
+                            <input type="text" th:value="${lesson.time}" th:field="*{lessonList[__${loop.index}__].time}">
+                            <span>회</span>
+                        </div>
+                        <div class="lesson-price">
+                            <input type="text" th:value="${lesson.price}" th:field="*{lessonList[__${loop.index}__].price}">
+                            <span>원</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul>
+                <li class="type">자격증</li>
+                <li class="content certificate">
+                    <div class="certificate-box" th:each="certificate, loop : ${certificateList}">
+                        <div class="certificate-name">
+                            <input type="text" th:value="${certificate.name}" th:field="*{certificateList[__${loop.index}__].name}"
+                                   placeholder="자격증 이름을 입력해주세요.">
+                        </div>
+                        <div class="certificate-imgUrl">
+                            <input type="text" th:value="${certificate.imgUrl}" th:field="*{certificateList[__${loop.index}__].imgUrl}"
+                                   placeholder="자격증 이미지를 업로드 해주세요.">
+                            <span><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="contact-list">
+                <li class="type">연락처</li>
+                <li class="content contact">
+                    <div class="contact-box" th:each="contact, loop : ${contactList}">
+                        <div class="contact-type">
+                            <input type="text" th:value="${contact.type}" th:field="*{contactList[__${loop.index}__].type}"
+                                   placeholder="연락처 종류를 입력해주세요.">
+                        </div>
+                        <div class="contact-content">
+                            <input type="text" th:value="${contact.content}" th:field="*{contactList[__${loop.index}__].content}"
+                                   placeholder="연락처를 입력해주세요.">
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="btn-list">
+                <li class="type"></li>
+                <li class="content">
+                    <button class="btn btn-long" type="submit">트레이너 등록하기</button>
+                </li>
+            </ul>
+        </form>
+    </section>
+    <!-- trainer-form-section end -->
     <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
-$("input[name='gender_answer']:checked").each(function(){
-	console.log($(this).val())
-});
+    let simpleMde = new SimpleMDE({
+        element: $("#introDetail")[0],
+        placeholder: "자세한 소개를 입력해주세요",
+        hideIcons: ["guide", "fullscreen", "side-by-side"]
+    });
 
+    function _zoneCode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var mainAddress = "";
 
+                if (data.userSelectedType === "R") {
+                    mainAddress = data.roadAddress;
+                } else {
+                    mainAddress = data.jibunAddress;
+                }
+
+                $(".zoneCode").val(data.zonecode);
+                $(".mainAddress").val(mainAddress);
+                $(".subAddress").focus();
+            }
+        }).open();
+
+        // 여기서 위도, 경도 받아오는 함수 실행..
+    }
 
 </script>
 </html>
