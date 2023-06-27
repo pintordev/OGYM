@@ -118,11 +118,7 @@ $(document).ready(function () {
 
   $("#loginId").on("blur", function() {
       var loginId = $(this).val();
-      if (loginId.length < 4) {
-        $("#loginIdError").text("최소 4자리 이상 입력해주세요").css("color", "red");
-      }
-
-      if (!loginId.match(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/)) {
+      if (loginId.length > 0 && !loginId.match(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/)) {
        $("#loginIdError").text("영문과 숫자를 최소 한 개 이상 포함해주세요").css("color", "red");
        } else if (loginId.length >= 4) {
             $.ajax({
@@ -138,18 +134,16 @@ $(document).ready(function () {
               }
             });
           }
-          else {
-          $("#loginIdError").text("");
-          }
+          if (loginId.length > 0 && loginId.length < 4) {
+        $("#loginIdError").text("최소 4자리 이상 입력해주세요").css("color", "red");
+      }
     });
 
 
   $("#nickname").on("blur", function() {
       var nickname = $(this).val();
-      if (nickname.length < 2) {
-        $("#nicknameError").text("최소 2자리 이상 입력해주세요").css("color", "red");
-      }
-      if (!nickname.match(/(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣\d]+/g)) {
+
+      if (nickname.length > 0 && !nickname.match(/(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣\d]+/g)) {
         $("#nicknameError").text("사용할 수 없는 닉네임입니다").css("color", "red");
       } else if (nickname.length >= 2) {
         $.ajax({
@@ -168,6 +162,10 @@ $(document).ready(function () {
               $("#nicknameError").text(xhr.responseJSON.message).css("color", "red");
           }
         });
+
+      }
+      if (nickname.length > 0 && nickname.length < 2) {
+        $("#nicknameError").text("최소 2자리 이상 입력해주세요").css("color", "red");
       }
     });
 
@@ -221,19 +219,15 @@ $(document).ready(function () {
 
     $("#username").on("blur", function () {
       var username = $("#username").val();
-      if(!username.match(/(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣]/)) {
+      if(username.length > 0 && !username.match(/(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣]/)) {
         $("#usernameError").text("한글, 영문명을 입력해주세요.").css("color", "red");
-      } else {
-        $("#usernameError").text("");
       }
     });
 
     $("#birthYear").on("blur", function () {
       var birthYear = $("#birthYear").val();
-      if(birthYear.length < 4) {
-        $("#birthDateError").text("생년(4자)을 확인해주세요.").css("color", "red");
-      } else {
-        $("#birthDateError").text("");
+      if(birthYear.length < 4 && birthYear.length !== 0) {
+      $("#birthDateError").text("생년(4자)을 입력해주세요.").css("color", "red");
       }
     });
 
@@ -491,7 +485,7 @@ $(document).ready(function () {
     }
 
     if ($("#nickname").val() === "") {
-      $("#nicknameError").text("닉네임을 입력해주세요");
+      $("#nicknameError").text("닉네임을 입력해주세요").css("color", "red");
       $("#nickname").focus();
       hasError = true;
     } else if ($("#nicknameError").text().includes("사용중인") || $("#nicknameError").text().includes("사용할")) {
@@ -514,7 +508,7 @@ $(document).ready(function () {
     }
 
     if ($("#loginId").val() === "") {
-      $("#loginIdError").text("아이디를 입력해주세요");
+      $("#loginIdError").text("아이디를 입력해주세요").css("color", "red");
       $("#loginId").focus();
       hasError = true;
     }else if ($("#loginIdError").text().includes("사용중인") || $("#loginIdError").text().includes("사용할")) {
