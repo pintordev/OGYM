@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -225,34 +226,36 @@ public class UserController {
             return "";
         }
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/password")
+    public String modifyPassword(UserPasswordForm userPasswordForm) {
+        return "modify_password_form";
+    }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/password")
+    public String modifyPassword(@Valid UserPasswordForm userPasswordForm, BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "modify_password_form";
+        }
 
+        SiteUser user = this.userService.getUser(principal.getName());
+        if (!this.userService.confirmPassword(userPasswordForm.getPresentPW(), user)) {
+            bindingResult.rejectValue("presentPW", "passwordInCorrect",
+                    "현재 비밀번호를 바르게 입력해주세요.");
+            return "modify_password_form";
+        }
 
-//    @PostMapping("/find")
-//    @ResponseBody
-//    public String findUserPassword(@RequestParam("loginId") String loginId, @RequestParam("email") String email) {
-//        try {
-//            SiteUser user = userService.getUserByLoginId(loginId);
-//            if (user.getEmail().equals(email)) {
-//                String password = user.getPassword();
-//                // 이메일 발송 로직 구현
-//                sendEmailWithPassword(email, password);
-//                return "비밀번호를 이메일로 발송했습니다.";
-//            } else {
-//                return "입력한 정보가 일치하지 않습니다.";
-//            }
-//        } catch (DataNotFoundException e) {
-//            return "가입된 정보가 없습니다.";
-//        }
-//    }
-//@GetMapping("/")
-//public String index(Model model) {
-//    SessionUser user = (SessionUser) httpSession.getAttribute("user");
-//    if (user != null) {
-//        model.addAttribute("userName", user.getName());
-//    }
-//    return "index";
-//}
+        // 비밀번호와 비밀번호 확인에 입력한 문자열이 서로 다르면 다시 입력 하도록
+        if (!userPasswordForm.getNewPW1().equals(userPasswordForm.getNewPW2())) {
+            bindingResult.rejectValue("newPW2", "passwordInCorrect",
+                    "입력한 비밀번호가 일치하지 않습니다.");
+            return "modify_password_form";
+        }
 
+        userService.modifyPassword(userPasswordForm.getNewPW1(), user);
+
+        return "redirect:/user/logout";
+    }
 
 }

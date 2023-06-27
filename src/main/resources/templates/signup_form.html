@@ -1,11 +1,15 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<script layout:fragment="api_address" type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script layout:fragment="api_map" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1cfff8a090a4615c9bacd5933a522f6&libraries=services"></script>
 <div layout:fragment="content">
     <!-- 구현 Start -->
     <!-- signup-form-section start -->
     <section class="form signup-form-section">
         <div class="logo-box">
             <span>Welcome to</span>
-            <span>oGym</span>
+            &nbsp;
+            <img th:src="@{/image/todayGym_logo_main.png}" alt="">
         </div>
         <form class="signup-form" th:object="${userCreateForm}" th:action="@{/user/signup}" method="post">
             <div class="input-box loginId">

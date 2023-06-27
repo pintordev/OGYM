@@ -6,10 +6,10 @@
   <!-- user-find-form-section start -->
   <section class="form user-find-form-section">
     <div class="logo-box">
-      <span>oGym</span>
+      <img th:src="@{/image/todayGym_logo_main.png}" alt="">
     </div>
     <h3>아이디 찾기</h3>
-    <form class="loginId-find-form" th:action="@{/user/find/loginId}" method="post">
+    <form class="loginId-find-form" th:action="@{/user/find}" method="post">
       <div class="input-box email">
         <input id="findIdEmail" name="findIdEmail" type="text" placeholder="회원가입에 사용한 이메일을 입력해주세요">
         <div class="error" id="findIdEmailError"></div>
@@ -17,7 +17,7 @@
       <button type="button" class="btn" id="findId-btn">아이디 찾기</button>
     </form>
     <h3>비밀번호 찾기</h3>
-    <form class="password-find-form" action="">
+    <form class="password-find-form" th:action="@{/user/find}" method="post">
       <div class="input-box findPW">
         <input id="findPWId" name="findPWId" type="text" placeholder="로그인 ID를 입력해주세요">
         <div class="error" id="findPWIdError"></div>
@@ -56,7 +56,7 @@ $(document).ready(function () {
       $("#findPW-btn").css("background-color", "");
     }
     //input 입력 시 아이디찾기 버튼 상태값 변경
-    if (findIdEmail === "") {
+    if (findIdEmail !== "") {
       $("#findIdEmailError").text("");
     } else{
       $("#findIdEmailError").text("");
@@ -80,6 +80,7 @@ $(document).ready(function () {
     var findIdEmail = $("#findIdEmail").val();
     if (findIdEmail === "") {
       $("#findIdEmailError").text("이메일을 입력해주세요").css("color","red");
+      $("#findIdEmail").focus();
       return false;
     }
 
@@ -119,14 +120,17 @@ $(document).ready(function () {
     var findPWId = $("#findPWId").val();
     var findPWEmail = $("#findPWEmail").val();
     if (findPWId === "" || findPWEmail === "") {
-      if (findPWId === "") {
-        $("#findPWIdError").text("아이디를 입력해주세요").css("color","red");
-      }
       if (findPWEmail === "") {
         $("#findPWEmailError").text("이메일을 입력해주세요").css("color","red");
+        $("#findPWEmail").focus();
+      }
+      if (findPWId === "") {
+        $("#findPWIdError").text("아이디를 입력해주세요").css("color","red");
+        $("#findPWId").focus();
       }
       return false;
     }
+
     $("#findPW-btn").text("이메일 발송중").css("font-size", "0.8rem");
     $.ajax({
       url: "/user/find",

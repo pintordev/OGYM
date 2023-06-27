@@ -193,11 +193,20 @@ input[type="number"]::-webkit-inner-spin-button {
 	font-weight: bold;
 	font-size: 2.5rem;
 	line-height: 90px;
+	margin-top:10px
 }
+
+.nav-bar-section > .left-box > .logo-box > a > img{
+	height:55px;
+	margin-top:10px
+}
+
+
 .nav-bar-section > .left-box > .left-nav > li {
 	display: inline-block;
 	line-height: 90px;
 	margin-left: 20px;
+	margin-top:10px
 }
 
 .nav-bar-section > .right-box > .right-nav > li {
@@ -286,11 +295,17 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* signup-form-section css */
 .signup-form-section > .logo-box {
-	font-weight: bold;
+    font-weight: bold;
 	font-size: 2.5rem;
 	line-height: 90px;
-	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
+.signup-form-section > .logo-box > img {
+	height:60px;
+}
+
 
 .signup-form-section > .signup-form > .input-box input {
 	height: 40px;
@@ -377,11 +392,16 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* login-form-section css */
 .login-form-section > .logo-box {
-	font-weight: bold;
-	font-size: 2.5rem;
-	line-height: 90px;
-	text-align: center;
+	display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
+
+.login-form-section > .logo-box > img {
+	height:70px;
+}
+
 .login-form-section > .login-form > .input-box input {
 	height: 40px;
 	padding: 0 10px;
@@ -467,11 +487,16 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* user-find-form-section css */
 .user-find-form-section > .logo-box {
-	font-weight: bold;
-	font-size: 2.5rem;
-	line-height: 90px;
-	text-align: center;
+	display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
+
+.user-find-form-section > .logo-box > img {
+	height:70px;
+}
+
 .user-find-form-section > h3 {
 	margin-bottom: 15px;
 }
@@ -525,6 +550,57 @@ input[type="number"]::-webkit-inner-spin-button {
 	margin-left: auto;
 	margin-top: -10px;
 }
+
+/* modify-password-form-section */
+.modify-password-form-section > .logo-box {
+	display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.modify-password-form-section > .logo-box > img {
+	height:70px;
+}
+
+.modify-password-form-section > h3 {
+	margin-bottom: 15px;
+}
+
+.modify-password-form-section > .modify-password-form > .input-box input {
+	height: 40px;
+	padding: 0 10px;
+	font-size: 0.9rem;
+	border-radius: 0.3rem;
+	border: 1px solid rgb(128, 128, 128);
+}
+
+.modify-password-form-section > .modify-password-form > .input-box #newPW1 {
+	height: 40px;
+	padding: 0 10px;
+	font-size: 0.85rem;
+	border-radius: 0.3rem;
+	border: 1px solid rgb(128, 128, 128);
+}
+
+.modify-password-form-section > .modify-password-form > .input-box > div {
+	display: flex;
+}
+.modify-password-form-section > .modify-password-form > .input-box > .error {
+	padding: 0 10px;
+	font-size: 0.7rem;
+	color: red;
+	height: 25px;
+	line-height: 20px;
+	/* 		visibility: hidden; opacity: 0; */
+}
+
+.modify-password-form-section > .modify-password-form > .btn {
+	display: block;
+	margin-left: auto;
+	margin-top: -10px;
+}
+
 
 /* board-header-section css */
 .board-header-section > h2 {

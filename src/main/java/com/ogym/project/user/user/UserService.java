@@ -127,6 +127,9 @@ public class UserService {
     public boolean confirmCertificationCode(String inputCode, String genCode) {
         return passwordEncoder.matches(inputCode, genCode);
     }
+    public boolean confirmPassword(String password, SiteUser user) {
+        return passwordEncoder.matches(password, user.getPassword());
+    }
 
     public void updateLoginDate(SiteUser user) {
         user.setLastLoginDate(LocalDateTime.now());
