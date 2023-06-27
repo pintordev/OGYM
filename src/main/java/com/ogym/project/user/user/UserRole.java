@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-
 public enum UserRole {
 
     ADMIN("admin"),
@@ -12,6 +11,7 @@ public enum UserRole {
     TRAINER("trainer"),
     SELLER("seller"),
     USER("user");
+
     private final String value;
 
     UserRole(String value) {
@@ -21,6 +21,5 @@ public enum UserRole {
     public String getValue() {
         return value;
     }
-
 
 }

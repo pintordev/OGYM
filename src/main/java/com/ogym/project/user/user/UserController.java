@@ -159,7 +159,9 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(HttpServletRequest request, Model model) {
+    public String login(HttpServletRequest request, Model model,
+                        @RequestParam(value = "error", defaultValue = "") String error,
+                        @RequestParam(value = "exception", defaultValue = "") String exception) {
         String uri = request.getHeader("Referer");
         if (uri != null && !uri.contains("/login")) {
             request.getSession().setAttribute("prevPage", uri);

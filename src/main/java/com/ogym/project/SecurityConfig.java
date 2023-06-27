@@ -3,7 +3,8 @@ package com.ogym.project;
 
 import com.ogym.project.handler.LoginFailHandler;
 import com.ogym.project.handler.CustomAuthSuccessHandler;
-import com.ogym.project.user.oauth2.PrincipalOauth2UserService;
+import com.ogym.project.handler.Oauth2LoginFailureHandler;
+import com.ogym.project.user.oauth2Account.Oauth2UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +25,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final CustomAuthSuccessHandler loginSuccessHandler;
     private final LoginFailHandler loginFailHandler;
-    private final PrincipalOauth2UserService principalOauth2UserService;
-
-
+    private final Oauth2UserSecurityService oauth2UserSecurityService;
+    private final Oauth2LoginFailureHandler oauth2LoginFailureHandler;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,9 +51,10 @@ public class SecurityConfig {
                 .and()
                 .oauth2Login()
                 .loginPage("/user/login")
+                .failureHandler(oauth2LoginFailureHandler)
                 .defaultSuccessUrl("/")
                 .userInfoEndpoint()
-                .userService(principalOauth2UserService)
+                .userService(oauth2UserSecurityService)
         ;
         return http.build();
     }

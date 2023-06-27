@@ -42,6 +42,10 @@
             </button>
         </div>
     </section>
+    <a href="/user/oauth2/kakao">카카오</a>
+    <a href="/user/oauth2/google">구글</a>
+    <a href="/user/oauth2/naver">네이버</a>
+    <div sec:authorize="isAuthenticated()" th:text="${#authentication.principal.username}"></div>
     <!-- top-banner-section end -->
     <!-- 구현 End -->
 </div>
