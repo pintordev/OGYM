@@ -1,22 +1,22 @@
-package com.ogym.project.user.oauth2;
+package com.ogym.project.user.oauth2Account;
 
 import lombok.AllArgsConstructor;
 
 import java.util.Map;
 
 @AllArgsConstructor
-public class GoogleUserInfo implements OAuth2UserInfo{
+public class NaverUserInfo implements OAuth2UserInfo{
 
     private Map<String, Object> attributes;
 
     @Override
     public String getProviderId() {
-        return (String) attributes.get("sub");
+        return (String) attributes.get("id");
     }
 
     @Override
     public String getProvider() {
-        return "google";
+        return "naver";
     }
 
     @Override

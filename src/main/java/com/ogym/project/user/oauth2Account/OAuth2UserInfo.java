@@ -1,4 +1,4 @@
-package com.ogym.project.user.oauth2;
+package com.ogym.project.user.oauth2Account;
 
 public interface OAuth2UserInfo {
     String getProviderId();

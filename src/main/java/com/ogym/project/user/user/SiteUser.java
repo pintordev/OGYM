@@ -1,5 +1,6 @@
 package com.ogym.project.user.user;
 
+import com.ogym.project.user.oauth2Account.Oauth2Account;
 import groovy.transform.builder.Builder;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,11 +8,11 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Builder
 public class SiteUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +45,6 @@ public class SiteUser {
 
     private LocalDateTime lastLoginDate;
 
-    private String provider;
-
-    private String providerId;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
+    private List<Oauth2Account> socialAccount;
 }
