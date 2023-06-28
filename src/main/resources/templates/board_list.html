@@ -22,7 +22,8 @@
             </div>
         </div>
         <div class="right-box">
-            <a href="/board/write" class="write-btn btn-sm">글쓰기</a>
+            <a sec:authorize="isAuthenticated()" href="/board/write" class="write-btn btn-sm">글쓰기</a>
+            <a sec:authorize="isAnonymous()" th:onclick="_anonymous()" class="write-btn btn-sm a-hover">글쓰기</a>
         </div>
     </div>
     <div class="list-content">
