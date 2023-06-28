@@ -28,6 +28,10 @@ public class MainController {
         model.addAttribute("bestBoardList", bestBoardList);
         List<Board> recentBoardList = this.boardService.getRecentBoard();
         model.addAttribute("recentBoardList", recentBoardList);
+
+        String presentPath = System.getProperty("user.dir");
+        System.out.println("현재 파일 경로: " + presentPath);
+
         return "index";
     }
 
