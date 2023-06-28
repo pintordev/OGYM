@@ -180,6 +180,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* nav-bar-section css */
 .nav-bar-section {
+    margin-top: 10px;
 	height: 90px;
 	/* 	border: 1px solid red; */
 	display: flex;
@@ -193,12 +194,18 @@ input[type="number"]::-webkit-inner-spin-button {
 	font-weight: bold;
 	font-size: 2.5rem;
 	line-height: 90px;
-	margin-top:10px
+	margin-top:10px;
+	display: flex;
+	align-items: center;
 }
-
+.nav-bar-section > .left-box > .logo-box > a {
+    display: flex;
+    align-items: center;
+    height: 55px;
+    line-height: 55px;
+}
 .nav-bar-section > .left-box > .logo-box > a > img{
-	height:55px;
-	margin-top:10px
+	height: 55px;
 }
 
 
