@@ -730,6 +730,9 @@ input[type="number"]::-webkit-inner-spin-button {
 	flex: 1 1 auto;
 	display: flex;
 	align-items: center;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .board-list-section > .list-content > ul > li.content > a {
     white-space: nowrap;
@@ -2087,6 +2090,9 @@ input[type="number"]::-webkit-inner-spin-button {
     flex: 0 0 45%;
     border: solid rgb(191, 191, 191);
     border-width: 0 0 1px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .index-board-list-section > .board-box > h2 {
     border: solid rgb(191, 191, 191);
@@ -2109,6 +2115,9 @@ input[type="number"]::-webkit-inner-spin-button {
     padding: 0 10px;
 }
 .index-board-list-section > .board-box > .board-list > .upper-box > .title-subject {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-weight: bold;
 }
 .index-board-list-section > .board-box > .board-list > .upper-box > .title-commentList {
