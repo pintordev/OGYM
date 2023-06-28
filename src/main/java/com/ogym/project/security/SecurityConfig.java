@@ -1,9 +1,10 @@
-package com.ogym.project;
+package com.ogym.project.security;
 
 
-import com.ogym.project.handler.LoginFailHandler;
-import com.ogym.project.handler.CustomAuthSuccessHandler;
-import com.ogym.project.handler.Oauth2LoginFailureHandler;
+import com.ogym.project.security.DefaultLoginFailureHandler;
+import com.ogym.project.security.DefaultLoginSuccessHandler;
+import com.ogym.project.security.Oauth2LoginFailureHandler;
+import com.ogym.project.security.Oauth2LoginSuccessHandler;
 import com.ogym.project.user.oauth2Account.Oauth2UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,9 +27,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomAuthSuccessHandler loginSuccessHandler;
-    private final LoginFailHandler loginFailHandler;
+    private final DefaultLoginSuccessHandler defaultLoginSuccessHandler;
+    private final DefaultLoginFailureHandler defaultLoginFailureHandler;
     private final Oauth2UserSecurityService oauth2UserSecurityService;
+    private final Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
     private final Oauth2LoginFailureHandler oauth2LoginFailureHandler;
 
     @Bean
@@ -38,8 +40,8 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
-                .successHandler(loginSuccessHandler)
-                .failureHandler(loginFailHandler)
+                .successHandler(defaultLoginSuccessHandler)
+                .failureHandler(defaultLoginFailureHandler)
                 .usernameParameter("loginId")
                 .and()
                 .logout()
@@ -51,8 +53,8 @@ public class SecurityConfig {
                 .and()
                 .oauth2Login()
                 .loginPage("/user/login")
+                .successHandler(oauth2LoginSuccessHandler)
                 .failureHandler(oauth2LoginFailureHandler)
-                .defaultSuccessUrl("/")
                 .userInfoEndpoint()
                 .userService(oauth2UserSecurityService)
         ;

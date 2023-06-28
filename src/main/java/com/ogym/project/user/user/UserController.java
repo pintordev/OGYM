@@ -2,10 +2,20 @@ package com.ogym.project.user.user;
 
 import com.ogym.project.DataNotFoundException;
 
+import com.ogym.project.board.board.Board;
+import com.ogym.project.board.board.BoardService;
+import com.ogym.project.board.comment.Comment;
+import com.ogym.project.board.comment.CommentService;
+import com.ogym.project.board.reComment.ReComment;
+import com.ogym.project.board.reComment.ReCommentService;
+import com.ogym.project.user.oauth2Account.Oauth2Account;
+import groovyjarjarpicocli.CommandLine;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,6 +26,10 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -25,7 +39,9 @@ public class UserController {
     private final UserService userService;
     private final UserEmailService userEmailService;
     private final HttpSession httpSession; //12644
-
+    private final BoardService boardService;
+    private final CommentService commentService;
+    private final ReCommentService reCommentService;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
@@ -173,9 +189,6 @@ public class UserController {
     @GetMapping("/login/authenticate")
     @ResponseBody
     public String idAndPasswordAuthenticate(@RequestParam("loginId") String loginId, @RequestParam("password") String  password) {
-        System.out.println(loginId);
-        System.out.println(password);
-        System.out.println();
 
         if (this.userService.authenticateLoginIdAndPassword(loginId, password)) {
             return "";
@@ -258,6 +271,39 @@ public class UserController {
         userService.modifyPassword(userPasswordForm.getNewPW1(), user);
 
         return "redirect:/user/logout";
+    }
+
+    @GetMapping("/mypage")
+    public String myPage(Model model, Principal principal,
+                         @RequestParam(value = "section", defaultValue = "information") String section,
+                         @RequestParam(value = "bPage", defaultValue = "0") int bPage,
+                         @RequestParam(value = "cPage", defaultValue = "0") int cPage,
+                         @RequestParam(value = "rPage", defaultValue = "0") int rPage) {
+
+        SiteUser user = this.userService.getUserByLoginId(principal.getName());
+        model.addAttribute("user", user);
+
+        List<String> socialLinked = new ArrayList<>();
+        for (Oauth2Account socialAccount : user.getSocialAccount()) {
+            socialLinked.add(socialAccount.getProvider());
+        }
+        model.addAttribute("socialLinked", socialLinked);
+
+        Page<Board> boardPaging = this.boardService.getListByUser(bPage, user);
+        model.addAttribute("boardPaging", boardPaging);
+
+        Page<Comment> commentPaging = this.commentService.getListByUser(cPage, user);
+        model.addAttribute("commentPaging", commentPaging);
+
+        Page<ReComment> reCommentPaging = this.reCommentService.getListByUser(rPage, user);
+        model.addAttribute("reCommentPaging", reCommentPaging);
+
+        model.addAttribute("section", section);
+        model.addAttribute("bPage", bPage);
+        model.addAttribute("cPage", cPage);
+        model.addAttribute("rPage", rPage);
+
+        return "my_page";
     }
 
 }

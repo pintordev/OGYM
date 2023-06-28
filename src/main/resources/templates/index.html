@@ -1,4 +1,6 @@
 <html layout:decorate="~{layout}">
+<script layout:fragment="api_address" type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script layout:fragment="api_map" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1cfff8a090a4615c9bacd5933a522f6&libraries=services"></script>
 <div layout:fragment="content">
     <!-- 구현 Start -->
     <!-- top-banner-section start -->
@@ -42,11 +44,58 @@
             </button>
         </div>
     </section>
-    <a href="/user/oauth2/kakao">카카오</a>
-    <a href="/user/oauth2/google">구글</a>
-    <a href="/user/oauth2/naver">네이버</a>
-    <div sec:authorize="isAuthenticated()" th:text="${#authentication.principal.username}"></div>
     <!-- top-banner-section end -->
+
+    <!-- index-trainer-list-section start -->
+    <section class="index-trainer-list-section">
+        <div>
+            <button th:onclick="_showTrainer()">주소찾기</button>
+            <span>위도: </span><span class="latitude"></span>
+            <span>경도: </span><span class="longitude"></span>
+        </div>
+        <div id="map"></div>
+    </section>
+    <!-- index-trainer-list-section end -->
+
+    <!-- index-board-list-section start -->
+    <section class="index-board-list-section">
+        <div class="best-board-box board-box">
+            <h2>Best 게시글</h2>
+            <div class="board-list" th:if="${#lists.size(bestBoardList) > 0}" th:each="board : ${bestBoardList}">
+                <div class="upper-box">
+                    <div th:text="${board.category.name}" class="title-category"
+                         th:onclick="_goBoard(this)" th:data-id="${board.id}"></div>
+                    <div th:text="${board.title}" class="title-subject" th:onclick="_goBoard(this)" th:data-id="${board.id}"></div>
+                    <div th:if="${#lists.size(board.commentList) > 0}" th:text="|[${#lists.size(board.commentList)}]|"
+                         th:onclick="_goBoard(this)" th:data-id="${board.id}" class="title-commentList"></div>
+                </div>
+                <div class="lower-box">
+                    <div th:text="|조회 수 ${board.hit}|" class="lower-box-content left"></div>
+                    <div th:text="|추천 수 ${#lists.size(board.voter)}|" class="lower-box-content center"></div>
+                    <div th:text="${#temporals.format(board.createDate, 'yy.MM.dd HH:mm')}" class="lower-box-content right"></div>
+                </div>
+            </div>
+        </div>
+        <div class="recent-board-box board-box">
+            <h2>최신 게시글</h2>
+            <div class="board-list" th:if="${#lists.size(recentBoardList) > 0}" th:each="board : ${recentBoardList}">
+                <div class="upper-box">
+                    <div th:text="${board.category.name}" class="title-category"
+                         th:onclick="_goBoard(this)" th:data-id="${board.id}"></div>
+                    <div th:text="${board.title}" class="title-subject" th:onclick="_goBoard(this)" th:data-id="${board.id}"></div>
+                    <div th:if="${#lists.size(board.commentList) > 0}" th:text="|[${#lists.size(board.commentList)}]|"
+                         th:onclick="_goBoard(this)" th:data-id="${board.id}" class="title-commentList"></div>
+                </div>
+                <div class="lower-box">
+                    <div th:text="|조회 수 ${board.hit}|" class="lower-box-content left"></div>
+                    <div th:text="|추천 수 ${#lists.size(board.voter)}|" class="lower-box-content center"></div>
+                    <div th:text="${#temporals.format(board.createDate, 'yy.MM.dd HH:mm')}" class="lower-box-content right"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- index-board-list-section end -->
+
     <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
@@ -87,6 +136,64 @@
         $(".swiper > .img-box").last().remove();
         $(".swiper").animate({ left: "-4000px" }, 0);
         $(".swiper").stop().animate({ left: "-3000px" }, 1000);
+    }
+
+    function _goBoard(_this) {
+        location.href = "/board/" + _this.dataset.id;
+    }
+
+    var address = "";
+
+    function _showTrainer() {
+        var mainAddress = "";
+        _zoneCode();
+        _getMap();
+    }
+
+    function _zoneCode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                if (data.userSelectedType === "R") {
+                    mainAddress = data.roadAddress;
+                } else {
+                    mainAddress = data.jibunAddress;
+                }
+            }
+        }).open();
+    }
+
+    function _getMap() {
+        var mapContainer = document.getElementById('map'); // 지도를 표시할 div
+        var mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(mainAddress, function(result, status) {
+             if (status === kakao.maps.services.Status.OK) {
+                $(".latitude").text(result[0].y);
+                $(".longitude").text(result[0].x);
+
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                var marker = new kakao.maps.Marker({
+                    map: map,
+                    position: coords
+                });
+
+                var infowindow = new kakao.maps.InfoWindow({
+                    content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                });
+
+                infowindow.open(map, marker);
+
+                map.setCenter(coords);
+
+                $("#map").addClass("active");
+            }
+        });
     }
 </script>
 </html>

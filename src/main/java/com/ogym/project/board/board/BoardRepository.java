@@ -1,11 +1,14 @@
 package com.ogym.project.board.board;
 
 import com.ogym.project.board.category.Category;
+import com.ogym.project.user.user.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
@@ -334,4 +337,19 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findAllByCommentContentOrderByCreateDate(@Param("bCategory") String bCategory, @Param("ccKw") String ccKw, Pageable pageable);
 
     Long countByCategory(Category category);
+
+    Page<Board> findAllByAuthor(SiteUser author, Pageable pageable);
+
+    @Query(value = "select "
+            + "distinct b.*, count(bv.board_id) as voter_count "
+            + "from board b "
+            + "left outer join board_voter bv on b.id = bv.board_id "
+            + "group by b.id, bv.board_id "
+            + "order by voter_count desc, b.create_date desc "
+            + "limit 10 "
+            , countQuery = "select count(*) from board"
+            , nativeQuery = true)
+    List<Board> findTop10OrderByVoterCount();
+
+    List<Board> findTop10ByOrderByCreateDateDesc();
 }

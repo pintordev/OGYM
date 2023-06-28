@@ -1,5 +1,6 @@
 package com.ogym.project;
 
+import com.ogym.project.user.oauth2Account.Oauth2Account;
 import com.ogym.project.user.user.SiteUser;
 import com.ogym.project.user.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
