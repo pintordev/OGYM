@@ -47,4 +47,11 @@ public class TrainerService {
         Optional<Trainer> ot = this.trainerRepository.findByUserInfo(userInfo);
         return ot.isPresent();
     }
+
+    public List<Trainer> getListWithRadius() {
+
+
+
+        return null;
+    }
 }

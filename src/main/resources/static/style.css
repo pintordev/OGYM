@@ -212,6 +212,7 @@ input[type="number"]::-webkit-inner-spin-button {
 	height: 500px;
 	position: relative;
 	overflow: hidden;
+	margin-top: 50px;
 }
 .top-banner-section > .cover {
 	width: 100%;
@@ -1644,5 +1645,418 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* footer-section css */
 .footer-section {
-    margin-top: 200px;
+    border-top: 1px solid #e4e4e4;
+    background-color:#f8f9fa;
+    padding: 2rem 0;
+    margin: 5rem 0 0 0;
+    text-align: center;
 }
+.footer-section > .inner > .footer-message {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #545e6f;
+    margin-bottom: 0.3rem;
+    margin: 0 0 0 0.6rem;
+    display:inline-block;
+}
+.footer-section > .inner > .footer-message > div {
+    margin: 0.6rem;
+}
+
+/* mypage-section css */
+.mypage-section {
+    margin-top: 50px;
+}
+
+.mypage-section > .inner-container {
+	margin: 0 5px;
+	padding: 20px 15px;
+	display: flex;
+	border: solid rgb(191, 191, 191);
+	border-width: 3px 0 3px 0;
+}
+.mypage-section > .inner-container > .profile-img-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding-left: 30px;
+	padding-right: 45px;
+}
+.mypage-section > .inner-container > .profile-img-box > img {
+	height: 150px;
+	border-radius: 50%;
+}
+.mypage-section > .inner-container > .profile-img-box > .user-name {
+	margin-top: 20px;
+	font-weight: bold;
+	font-size: 2rem;
+}
+
+.mypage-section > .inner-container > .profile-abstract-box {
+    width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.mypage-section > .inner-container > .profile-abstract-box > ul {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+.mypage-section > .inner-container > .profile-abstract-box > ul > li {
+    display: flex;
+}
+.mypage-section > .inner-container > .profile-abstract-box > ul > li.type {
+    font-weight: bold;
+    flex: 0 0 30%;
+}
+.mypage-section > .inner-container > .profile-abstract-box > ul > li.content.social-linked-list > a.social-linked > img {
+    height: 30px;
+    margin-right: 15px;
+    border-radius: 0.5rem;
+    line-height: 40px;
+}
+.mypage-section > .inner-container > .profile-abstract-box > ul > li.content.social-linked-list > a.social-linked {
+    display: flex;
+}
+.mypage-section > .inner-container > .profile-abstract-box > ul > li.content.social-linked-list > a.social-linked.active {
+    cursor: pointer;
+    opacity: 0.5;
+}
+.mypage-section > .inner-container > .button-box {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex: 0 0 20%;
+}
+.mypage-section > .inner-container > .button-box > button {
+    margin-left: 10px;
+}
+
+/* mypage-detail-classification css */
+.mypage-detail-classification {
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.mypage-detail-classification > .classify-btn-box {
+	display: flex;
+}
+.mypage-detail-classification > .classify-btn-box > button {
+	/* 	width: 100px; */
+	border: solid rgb(191, 191, 191);
+	background-color: white;
+	color: rgb(128, 128, 128);
+	font-size: 1rem;
+	font-weight: bold;
+	/* 	background-color: red; */
+	padding: 0 20px;
+}
+.mypage-detail-classification > .classify-btn-box > button.active {
+    color: black;
+}
+.mypage-detail-classification > .classify-btn-box > .left {
+	border-width: 0 1px 0 0;
+}
+.mypage-detail-classification > .classify-btn-box > .center {
+	border-width: 0 1px 0 1px;
+}
+.mypage-detail-classification > .classify-btn-box > .right {
+	border-width: 0 0 0 1px;
+}
+.mypage-detail-classification > .classify-btn-box > button:hover {
+	color: black;
+}
+
+.tab-menu {
+    display: none;
+}
+.tab-menu.active {
+    display: block;
+}
+/* mypage-detail-information css */
+
+.mypage-detail-information > .detail-information-box {
+    margin: 0 100px;
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+}
+
+.mypage-detail-information > .detail-information-box > ul {
+    display: flex;
+    align-items: center;
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+    height: 50px;
+}
+.mypage-detail-information > .detail-information-box > ul > li {
+    height: 100%;
+}
+.mypage-detail-information > .detail-information-box > ul > li.type {
+    flex: 0 0 20%;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 3px double rgb(191, 191, 191);
+}
+.mypage-detail-information > .detail-information-box > ul > li.content {
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+}
+.mypage-detail-information > .detail-information-box > ul > li.content.social-linked-list > a.social-linked > img {
+    height: 30px;
+    margin-right: 15px;
+    border-radius: 0.5rem;
+    line-height: 40px;
+}
+.mypage-detail-information > .detail-information-box > ul > li.content.social-linked-list > a.social-linked {
+    display: flex;
+}
+.mypage-detail-information > .detail-information-box > ul > li.content.social-linked-list > a.social-linked.active {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+/* mypage-detail-board css */
+
+.mypage-detail-board > .detail-board-box {
+    margin: 0 100px;
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list {
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .upper-box {
+    display: flex;
+    margin: 20px 0 10px 0;
+    align-items: center;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .upper-box > div:hover {
+    cursor: pointer;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .upper-box > .title-category {
+    padding: 0 10px;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .upper-box > .title-subject {
+    font-weight: bold;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .upper-box > .title-commentList {
+    padding: 0 10px;
+    color: rgb(128, 128, 128);
+    font-size: 0.9rem;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .lower-box {
+    display: flex;
+    margin: 10px 0;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .lower-box > .lower-box-content {
+    font-size: 0.9rem;
+    padding: 0 10px;
+    color: rgb(128, 128, 128);
+    border: solid rgb(191, 191, 191);
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .lower-box > .left {
+    border-width: 0 1px 0 0;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .lower-box > .center {
+    border-width: 0 1px 0 1px;
+}
+.mypage-detail-board > .detail-board-box > .detail-board-list > .lower-box > .right {
+    border-width: 0 0 0 1px;
+}
+
+/* mypage-detail-comment css */
+
+.mypage-detail-comment > .detail-comment-box {
+    margin: 0 100px;
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list {
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .upper-box {
+    display: flex;
+    margin: 20px 0 10px 0;
+    align-items: center;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .upper-box > .title-content {
+    padding: 0 10px;
+    font-weight: bold;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .upper-box > .title-content:hover {
+    cursor: pointer;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .upper-box > .title-reCommentList {
+    color: rgb(128, 128, 128);
+    font-size: 0.9rem;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .upper-box > .title-reCommentList:hover {
+    cursor: pointer;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .upper-box > .upper-box-content {
+    font-size: 0.9rem;
+    padding: 0 10px;
+    color: rgb(128, 128, 128);
+    border: solid rgb(191, 191, 191);
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .upper-box > .left {
+    border-width: 0 1px 0 0;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .upper-box > .right {
+    border-width: 0 0 0 1px;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .lower-box {
+    display: flex;
+    margin: 10px 0;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .lower-box > div {
+    font-size: 0.9rem;
+    color: rgb(128, 128, 128);
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .lower-box > div:hover {
+    cursor: pointer;
+}
+.mypage-detail-comment > .detail-comment-box > .detail-comment-list > .lower-box > .title-icon {
+    padding: 0 10px;
+}
+
+/* mypage-detail-reComment css */
+
+.mypage-detail-reComment > .detail-reComment-box {
+    margin: 0 100px;
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list {
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .upper-box {
+    display: flex;
+    margin: 20px 0 10px 0;
+    align-items: center;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .upper-box > .title-content {
+    padding: 0 10px;
+    font-weight: bold;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .upper-box > .title-content:hover {
+    cursor: pointer;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .upper-box > .title-reCommentList {
+    color: rgb(128, 128, 128);
+    font-size: 0.9rem;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .upper-box > .title-reCommentList:hover {
+    cursor: pointer;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .upper-box > .upper-box-content {
+    font-size: 0.9rem;
+    padding: 0 10px;
+    color: rgb(128, 128, 128);
+    border: solid rgb(191, 191, 191);
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .upper-box > .left {
+    border-width: 0 1px 0 0;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .upper-box > .right {
+    border-width: 0 0 0 1px;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .lower-box {
+    display: flex;
+    margin: 10px 0;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .lower-box > div {
+    font-size: 0.9rem;
+    color: rgb(128, 128, 128);
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .lower-box > div:hover {
+    cursor: pointer;
+}
+.mypage-detail-reComment > .detail-reComment-box > .detail-reComment-list > .lower-box > .title-icon {
+    padding: 0 10px;
+}
+
+/* index-trainer-list-section css */
+
+.index-trainer-list-section {
+    margin-top: 50px;
+}
+.index-trainer-list-section > #map {
+    width: 500px;
+    height: 350px;
+    margin: 0 auto;
+    display: none;
+}
+.index-trainer-list-section > #map.active {
+    display: block;
+}
+
+/* index-board-list-section css */
+
+.index-board-list-section {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.index-board-list-section > .board-box {
+    flex: 0 0 45%;
+    border: solid rgb(191, 191, 191);
+    border-width: 0 0 1px 0;
+}
+.index-board-list-section > .board-box > h2 {
+    border: solid rgb(191, 191, 191);
+    border-width: 0 0 1px 0;
+    padding: 0 0 20px 10px;
+}
+.index-board-list-section > .board-box > .board-list {
+    border: solid rgb(191, 191, 191);
+    border-width: 1px 0 1px 0;
+}
+.index-board-list-section > .board-box > .board-list > .upper-box {
+    display: flex;
+    margin: 20px 0 10px 0;
+    align-items: center;
+}
+.index-board-list-section > .board-box > .board-list > .upper-box > div:hover {
+    cursor: pointer;
+}
+.index-board-list-section > .board-box > .board-list > .upper-box > .title-category {
+    padding: 0 10px;
+}
+.index-board-list-section > .board-box > .board-list > .upper-box > .title-subject {
+    font-weight: bold;
+}
+.index-board-list-section > .board-box > .board-list > .upper-box > .title-commentList {
+    padding: 0 10px;
+    color: rgb(128, 128, 128);
+    font-size: 0.9rem;
+}
+.index-board-list-section > .board-box > .board-list > .lower-box {
+    display: flex;
+    margin: 10px 0;
+}
+.index-board-list-section > .board-box > .board-list > .lower-box > .lower-box-content {
+    font-size: 0.9rem;
+    padding: 0 10px;
+    color: rgb(128, 128, 128);
+    border: solid rgb(191, 191, 191);
+}
+.index-board-list-section > .board-box > .board-list > .lower-box > .left {
+    border-width: 0 1px 0 0;
+}
+.index-board-list-section > .board-box > .board-list > .lower-box > .center {
+    border-width: 0 1px 0 1px;
+}
+.index-board-list-section > .board-box > .board-list > .lower-box > .right {
+    border-width: 0 0 0 1px;
+}
+

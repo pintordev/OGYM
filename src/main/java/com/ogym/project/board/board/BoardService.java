@@ -162,4 +162,21 @@ public class BoardService {
     public Long getCount(Category category) {
         return this.boardRepository.countByCategory(category);
     }
+
+    public Page<Board> getListByUser(int bPage, SiteUser user) {
+
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(bPage, 10, Sort.by(sorts));
+
+        return this.boardRepository.findAllByAuthor(user, pageable);
+    }
+
+    public List<Board> getBestBoard() {
+        return this.boardRepository.findTop10OrderByVoterCount();
+    }
+
+    public List<Board> getRecentBoard() {
+        return this.boardRepository.findTop10ByOrderByCreateDateDesc();
+    }
 }

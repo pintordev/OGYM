@@ -1,11 +1,15 @@
 package com.ogym.project.board.comment;
 
 import com.ogym.project.board.board.Board;
+import com.ogym.project.user.user.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.Collection;
+import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
@@ -42,4 +46,13 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             , countQuery = "select count(*) from comment"
             , nativeQuery = true)
     Page<Comment> findAllByBoardOrderByCreateDate(@Param("board_id") Long boardId, Pageable pageable);
+
+    Page<Comment> findAllByAuthor(SiteUser author, Pageable pageable);
+
+    @Query(value = "select "
+            + "* from comment c "
+            + "where c.board_id = :board_id "
+            + "and c.id <= :comment_id "
+            , nativeQuery = true)
+    List<Comment> findAllByBoardAndCommentIdGreaterThanEqual(@Param("board_id") Long boardId, @Param("comment_id") Long commentId);
 }

@@ -27,6 +27,17 @@ public class CommentController {
     private final BoardService boardService;
     private final UserService userService;
 
+    @GetMapping("/{id}")
+    public String redirectBoard(@PathVariable("id") Long id) {
+
+        Comment comment = this.commentService.getComment(id);
+        Board board = comment.getBoard();
+
+        int cPage = this.commentService.getPage(id, board);
+
+        return String.format("redirect:/board/%s?cPage=%s#comment_%s", board.getId(), cPage, comment.getId());
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
     public String writeComment(Model model,

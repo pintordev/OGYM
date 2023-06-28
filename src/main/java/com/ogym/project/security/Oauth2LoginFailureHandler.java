@@ -1,4 +1,4 @@
-package com.ogym.project.handler;
+package com.ogym.project.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
