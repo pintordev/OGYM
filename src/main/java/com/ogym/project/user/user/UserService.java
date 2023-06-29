@@ -135,4 +135,8 @@ public class UserService {
         user.setLastLoginDate(LocalDateTime.now());
         this.userRepository.save(user);
     }
+
+//    public boolean checkSpecialCharacter(String password) {
+//         return password.matches(".*[\\W_]+.*");
+//    }
 }

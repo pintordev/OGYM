@@ -53,6 +53,25 @@
                 </div>
                 <div class="error" id="birthDateError"></div>
             </div>
+
+
+                <div class="input-box addressDate">
+                    <div>
+                        <input type="text" class="zoneCode" placeholder="우편번호">
+                        <button class="btn" type="button">우편번호 찾기</button>
+                    </div>
+                    <div>
+                        <input type="text" class="mainAddress" placeholder="주소">
+                    </div>
+                    <div>
+                        <input type="text" class="subAddress" placeholder="상세주소를 입력해주세요">
+                    </div>
+                    <div class="error" id="addressError"></div>
+
+            </div>
+
+
+
             <div class="input-box email">
                 <label for="email"></label>
                 <div class="two-part">
@@ -87,6 +106,10 @@ var timer;
 $(document).ready(function () {
   //email 버튼 클릭 시 인증번호 발송 및 타이머 작동
   $("#email-btn").click(function () {
+    if($("#email").val() === "") {
+      $("#emailError").text("이메일을 입력해주세요").css("color", "red");
+      return false;
+    }
     $("#email").prop("disabled", true);
     $(".timer").css("display", "flex");
     $(".timer").text("이메일 발송중").css("font-size", "0.8rem");
@@ -143,9 +166,9 @@ $(document).ready(function () {
   $("#nickname").on("blur", function() {
       var nickname = $(this).val();
 
-      if (nickname.length > 0 && !nickname.match(/(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣\d]+/g)) {
+      if (nickname.length > 0 && nickname.match(/[ㄱ-ㅎㅏ-ㅣ!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+/)) {
         $("#nicknameError").text("사용할 수 없는 닉네임입니다").css("color", "red");
-      } else if (nickname.length >= 2) {
+        } else if (nickname.length >= 2) {
         $.ajax({
           url: "signup/nickname",
           type: "GET",
@@ -253,6 +276,7 @@ $(document).ready(function () {
     $(".modify-btn").hide();
     $(".timer").css("display", "none");
     timeRemain = 180;
+    $("#genCode").val("");
   });
 
   //html에 pattern을 "\d*"로 바꾸면 숫자만 입력되지만 브라우저에따라 문자나 소수점이 들어갈 수 있어 이 처리가 필요하다고함
@@ -285,6 +309,7 @@ $(document).ready(function () {
     } else {
       clearInterval(timer);
       $(".timer").css("display", "none");
+      $("#genCode").val("");
       //타이머 다시 실행될 수 있으니 값 초기화
       $("#email-btn").prop("disabled", false);
       timeRemain = 180;
@@ -359,6 +384,9 @@ $(document).ready(function () {
   $("#code-btn").click(function () {
     var code = $("#code").val();
     var genCode = $("#genCode").val();
+    if (genCode === ""){
+      $("#codeError").text("인증번호를 확인해주세요").css("color","red");
+      }
 
     if (code !== "" && genCode) {
       $.ajax({
@@ -381,7 +409,7 @@ $(document).ready(function () {
           }
         },
         error: function (res) {
-          $("#codeError").text(res.responseJSON.message);
+          $("#codeError").text(res.responseJSON.message).css("color","red");
         }
       });
     }
@@ -431,7 +459,7 @@ $(document).ready(function () {
     var username = $("#username").val();
 
     if ($("#code").val() === "") {
-      $("#codeError").text("인증번호를 입력해주세요");
+      $("#codeError").text("인증번호를 입력해주세요").css("color","red");
       $("#code").focus();
       hasError = true;
     } else if (!$("#codeError").text().includes("완료")) {

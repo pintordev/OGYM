@@ -333,6 +333,11 @@ input[type="number"]::-webkit-inner-spin-button {
 .signup-form-section > .signup-form > .input-box > .three-part > input {
 	width: 100%;
 }
+
+.signup-form-section > .signup-form > .input-box > input .addressDate {
+    width: 100%;
+}
+
 .signup-form-section
 	> .signup-form
 	> .input-box
