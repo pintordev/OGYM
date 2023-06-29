@@ -2,7 +2,9 @@
 <section th:fragment="navbarFragment" class="nav-bar-section">
     <div class="left-box">
         <div class="logo-box">
-            <a href="/">oGym</a>
+            <a href="/">
+                <img th:src="@{/image/todayGym_logo_header.png}" alt="">
+            </a>
         </div>
         <ul class="left-nav">
             <li><a href="/board">커뮤니티</a></li>
@@ -15,6 +17,7 @@
             <li sec:authorize="isAnonymous()"><a href="/user/login">로그인</a></li>
             <li sec:authorize="isAnonymous()"><a href="/user/signup">회원가입</a></li>
             <li sec:authorize="isAuthenticated()"><a href="/user/logout">로그아웃</a></li>
+            <li sec:authorize="isAuthenticated()"><a href="/user/mypage">마이페이지</a></li>
             <li><a href="#">문의하기</a></li>
         </ul>
     </div>

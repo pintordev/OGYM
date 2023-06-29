@@ -1,0 +1,330 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <!-- 구현 Start -->
+    <!-- mypage-section start -->
+    <section class="mypage-section">
+        <div class="inner-container">
+            <div class="profile-img-box">
+                <img th:src="@{/image/user_profile.jpg}" alt="">
+                <span class="user-name" th:text="${user.username}"></span>
+            </div>
+            <div class="profile-abstract-box">
+                <ul>
+                    <li class="type">로그인 ID</li>
+                    <li class="content" th:text="${user.loginId}"></li>
+                </ul>
+                <ul>
+                    <li class="type">닉네임</li>
+                    <li class="content" th:text="${user.nickname}"></li>
+                </ul>
+                <ul>
+                    <li class="type">가입일</li>
+                    <li class="content" th:text="${#temporals.format(user.createDate, 'yy.MM.dd HH:mm')}"></li>
+                </ul>
+                <ul>
+                    <li class="type">최근 로그인</li>
+                    <li class="content" th:text="${#temporals.format(user.lastLoginDate, 'yy.MM.dd HH:mm')}"></li>
+                </ul>
+                <ul>
+                    <li class="type">소셜 계정</li>
+                    <li class="content social-linked-list">
+                        <a class="social-linked" th:classappend="${#lists.contains(socialLinked, 'kakao') ? 'disabled' : 'active'}"
+                           th:onclick="_socialLink(this)" th:data-uri="|/user/oauth2/kakao|">
+                            <img th:src="@{/image/login_kakao.png}" alt="">
+                        </a>
+                        <a class="social-linked" th:classappend="${#lists.contains(socialLinked, 'naver') ? 'disabled' : 'active'}"
+                           th:onclick="_socialLink(this)" th:data-uri="|/user/oauth2/naver|">
+                            <img th:src="@{/image/login_naver.png}" alt="">
+                        </a>
+                        <a class="social-linked" th:classappend="${#lists.contains(socialLinked, 'google') ? 'disabled' : 'active'}"
+                           th:onclick="_socialLink(this)" th:data-uri="|/user/oauth2/google|">
+                            <img th:src="@{/image/login_google.png}" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="button-box">
+                <button class="btn-sm" onclick="location.href='/user/modify/password'">비밀번호 변경</button>
+                <button class="btn-sm">회원탈퇴</button>
+            </div>
+        </div>
+    </section>
+    <!-- mypage-section end -->
+
+    <!-- mypage-detail-classification start -->
+    <section class="mypage-detail-classification">
+        <div class="classify-btn-box">
+            <button class="left information" th:classappend="${section == 'information' ? 'active' : ''}"
+                    th:onclick="_tabMenu(this)" th:data-id="|#tab-menu-information|">회원정보</button>
+            <button class="center board" th:classappend="${section == 'board' ? 'active' : ''}"
+                    th:onclick="_tabMenu(this)" th:data-id="|#tab-menu-board|">작성 글</button>
+            <button class="center comment" th:classappend="${section == 'comment' ? 'active' : ''}"
+                    th:onclick="_tabMenu(this)" th:data-id="|#tab-menu-comment|">작성 답글</button>
+            <button class="right reComment" th:classappend="${section == 'reComment' ? 'active' : ''}"
+                    th:onclick="_tabMenu(this)" th:data-id="|#tab-menu-reComment|">작성 댓글</button>
+        </div>
+    </section>
+    <!-- mypage-detail-classification end -->
+
+    <!-- mypage-detail-information start -->
+    <section class="mypage-detail-information tab-menu" th:classappend="${section == 'information' ? 'active' : ''}" id="tab-menu-information">
+        <div class="detail-information-box">
+            <ul>
+                <li class="type">권한</li>
+                <li class="content" th:text="${user.authority.value}"></li>
+            </ul>
+            <ul>
+                <li class="type">로그인 ID</li>
+                <li class="content" th:text="${user.loginId}"></li>
+            </ul>
+            <ul>
+                <li class="type">닉네임</li>
+                <li class="content" th:text="${user.nickname}"></li>
+            </ul>
+            <ul>
+                <li class="type">이름</li>
+                <li class="content" th:text="${user.username}"></li>
+            </ul>
+            <ul>
+                <li class="type">생일</li>
+                <li class="content" th:text="${user.birthDate}"></li>
+            </ul>
+            <ul>
+                <li class="type">이메일</li>
+                <li class="content" th:text="${user.email}"></li>
+            </ul>
+            <ul>
+                <li class="type">전화번호</li>
+                <li class="content" th:text="${user.phoneNumber}"></li>
+            </ul>
+            <ul>
+                <li class="type">주소</li>
+                <li class="content">
+                    <span th:if="${user.address != null}" th:text="${user.address}"></span>
+                </li>
+            </ul>
+            <ul>
+                <li class="type">가입일</li>
+                <li class="content" th:text="${#temporals.format(user.createDate, 'yy.MM.dd HH:mm')}"></li>
+            </ul>
+            <ul>
+                <li class="type">최근 로그인</li>
+                <li class="content" th:text="${#temporals.format(user.lastLoginDate, 'yy.MM.dd HH:mm')}"></li>
+            </ul>
+            <ul>
+                <li class="type">소셜 계정</li>
+                <li class="content social-linked-list">
+                    <a class="social-linked" th:classappend="${#lists.contains(socialLinked, 'kakao') ? 'disabled' : 'active'}"
+                       th:onclick="_socialLink(this)" th:data-uri="|/user/oauth2/kakao|">
+                        <img th:src="@{/image/login_kakao.png}" alt="">
+                    </a>
+                    <a class="social-linked" th:classappend="${#lists.contains(socialLinked, 'naver') ? 'disabled' : 'active'}"
+                       th:onclick="_socialLink(this)" th:data-uri="|/user/oauth2/naver|">
+                        <img th:src="@{/image/login_naver.png}" alt="">
+                    </a>
+                    <a class="social-linked" th:classappend="${#lists.contains(socialLinked, 'google') ? 'disabled' : 'active'}"
+                       th:onclick="_socialLink(this)" th:data-uri="|/user/oauth2/google|">
+                        <img th:src="@{/image/login_google.png}" alt="">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!-- mypage-detail-information end -->
+
+    <!-- mypage-detail-board start -->
+    <section class="mypage-detail-board tab-menu" th:classappend="${section == 'board' ? 'active' : ''}" id="tab-menu-board">
+        <div class="detail-board-box">
+            <div class="detail-board-list" th:if="${#lists.size(boardPaging) > 0}" th:each="board : ${boardPaging}">
+                <div class="upper-box">
+                    <div th:text="${board.category.name}" class="title-category"
+                         th:onclick="_goBoard(this)" th:data-id="${board.id}"></div>
+                    <div th:text="${board.title}" class="title-subject" th:onclick="_goBoard(this)" th:data-id="${board.id}"></div>
+                    <div th:if="${#lists.size(board.commentList) > 0}" th:text="|[${#lists.size(board.commentList)}]|"
+                         th:onclick="_goBoard(this)" th:data-id="${board.id}" class="title-commentList"></div>
+                </div>
+                <div class="lower-box">
+                    <div th:text="|조회 수 ${board.hit}|" class="lower-box-content left"></div>
+                    <div th:text="|추천 수 ${#lists.size(board.voter)}|" class="lower-box-content center"></div>
+                    <div th:text="${#temporals.format(board.createDate, 'yy.MM.dd HH:mm')}" class="lower-box-content right"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="page-list" th:if="${!boardPaging.isEmpty()}">
+                <li class="page-start" th:classappend="${boardPaging.number != 0} ? 'page-active' : 'disabled'"
+                    th:onclick="_bPaging(this)" th:data-page="${0}">처음</li>
+                <li class="page-middle" th:classappend="${boardPaging.number - 10 >= 0} ? 'page-active' : 'disabled'"
+                    th:onclick="_bPaging(this)" th:data-page="${boardPaging.number - 10}"><i class="fa-solid fa-angles-left"></i></li>
+                <li class="page-middle" th:classappend="${boardPaging.hasPrevious} ? 'page-active' : 'disabled'"
+                    th:onclick="_bPaging(this)" th:data-page="${boardPaging.number - 1}"><i class="fa-solid fa-angle-left"></i></li>
+                <li class="page-middle" th:each="page : ${#numbers.sequence(0, boardPaging.totalPages-1)}"
+                    th:if="${page >= boardPaging.number - 2 and page <= boardPaging.number + 2 and boardPaging.number > 1 and boardPaging.number < boardPaging.totalPages-2}"
+                    th:classappend="${page != boardPaging.number} ? 'page-active' : 'disabled page-now'"
+                    th:onclick="_bPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+                <li class="page-middle" th:each="page : ${#numbers.sequence(0, boardPaging.totalPages-1)}"
+                    th:if="${(boardPaging.number <= 1 and page <= 4) or (boardPaging.number >= boardPaging.totalPages-2 and page >= boardPaging.totalPages-5)}"
+                    th:classappend="${page != boardPaging.number} ? 'page-active' : 'disabled page-now'"
+                    th:onclick="_bPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+                <li class="page-middle" th:classappend="${boardPaging.hasNext} ? 'page-active' : 'disabled'"
+                    th:onclick="_bPaging(this)" th:data-page="${boardPaging.number + 1}"><i class="fa-solid fa-angle-right"></i></li>
+                <li class="page-middle" th:classappend="${boardPaging.number + 10 <= boardPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                    th:onclick="_bPaging(this)" th:data-page="${boardPaging.number + 10}"><i class="fa-solid fa-angles-right"></i></li>
+                <li class="page-end" th:classappend="${boardPaging.number != boardPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                    th:onclick="_bPaging(this)" th:data-page="${boardPaging.totalPages-1}">끝</li>
+            </ul>
+        </div>
+    </section>
+    <!-- mypage-detail-board end -->
+
+    <!-- mypage-detail-comment start -->
+    <section class="mypage-detail-comment tab-menu" th:classappend="${section == 'comment' ? 'active' : ''}" id="tab-menu-comment">
+        <div class="detail-comment-box">
+            <div class="detail-comment-list" th:if="${#lists.size(commentPaging) > 0}" th:each="comment : ${commentPaging}">
+                <div class="upper-box">
+                    <div th:text="${comment.content}" class="title-content" th:onclick="_goComment(this)" th:data-id="${comment.id}"></div>
+                    <div th:if="${#lists.size(comment.reCommentList) > 0}" th:text="|[${#lists.size(comment.reCommentList)}]|"
+                         th:onclick="_goComment(this)" th:data-id="${comment.id}" class="title-reCommentList"></div>
+                    <div th:text="|추천 수 ${#lists.size(comment.voter)}|" class="upper-box-content left"></div>
+                    <div th:text="${#temporals.format(comment.createDate, 'yy.MM.dd HH:mm')}" class="upper-box-content right"></div>
+                </div>
+                <div class="lower-box">
+                    <div class="title-icon" th:onclick="_goBoard(this)" th:data-id="${comment.board.id}"><i class="fa-solid fa-file-lines"></i></div>
+                    <div th:text="${comment.board.title}" class="title-subject" th:onclick="_goBoard(this)" th:data-id="${comment.board.id}"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="page-list" th:if="${!commentPaging.isEmpty()}">
+                <li class="page-start" th:classappend="${commentPaging.number != 0} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${0}">처음</li>
+                <li class="page-middle" th:classappend="${commentPaging.number - 10 >= 0} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.number - 10}"><i class="fa-solid fa-angles-left"></i></li>
+                <li class="page-middle" th:classappend="${commentPaging.hasPrevious} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.number - 1}"><i class="fa-solid fa-angle-left"></i></li>
+                <li class="page-middle" th:each="page : ${#numbers.sequence(0, commentPaging.totalPages-1)}"
+                    th:if="${page >= commentPaging.number - 2 and page <= commentPaging.number + 2 and commentPaging.number > 1 and commentPaging.number < commentPaging.totalPages-2}"
+                    th:classappend="${page != commentPaging.number} ? 'page-active' : 'disabled page-now'"
+                    th:onclick="_cPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+                <li class="page-middle" th:each="page : ${#numbers.sequence(0, commentPaging.totalPages-1)}"
+                    th:if="${(commentPaging.number <= 1 and page <= 4) or (commentPaging.number >= commentPaging.totalPages-2 and page >= commentPaging.totalPages-5)}"
+                    th:classappend="${page != commentPaging.number} ? 'page-active' : 'disabled page-now'"
+                    th:onclick="_cPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+                <li class="page-middle" th:classappend="${commentPaging.hasNext} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.number + 1}"><i class="fa-solid fa-angle-right"></i></li>
+                <li class="page-middle" th:classappend="${commentPaging.number + 10 <= commentPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.number + 10}"><i class="fa-solid fa-angles-right"></i></li>
+                <li class="page-end" th:classappend="${commentPaging.number != commentPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                    th:onclick="_cPaging(this)" th:data-page="${commentPaging.totalPages-1}">끝</li>
+            </ul>
+        </div>
+    </section>
+    <!-- mypage-detail-comment end -->
+
+    <!-- mypage-detail-reComment start -->
+    <section class="mypage-detail-reComment tab-menu" th:classappend="${section == 'reComment' ? 'active' : ''}" id="tab-menu-reComment">
+        <div class="detail-reComment-box">
+            <div class="detail-reComment-list" th:if="${#lists.size(reCommentPaging) > 0}" th:each="reComment : ${reCommentPaging}">
+                <div class="upper-box">
+                    <div th:text="${reComment.content}" class="title-content" th:onclick="_goReComment(this)" th:data-id="${reComment.id}"></div>
+                    <div th:if="${#lists.size(reComment.children) > 0}" th:text="|[${#lists.size(reComment.children)}]|"
+                         th:onclick="_goReComment(this)" th:data-id="${reComment.id}" class="title-reCommentList"></div>
+                    <div th:text="|추천 수 ${#lists.size(reComment.voter)}|" class="upper-box-content left"></div>
+                    <div th:text="${#temporals.format(reComment.createDate, 'yy.MM.dd HH:mm')}" class="upper-box-content right"></div>
+                </div>
+                <div class="lower-box">
+                    <div class="title-icon" th:onclick="_goBoard(this)" th:data-id="${reComment.comment.board.id}"><i class="fa-solid fa-file-lines"></i></div>
+                    <div th:text="${reComment.comment.board.title}" class="title-subject" th:onclick="_goBoard(this)" th:data-id="${reComment.comment.board.id}"></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul class="page-list" th:if="${!reCommentPaging.isEmpty()}">
+                <li class="page-start" th:classappend="${reCommentPaging.number != 0} ? 'page-active' : 'disabled'"
+                    th:onclick="_rPaging(this)" th:data-page="${0}">처음</li>
+                <li class="page-middle" th:classappend="${reCommentPaging.number - 10 >= 0} ? 'page-active' : 'disabled'"
+                    th:onclick="_rPaging(this)" th:data-page="${reCommentPaging.number - 10}"><i class="fa-solid fa-angles-left"></i></li>
+                <li class="page-middle" th:classappend="${reCommentPaging.hasPrevious} ? 'page-active' : 'disabled'"
+                    th:onclick="_rPaging(this)" th:data-page="${reCommentPaging.number - 1}"><i class="fa-solid fa-angle-left"></i></li>
+                <li class="page-middle" th:each="page : ${#numbers.sequence(0, reCommentPaging.totalPages-1)}"
+                    th:if="${page >= reCommentPaging.number - 2 and page <= reCommentPaging.number + 2 and reCommentPaging.number > 1 and reCommentPaging.number < reCommentPaging.totalPages-2}"
+                    th:classappend="${page != reCommentPaging.number} ? 'page-active' : 'disabled page-now'"
+                    th:onclick="_rPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+                <li class="page-middle" th:each="page : ${#numbers.sequence(0, reCommentPaging.totalPages-1)}"
+                    th:if="${(reCommentPaging.number <= 1 and page <= 4) or (reCommentPaging.number >= reCommentPaging.totalPages-2 and page >= reCommentPaging.totalPages-5)}"
+                    th:classappend="${page != reCommentPaging.number} ? 'page-active' : 'disabled page-now'"
+                    th:onclick="_rPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+                <li class="page-middle" th:classappend="${reCommentPaging.hasNext} ? 'page-active' : 'disabled'"
+                    th:onclick="_rPaging(this)" th:data-page="${reCommentPaging.number + 1}"><i class="fa-solid fa-angle-right"></i></li>
+                <li class="page-middle" th:classappend="${reCommentPaging.number + 10 <= reCommentPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                    th:onclick="_rPaging(this)" th:data-page="${reCommentPaging.number + 10}"><i class="fa-solid fa-angles-right"></i></li>
+                <li class="page-end" th:classappend="${reCommentPaging.number != commentPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                    th:onclick="_rPaging(this)" th:data-page="${reCommentPaging.totalPages-1}">끝</li>
+            </ul>
+        </div>
+    </section>
+    <!-- mypage-detail-reComment end -->
+
+    <!-- several parameters input part start; bPageSize, bPage, bKw, bSort, bCategory -->
+    <form th:action="@{|/user/mypage|}" method="get" id="parameterForm">
+        <input type="hidden" id="section" name="section" th:value="${section}">
+        <input type="hidden" id="bPage" name="bPage" th:value="${bPage}">
+        <input type="hidden" id="cPage" name="cPage" th:value="${cPage}">
+        <input type="hidden" id="rPage" name="rPage" th:value="${rPage}">
+    </form>
+    <!-- several parameters input part end -->
+
+    <!-- 구현 End -->
+</div>
+<script layout:fragment="script" type="text/javascript">
+    function _socialLink(_this) {
+        if ($(_this).hasClass("active")) {
+            location.href = _this.dataset.uri;
+        }
+    }
+
+    function _tabMenu(_this) {
+        $(_this).siblings().removeClass("active");
+        $(_this.dataset.id).siblings("section.tab-menu").removeClass("active");
+        $(_this).addClass("active");
+        $(_this.dataset.id).addClass("active");
+    }
+
+    function _goBoard(_this) {
+        location.href = "/board/" + _this.dataset.id;
+    }
+
+    function _goComment(_this) {
+        location.href = "/comment/" + _this.dataset.id;
+    }
+
+    function _goReComment(_this) {
+        location.href = "/reComment/" + _this.dataset.id;
+    }
+
+    function _bPaging(_this) {
+        if (!$(_this).hasClass("disabled")) {
+            $("#bPage").val(_this.dataset.page);
+            $("#section").val("board");
+            $("#parameterForm").submit();
+        }
+    }
+
+    function _cPaging(_this) {
+        if (!$(_this).hasClass("disabled")) {
+            $("#cPage").val(_this.dataset.page);
+            $("#section").val("comment");
+            $("#parameterForm").submit();
+        }
+    }
+
+    function _rPaging(_this) {
+        if (!$(_this).hasClass("disabled")) {
+            $("#rPage").val(_this.dataset.page);
+            $("#section").val("reComment");
+            $("#parameterForm").submit();
+        }
+    }
+
+</script>
+</html>

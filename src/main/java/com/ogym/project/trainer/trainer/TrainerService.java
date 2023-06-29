@@ -52,9 +52,9 @@ public class TrainerService {
     }
 
     public Trainer getTrainer(Long id){
-        Optional<Trainer> tn = this.trainerRepository.findById(id);
-        if(tn.isPresent()){
-            return tn.get();
+        Optional<Trainer> ot = this.trainerRepository.findById(id);
+        if(ot.isPresent()){
+            return ot.get();
         }else{
             throw new DataNotFoundException("trainer not found");
         }
@@ -63,5 +63,13 @@ public class TrainerService {
     public void saveAddress(Address address, Trainer trainer) {
         trainer.setAddress(address);
         this.trainerRepository.save(trainer);
+    }
+
+    public List<Trainer> getListWithRadius() {
+
+
+
+        return null;
+
     }
 }

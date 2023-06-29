@@ -2,11 +2,22 @@ package com.ogym.project.user.user;
 
 import com.ogym.project.DataNotFoundException;
 
+import com.ogym.project.board.board.Board;
+import com.ogym.project.board.board.BoardService;
+import com.ogym.project.board.comment.Comment;
+import com.ogym.project.board.comment.CommentService;
+import com.ogym.project.board.reComment.ReComment;
+import com.ogym.project.board.reComment.ReCommentService;
+import com.ogym.project.user.oauth2Account.Oauth2Account;
+import groovyjarjarpicocli.CommandLine;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +26,10 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -24,7 +39,9 @@ public class UserController {
     private final UserService userService;
     private final UserEmailService userEmailService;
     private final HttpSession httpSession; //12644
-
+    private final BoardService boardService;
+    private final CommentService commentService;
+    private final ReCommentService reCommentService;
 
     @GetMapping("/signup")
     public String signup(UserCreateForm userCreateForm) {
@@ -172,9 +189,6 @@ public class UserController {
     @GetMapping("/login/authenticate")
     @ResponseBody
     public String idAndPasswordAuthenticate(@RequestParam("loginId") String loginId, @RequestParam("password") String  password) {
-        System.out.println(loginId);
-        System.out.println(password);
-        System.out.println();
 
         if (this.userService.authenticateLoginIdAndPassword(loginId, password)) {
             return "";
@@ -227,34 +241,69 @@ public class UserController {
             return "";
         }
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/password")
+    public String modifyPassword(UserPasswordForm userPasswordForm) {
+        return "modify_password_form";
+    }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/password")
+    public String modifyPassword(@Valid UserPasswordForm userPasswordForm, BindingResult bindingResult, Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "modify_password_form";
+        }
 
+        SiteUser user = this.userService.getUser(principal.getName());
+        if (!this.userService.confirmPassword(userPasswordForm.getPresentPW(), user)) {
+            bindingResult.rejectValue("presentPW", "passwordInCorrect",
+                    "현재 비밀번호를 바르게 입력해주세요.");
+            return "modify_password_form";
+        }
 
-//    @PostMapping("/find")
-//    @ResponseBody
-//    public String findUserPassword(@RequestParam("loginId") String loginId, @RequestParam("email") String email) {
-//        try {
-//            SiteUser user = userService.getUserByLoginId(loginId);
-//            if (user.getEmail().equals(email)) {
-//                String password = user.getPassword();
-//                // 이메일 발송 로직 구현
-//                sendEmailWithPassword(email, password);
-//                return "비밀번호를 이메일로 발송했습니다.";
-//            } else {
-//                return "입력한 정보가 일치하지 않습니다.";
-//            }
-//        } catch (DataNotFoundException e) {
-//            return "가입된 정보가 없습니다.";
-//        }
-//    }
-//@GetMapping("/")
-//public String index(Model model) {
-//    SessionUser user = (SessionUser) httpSession.getAttribute("user");
-//    if (user != null) {
-//        model.addAttribute("userName", user.getName());
-//    }
-//    return "index";
-//}
+        // 비밀번호와 비밀번호 확인에 입력한 문자열이 서로 다르면 다시 입력 하도록
+        if (!userPasswordForm.getNewPW1().equals(userPasswordForm.getNewPW2())) {
+            bindingResult.rejectValue("newPW2", "passwordInCorrect",
+                    "입력한 비밀번호가 일치하지 않습니다.");
+            return "modify_password_form";
+        }
 
+        userService.modifyPassword(userPasswordForm.getNewPW1(), user);
+
+        return "redirect:/user/logout";
+    }
+
+    @GetMapping("/mypage")
+    public String myPage(Model model, Principal principal,
+                         @RequestParam(value = "section", defaultValue = "information") String section,
+                         @RequestParam(value = "bPage", defaultValue = "0") int bPage,
+                         @RequestParam(value = "cPage", defaultValue = "0") int cPage,
+                         @RequestParam(value = "rPage", defaultValue = "0") int rPage) {
+
+        SiteUser user = this.userService.getUserByLoginId(principal.getName());
+        model.addAttribute("user", user);
+
+        List<String> socialLinked = new ArrayList<>();
+        for (Oauth2Account socialAccount : user.getSocialAccount()) {
+            socialLinked.add(socialAccount.getProvider());
+        }
+        model.addAttribute("socialLinked", socialLinked);
+
+        Page<Board> boardPaging = this.boardService.getListByUser(bPage, user);
+        model.addAttribute("boardPaging", boardPaging);
+
+        Page<Comment> commentPaging = this.commentService.getListByUser(cPage, user);
+        model.addAttribute("commentPaging", commentPaging);
+
+        Page<ReComment> reCommentPaging = this.reCommentService.getListByUser(rPage, user);
+        model.addAttribute("reCommentPaging", reCommentPaging);
+
+        model.addAttribute("section", section);
+        model.addAttribute("bPage", bPage);
+        model.addAttribute("cPage", cPage);
+        model.addAttribute("rPage", rPage);
+
+        return "my_page";
+    }
 
 }

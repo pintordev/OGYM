@@ -62,6 +62,6 @@ public class Oauth2AccountController {
 
         this.oauth2AccountService.create(provider, providerId, email, name, parent);
 
-        return "redirect:/";
+        return "redirect:/user/mypage";
     }
 }

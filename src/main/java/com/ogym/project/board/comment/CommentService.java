@@ -7,9 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -73,5 +76,23 @@ public class CommentService {
             comment.getVoter().add(voter);
         }
         this.commentRepository.save(comment);
+    }
+
+    public Page<Comment> getListByUser(int cPage, SiteUser user) {
+
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(cPage, 10, Sort.by(sorts));
+
+        return this.commentRepository.findAllByAuthor(user, pageable);
+    }
+
+    public int getPage(Long id, Board board) {
+        int count = this.commentRepository.findAllByBoardAndCommentIdGreaterThanEqual(board.getId(), id).size();
+        List<Comment> commentList = this.commentRepository.findAllByBoardAndCommentIdGreaterThanEqual(board.getId(), id);
+        for (Comment comment : commentList) {
+            System.out.println(comment.getId());
+        }
+        return (count - 1) / 10;
     }
 }
