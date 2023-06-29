@@ -54,10 +54,10 @@ public class Oauth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         if (savedRequest != null) {
             uri = savedRequest.getRedirectUrl();
         } else if (prevPage != null && !prevPage.equals("")) {
-
             if (prevPage.contains("/user/signup")) {
                 uri = "/index";
-            } else {
+
+            } else{
                 uri = prevPage;
             }
         }

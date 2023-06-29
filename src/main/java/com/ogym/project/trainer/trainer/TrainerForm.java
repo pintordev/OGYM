@@ -41,6 +41,5 @@ public class TrainerForm {
     @NotEmpty
     private List<CertificateForm> certificateList;
 
-    @NotEmpty
     private AddressForm address;
 }

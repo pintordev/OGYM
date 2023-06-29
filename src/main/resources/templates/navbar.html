@@ -9,7 +9,6 @@
         <ul class="left-nav">
             <li><a href="/board">커뮤니티</a></li>
             <li><a href="/trainer">트레이너</a></li>
-            <li><a href="#">스토어</a></li>
         </ul>
     </div>
     <div class="right-box">
@@ -18,7 +17,7 @@
             <li sec:authorize="isAnonymous()"><a href="/user/signup">회원가입</a></li>
             <li sec:authorize="isAuthenticated()"><a href="/user/logout">로그아웃</a></li>
             <li sec:authorize="isAuthenticated()"><a href="/user/mypage">마이페이지</a></li>
-            <li><a href="#">문의하기</a></li>
+            <li sec:authorize="isAuthenticated()"><a href="/inquiry">문의하기</a></li>
         </ul>
     </div>
 </section>

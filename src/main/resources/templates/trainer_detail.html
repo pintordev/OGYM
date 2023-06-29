@@ -9,30 +9,25 @@
     <section class="trainer-detail-header">
         <div class="inner-container">
             <div class="profile-img-box">
-                <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_8dfc9177_%ED%95%9C%EC%83%81%EC%97%BD.jpg" alt="">
-                <span class="trainer-name">한상엽</span>
-                <span class="trainer-address">서울 종로</span>
+                <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_8dfc9177_%ED%95%9C%EC%83%81%EC%97%BD.jpg"
+                     alt="">
+                <span class="trainer-name" th:text="${trainer.userInfo.username}"></span>
+                <span class="trainer-address" th:text="${trainer.address.mainAddress}"></span>
             </div>
             <div class="profile-abstract-box">
                 <div class="info-detail">
                     <div class="info-abstract">
-                        건강한 삼대운동으로 강하게!
+                        <span class="trainer-intro-abstract" th:text="${trainer.introAbstract}"></span>
                     </div>
                     <div class="info-lesson">
                         PT 10회 기준 회당 70,000원
                     </div>
                     <div class="info-center">
-                        몬스터짐 광화문
+                        <span class="trainer-center" th:text="${trainer.center}"></span>
                     </div>
                 </div>
                 <div class="info-field">
-                    <span>#웨이트</span>
-                    <span>#스트레칭</span>
-                    <span>#재활</span>
-                    <span>#다이어트</span>
-                    <span>#대회준비</span>
-                    <span>#지구력</span>
-                    <span>#건강관리</span>
+                    <span th:each="field : ${trainer.fieldList}" th:text="|#${field.name} |"></span>
                 </div>
             </div>
         </div>
@@ -43,7 +38,6 @@
     <section class="trainer-detail-classification">
         <div class="classify-btn-box">
             <button class="information">정보</button>
-            <button class="used-product">사용제품</button>
             <button class="board">커뮤니티</button>
         </div>
     </section>
@@ -52,12 +46,10 @@
     <!-- trainer-information-section start -->
     <section class="trainer-information-section">
         <div class="inner-container">
-            <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_8dfc9177_%ED%95%9C%EC%83%81%EC%97%BD.jpg" alt="">
-            <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_e711e19e_%ED%95%98%EC%83%81%EC%95%84.png" alt="">
             <div class="interval">
 
-                스쾃 벤치프레스 데드리프트로 보디빌딩을 하여 3대기록도 올리고, 체형도 완성합니다.
-                지체지기 백세불통(知軆知己 百歲不痛) 내 몸을 알고 백세까지 건강하게 항상 건강하게 운동합시다.</div>
+                <span class="trainer-introDetail" th:text="${trainer.introDetail}"></span>.
+            </div>
         </div>
         <div class="inner-container trainer-field">
             <h3>트레이닝 종목</h3>
@@ -74,55 +66,18 @@
         <div class="inner-container trainer-center">
             <h3>소속 센터</h3>
             <div class="info-center">
-                <span>몬스터짐 광화문</span>
+                <span class="trainer-center" th:text="${trainer.center}"></span>
             </div>
         </div>
         <div class="inner-container trainer-certificate">
-            <h3>보유 자격증 [5]</h3>
+            <h3>보유 자격증 [<span th:text="${#lists.size(trainer.certificateList)}"></span>]</h3>
             <div class="certificate-list-box">
-                <div class="certificate-list">
-                    <div class="certificate-name">
+                <div class="certificate-list" th:each="certificate :${trainer.certificateList}">
+                    <div class="certificate-name" >
                         <i class="fa-solid fa-medal"></i>
-                        <span>루피</span>
+                        <span th:text="${certificate.name}"></span>
                     </div>
-                    <div class="certificate-img">
-                        <img src="//img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cqWN/image/XnpNmxETZywTbSNav2LupmhSiy0" alt="">
-                    </div>
-                </div>
-                <div class="certificate-list">
-                    <div class="certificate-name">
-                        <i class="fa-solid fa-medal"></i>
-                        <span>뽀로로</span>
-                    </div>
-                    <div class="certificate-img">
-                        <img src="https://i.namu.wiki/i/olVOIF0ve6_P-dOCgQU8GW74KLgxJxL5VPEHuwSnUe7dxvl0KOhjM2SANhkt546zcdW0SaFwdA-eYzGa84CnkVX2bKQ16AjqORdBTwUJtZ1p6vaIVHQ6rrkWVZtYPyc1bTmH8u6mi_Cx5vRfB5qAKg.webp" alt="">
-                    </div>
-                </div>
-                <div class="certificate-list">
-                    <div class="certificate-name">
-                        <i class="fa-solid fa-medal"></i>
-                        <span>크롱</span>
-                    </div>
-                    <div class="certificate-img">
-                        <img src="https://i.namu.wiki/i/Uf0f0uKi71u0dNf6ygylCk1zEGtrwHmVwR7A92vlSqNpPfdm90YjqN6s5v3miUtqnyzIN7QcT1z5VcEzWHkN6_M9x1D-HnvmvyO_htJ-u1Nnkpu-WlLGHHrlxN3GfOHbm62wZ4VMH1a3-0zlWUVVfg.webp" alt="">
-                    </div>
-                </div>
-                <div class="certificate-list">
-                    <div class="certificate-name">
-                        <i class="fa-solid fa-medal"></i>
-                        <span>패티</span>
-                    </div>
-                    <div class="certificate-img">
-                        <img src="https://i.namu.wiki/i/0S1dW1oNDouGd3mZlM_bmOnpZQK_7Ybx5FbDo9exuxxFep90SUegGcMndeU-i3LWArQlnBMgTrT670CMm_tgMLo-X3b65mQzJQBFMnsclOO_TBBYQbGWMIzn8HZvQumysxFPRXhb_LsR-fAOXR2mUw.webp" alt="">
-                    </div>
-                </div>
-                <div class="certificate-list">
-                    <div class="certificate-name">
-                        <i class="fa-solid fa-medal"></i>
-                        <span id="top">몽키 D. 루피</span>
-                    </div>
-                    <div class="certificate-img">
-                        <img src="https://m.media-amazon.com/images/I/71P6xih4-DL._AC_SX679_.jpg" alt="">
+                    <div class="certificate-img" th:text="${certificate.imgUrl}">
                     </div>
                 </div>
             </div>
@@ -131,25 +86,11 @@
             <div class="left-box">
                 <h3>레슨 이용가격</h3>
                 <div class="lesson-list-box">
-                    <div class="lesson-list">
-                        <div class="number">10회</div>
+                    <div class="lesson-list" th:each="lesson:${trainer.lessonList}">
+                        <div class="number" th:text="${lesson.number}+'회'"></div>
                         <div class="price-box">
-                            <div class="unit-price">회당 70,000원</div>
-                            <div class="total-price">700,000원</div>
-                        </div>
-                    </div>
-                    <div class="lesson-list">
-                        <div class="number">20회</div>
-                        <div class="price-box">
-                            <div class="unit-price">회당 65,000원</div>
-                            <div class="total-price">1,300,000원</div>
-                        </div>
-                    </div>
-                    <div class="lesson-list">
-                        <div class="number">30회</div>
-                        <div class="price-box">
-                            <div class="unit-price">회당 65,000원</div>
-                            <div class="total-price">1,950,000원</div>
+                            <div class="unit-price" th:text="|회당 ${#numbers.formatInteger(lesson.price/lesson.number, 0, 'COMMA')} 원|"></div>
+                            <div class="total-price" th:text="|${#numbers.formatInteger(lesson.price, 0, 'COMMA')} 원|"></div>
                         </div>
                     </div>
                 </div>
@@ -157,13 +98,9 @@
             <div class="right-box">
                 <h3>연락처</h3>
                 <div class="contacts-list-box">
-                    <div class="contacts-list">
-                        <span class="type">카카오톡</span>
-                        <span class="content">LYH1997</span>
-                    </div>
-                    <div class="contacts-list">
-                        <span class="type">인스타그램</span>
-                        <span class="content">mangwalker97</span>
+                    <div class="contacts-list" th:each="contact:${trainer.contactList}">
+                        <span th:text="${contact.type}"></span>
+                        <span th:text="${#strings.substring(contact.content, 0, 3) + '-' + #strings.substring(contact.content, 3, 7) + '-' + #strings.substring(contact.content, 7)}"></span>
                     </div>
                 </div>
             </div>
@@ -181,6 +118,7 @@
 		0
 	);
 });
+
 
 </script>
 </html>

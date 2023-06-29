@@ -47,10 +47,17 @@ public class TrainerController {
         return "trainer_list";
     }
 
-    @GetMapping("/detail")
-    public String detail(Model model) {
+    @GetMapping("/{id}")
+    public String detail(Model model,
+                         @PathVariable("id") Long id) {
+
         List<Field> fieldList = this.fieldService.getList();
         model.addAttribute("fieldList", fieldList);
+
+        Trainer trainer = this.trainerService.getTrainer(id);
+        model.addAttribute("trainer", trainer);
+
+        System.out.println(trainer.getAddress().getMainAddress());
 
         return "trainer_detail";
     }
@@ -226,14 +233,14 @@ public class TrainerController {
         }
 
         // 연락처 정보 저장
-        for(ContactForm contactForm : trainerForm.getContactList()){
+        for (ContactForm contactForm : trainerForm.getContactList()) {
             if (!contactForm.getType().equals("") && !contactForm.getContent().equals("")) {
                 this.contactService.create(contactForm.getType(), contactForm.getContent(), trainer);
             }
         }
 
         // 자격증 정보 저장
-        for(CertificateForm certificateForm : trainerForm.getCertificateList()){
+        for (CertificateForm certificateForm : trainerForm.getCertificateList()) {
             if (!certificateForm.getName().equals("") && !certificateForm.getImgUrl().equals("")) {
                 this.certificateService.create(certificateForm.getName(), certificateForm.getImgUrl(), trainer);
             }
@@ -243,12 +250,15 @@ public class TrainerController {
         AddressForm addressForm = trainerForm.getAddress();
         Address address = this.addressService.create(addressForm.getZoneCode(), addressForm.getMainAddress(), addressForm.getSubAddress(), addressForm.getLatitude(), addressForm.getLongitude(), trainer);
         if (addressForm.getZoneCode() != null && !addressForm.getMainAddress().equals("")
-                && addressForm.getLatitude() !=null && addressForm.getLongitude() != null) {
+                && addressForm.getLatitude() != null && addressForm.getLongitude() != null) {
         }
 
-        return "redirect:/trainer";
+        this.trainerService.saveAddress(address, trainer);
+        return String.format("redirect:/trainer/%s", trainer.getId());
     }
 }
+
+
 
 
 

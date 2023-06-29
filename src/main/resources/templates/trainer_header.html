@@ -8,7 +8,8 @@
                 <a href="#" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
             <div class="register-btn-box">
-                <button class="btn" onclick="location.href='/trainer/register'">트레이너 등록하기</button>
+                <button class="btn" sec:authorize="isAuthenticated()" onclick="location.href='/trainer/register'">트레이너 등록하기</button>
+                <button class="btn" sec:authorize="isAnonymous()" th:onclick="_anonymous(this)" th:data-uri="|/trainer/register|">트레이너 등록하기</button>
             </div>
         </div>
     </div>
