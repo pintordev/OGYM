@@ -12,6 +12,10 @@ import com.ogym.project.trainer.lesson.Lesson;
 import com.ogym.project.trainer.lesson.LessonForm;
 import com.ogym.project.user.user.SiteUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,9 +35,8 @@ public class TrainerService {
                           String gender,
                           String introAbstract,
                           String introDetail,
-                          List<Field> fieldList
-                       )
-    {
+                          List<Field> fieldList) {
+
         Trainer trainer = new Trainer();
         trainer.setUserInfo(userInfo);
         trainer.setCenter(center);
@@ -69,5 +72,12 @@ public class TrainerService {
 
         return null;
 
+    }
+
+    public Page<Trainer> getList(int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.trainerRepository.findAll(pageable);
     }
 }

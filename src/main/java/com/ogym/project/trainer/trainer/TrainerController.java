@@ -1,8 +1,11 @@
 package com.ogym.project.trainer.trainer;
 
+import com.ogym.project.file.FileService;
+import com.ogym.project.file.UploadedFile;
 import com.ogym.project.trainer.address.Address;
 import com.ogym.project.trainer.address.AddressForm;
 import com.ogym.project.trainer.address.AddressService;
+import com.ogym.project.trainer.certificate.Certificate;
 import com.ogym.project.trainer.certificate.CertificateForm;
 import com.ogym.project.trainer.certificate.CertificateService;
 import com.ogym.project.trainer.contact.Contact;
@@ -17,12 +20,14 @@ import com.ogym.project.user.user.SiteUser;
 import com.ogym.project.user.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 public class TrainerController {
+
     private final TrainerService trainerService;
     private final AddressService addressService;
     private final ContactService contactService;
@@ -38,11 +44,17 @@ public class TrainerController {
     private final LessonService lessonService;
     private final CertificateService certificateService;
     private final UserService userService;
+    private final FileService fileService;
 
     @GetMapping("")
-    public String main(Model model) {
+    public String main(Model model,
+                       @RequestParam(value = "page", defaultValue = "0") int page) {
+
         List<Field> fieldList = this.fieldService.getList();
         model.addAttribute("fieldList", fieldList);
+
+        Page<Trainer> trainerPaging = this.trainerService.getList(page);
+        model.addAttribute("trainerPaging", trainerPaging);
 
         return "trainer_list";
     }
@@ -57,7 +69,12 @@ public class TrainerController {
         Trainer trainer = this.trainerService.getTrainer(id);
         model.addAttribute("trainer", trainer);
 
-        System.out.println(trainer.getAddress().getMainAddress());
+        List<String> certificatePathList = new ArrayList<>();
+        for (Certificate certificate : trainer.getCertificateList()) {
+            UploadedFile image = certificate.getImage();
+            certificatePathList.add(this.fileService.getFilePath(image));
+        }
+        model.addAttribute("certificatePathList", certificatePathList);
 
         return "trainer_detail";
     }
@@ -88,10 +105,11 @@ public class TrainerController {
         return "trainer_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/register")
     public String register(Model model,
                            @Valid TrainerForm trainerForm,
-                           BindingResult bindingResult, Principal principal) {
+                           BindingResult bindingResult, Principal principal) throws IOException {
 
         int length;
 
@@ -123,8 +141,8 @@ public class TrainerController {
 
         index = 0;
         for (CertificateForm certificateForm : trainerForm.getCertificateList()) {
-            if (!certificateForm.getName().equals("") && !certificateForm.getImgUrl().equals("")) {
-                System.out.printf("name #%d : name = %s, imgUrl = %s\n", ++index, certificateForm.getName(), certificateForm.getImgUrl());
+            if (!certificateForm.getName().equals("") && certificateForm.getImage() != null) {
+                System.out.printf("name #%d : name = %s, imgUrl = %s\n", ++index, certificateForm.getName(), certificateForm.getImage().getOriginalFilename());
             }
         }
 
@@ -241,16 +259,17 @@ public class TrainerController {
 
         // 자격증 정보 저장
         for (CertificateForm certificateForm : trainerForm.getCertificateList()) {
-            if (!certificateForm.getName().equals("") && !certificateForm.getImgUrl().equals("")) {
-                this.certificateService.create(certificateForm.getName(), certificateForm.getImgUrl(), trainer);
+            if (!certificateForm.getName().equals("") && certificateForm.getImage() != null) {
+                this.certificateService.create(certificateForm.getName(), certificateForm.getImage(), trainer);
             }
         }
 
         // 주소 저장
         AddressForm addressForm = trainerForm.getAddress();
-        Address address = this.addressService.create(addressForm.getZoneCode(), addressForm.getMainAddress(), addressForm.getSubAddress(), addressForm.getLatitude(), addressForm.getLongitude(), trainer);
+        Address address = null;
         if (addressForm.getZoneCode() != null && !addressForm.getMainAddress().equals("")
                 && addressForm.getLatitude() != null && addressForm.getLongitude() != null) {
+            address = this.addressService.create(addressForm.getZoneCode(), addressForm.getMainAddress(), addressForm.getSubAddress(), addressForm.getLatitude(), addressForm.getLongitude(), trainer);
         }
 
         this.trainerService.saveAddress(address, trainer);

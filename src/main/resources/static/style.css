@@ -1692,9 +1692,27 @@ margin-bottom : 5px;
     display: flex;
     align-items: center;
 }
-.trainer-form-section > .trainer-form > ul > li.content.certificate > .certificate-box > div > input {
+.trainer-form-section > .trainer-form > ul > li.content.certificate > .certificate-box > .certificate-name > input {
     flex: 1 1 auto;
     border: none;
+}
+.trainer-form-section > .trainer-form > ul > li.content.certificate > .certificate-box > .certificate-imgUrl {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.trainer-form-section > .trainer-form > ul > li.content.certificate > .certificate-box > .certificate-imgUrl > .uploaded-file-name {
+    flex: 1 1 auto;
+    color: gray;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.trainer-form-section > .trainer-form > ul > li.content.certificate > .certificate-box > .certificate-imgUrl > .uploaded-file-name.active {
+    color: black;
+}
+.trainer-form-section > .trainer-form > ul > li.content.certificate > .certificate-box > .certificate-imgUrl > input {
+    display: none;
 }
 
 .trainer-form-section > .trainer-form > ul.contact-list {
