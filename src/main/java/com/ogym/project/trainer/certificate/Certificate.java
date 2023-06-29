@@ -1,5 +1,6 @@
 package com.ogym.project.trainer.certificate;
 
+import com.ogym.project.file.UploadedFile;
 import com.ogym.project.trainer.trainer.Trainer;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,9 +17,10 @@ public class Certificate {
     @Column(length = 50)
     private String name;
 
-    @Column(columnDefinition = "TEXT")
-    private String imgUrl;
+    @OneToOne
+    private UploadedFile image;
 
     @ManyToOne
     private Trainer trainer;
-    }
+
+}

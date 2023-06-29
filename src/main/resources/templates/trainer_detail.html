@@ -9,10 +9,9 @@
     <section class="trainer-detail-header">
         <div class="inner-container">
             <div class="profile-img-box">
-                <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_8dfc9177_%ED%95%9C%EC%83%81%EC%97%BD.jpg"
-                     alt="">
+                <img th:src="@{/image/user_profile.jpg}" alt="">
                 <span class="trainer-name" th:text="${trainer.userInfo.username}"></span>
-                <span class="trainer-address" th:text="${trainer.address.mainAddress}"></span>
+                <span class="trainer-address" th:text="${@commonUtil.reduceAddress(trainer.address.mainAddress)}"></span>
             </div>
             <div class="profile-abstract-box">
                 <div class="info-detail">
@@ -47,20 +46,13 @@
     <section class="trainer-information-section">
         <div class="inner-container">
             <div class="interval">
-
                 <span class="trainer-introDetail" th:text="${trainer.introDetail}"></span>.
             </div>
         </div>
         <div class="inner-container trainer-field">
             <h3>트레이닝 종목</h3>
             <div class="info-field">
-                <span>#웨이트</span>
-                <span>#스트레칭</span>
-                <span>#재활</span>
-                <span>#다이어트</span>
-                <span>#대회준비</span>
-                <span>#지구력</span>
-                <span>#건강관리</span>
+                <span th:each="field : ${trainer.fieldList}" th:text="|#${field.name} |"></span>
             </div>
         </div>
         <div class="inner-container trainer-center">
@@ -70,14 +62,16 @@
             </div>
         </div>
         <div class="inner-container trainer-certificate">
-            <h3>보유 자격증 [<span th:text="${#lists.size(trainer.certificateList)}"></span>]</h3>
+            <h3>보유 자격증
+                <span th:if="${#lists.size(trainer.certificateList) > 0}" th:text="|[${#lists.size(trainer.certificateList)}]|"></span></h3>
             <div class="certificate-list-box">
-                <div class="certificate-list" th:each="certificate :${trainer.certificateList}">
+                <div class="certificate-list" th:each="certificate, loop : ${trainer.certificateList}">
                     <div class="certificate-name" >
                         <i class="fa-solid fa-medal"></i>
                         <span th:text="${certificate.name}"></span>
                     </div>
-                    <div class="certificate-img" th:text="${certificate.imgUrl}">
+                    <div class="certificate-img">
+                        <img th:attr="src=${certificatePathList[__${loop.index}__]}" alt="">
                     </div>
                 </div>
             </div>
@@ -98,9 +92,10 @@
             <div class="right-box">
                 <h3>연락처</h3>
                 <div class="contacts-list-box">
-                    <div class="contacts-list" th:each="contact:${trainer.contactList}">
-                        <span th:text="${contact.type}"></span>
-                        <span th:text="${#strings.substring(contact.content, 0, 3) + '-' + #strings.substring(contact.content, 3, 7) + '-' + #strings.substring(contact.content, 7)}"></span>
+                    <div class="contacts-list" th:each="contact : ${trainer.contactList}">
+                        <span th:text="${contact.type}" class="contact-type"></span>
+                        <span th:if="${contact.type == '휴대폰'}" th:text="${#strings.substring(contact.content, 0, 3) + '-' + #strings.substring(contact.content, 3, 7) + '-' + #strings.substring(contact.content, 7)}"></span>
+                        <span th:text="${contact.content}"></span>
                     </div>
                 </div>
             </div>

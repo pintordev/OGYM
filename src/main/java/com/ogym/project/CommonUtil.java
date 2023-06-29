@@ -44,4 +44,9 @@ public class CommonUtil {
     public SiteUser usernameToUser(String loginId) {
         return this.userService.getUserByLoginId(loginId);
     }
+
+    public String reduceAddress(String address) {
+        String[] addressBits = address.split("\s");
+        return String.format("%s %s", addressBits[0], addressBits[1]);
+    }
 }

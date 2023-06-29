@@ -10,7 +10,7 @@
             <span>Road to</span>
             <span>WrestleMania VIXIV</span>
         </div>
-        <form class="trainer-form" th:action="@{/trainer/register}" th:object="${trainerForm}" method="post">
+        <form class="trainer-form" th:action="@{/trainer/register}" th:object="${trainerForm}" method="post" enctype="multipart/form-data">
             <ul>
                 <li class="type">이름</li>
                 <li class="content">
@@ -104,9 +104,10 @@
                                    placeholder="자격증 이름을 입력해주세요.">
                         </div>
                         <div class="certificate-imgUrl">
-                            <input type="text" th:value="${certificate.imgUrl}" th:field="*{certificateList[__${loop.index}__].imgUrl}"
-                                   placeholder="자격증 이미지를 업로드 해주세요.">
-                            <span><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                            <div class="uploaded-file-name">자격증 이미지를 업로드 해주세요.</div>
+                            <input type="file" th:value="${certificate.image}" th:field="*{certificateList[__${loop.index}__].image}"
+                                   placeholder="자격증 이미지를 업로드 해주세요." th:onchange="_getFileName(this)">
+                            <label th:for="|certificateList${loop.index}.image|"><i class="fa-solid fa-cloud-arrow-up"></i></label>
                         </div>
                     </div>
                 </li>
@@ -172,6 +173,13 @@
         }).open();
     }
 
+    function _getFileName(_this) {
+        var fileValue = $(_this).val().split("\\");
+        var fileName = fileValue[fileValue.length-1];
+
+        $(_this).siblings("div.uploaded-file-name").html(fileName);
+        $(_this).siblings("div.uploaded-file-name").addClass("active");
+    }
 
 </script>
 </html>

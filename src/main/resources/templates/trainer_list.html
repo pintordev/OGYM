@@ -21,67 +21,25 @@
             </div>
         </div>
         <div class="trainer-list-body">
-            <div class="trainer-list">
+            <div class="trainer-list" th:each="trainer : ${trainerPaging}">
                 <div class="profile-img-box">
-                    <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_8dfc9177_%ED%95%9C%EC%83%81%EC%97%BD.jpg" alt="">
+                    <img th:src="@{/image/user_profile.jpg}" alt="">
                 </div>
                 <div class="profile-detail-box">
                     <div class="detail-header">
-                        <span class="trainer-name"><a href="/trainer/17">한상엽</a></span>
-                        <span class="trainer-address">서울 종로</span>
+                        <span class="trainer-name"><a th:href="@{|/trainer/${trainer.id}|}" th:text="${trainer.userInfo.username}"></a></span>
+                        <span class="trainer-address" th:text="${@commonUtil.reduceAddress(trainer.address.mainAddress)}"></span>
                     </div>
-                    <div class="info-abstract">
-                        건강한 삼대운동으로 강하게!
-                    </div>
+                    <div class="info-abstract" th:text="${trainer.introAbstract}"></div>
                     <div class="info-detail">
                         <div class="info-lesson">
                             PT 10회 기준 회당 70,000원
                         </div>
                         <div class="delimiter"></div>
-                        <div class="info-center">
-                            몬스터짐 광화문
-                        </div>
+                        <div class="info-center" th:text="${trainer.center}"></div>
                     </div>
                     <div class="info-field">
-                        <span>#웨이트</span>
-                        <span>#스트레칭</span>
-                        <span>#재활</span>
-                        <span>#다이어트</span>
-                        <span>#대회준비</span>
-                        <span>#지구력</span>
-                        <span>#건강관리</span>
-                    </div>
-                </div>
-            </div>
-            <div class="trainer-list">
-                <div class="profile-img-box">
-                    <img src="https://cdn.monsterzym.com/images//community_uploads/thumbnails/trainer/introduce/3531279118_8dfc9177_%ED%95%9C%EC%83%81%EC%97%BD.jpg" alt="">
-                </div>
-                <div class="profile-detail-box">
-                    <div class="detail-header">
-                        <span class="trainer-name">한상엽</span>
-                        <span class="trainer-address">서울 종로</span>
-                    </div>
-                    <div class="info-abstract">
-                        건강한 삼대운동으로 강하게!
-                    </div>
-                    <div class="info-detail">
-                        <div class="info-lesson">
-                            PT 10회 기준 회당 70,000원
-                        </div>
-                        <div class="delimiter"></div>
-                        <div class="info-center">
-                            몬스터짐 광화문
-                        </div>
-                    </div>
-                    <div class="info-field">
-                        <span>#웨이트</span>
-                        <span>#스트레칭</span>
-                        <span>#재활</span>
-                        <span>#다이어트</span>
-                        <span>#대회준비</span>
-                        <span>#지구력</span>
-                        <span>#건강관리</span>
+                        <span th:each="field : ${trainer.fieldList}" th:text="|#${field.name} |"></span>
                     </div>
                 </div>
             </div>
