@@ -16,7 +16,6 @@ public class AddressService {
         address.setSubAddress(subAddress);
         address.setLatitude(latitude);
         address.setLongitude(longitude);
-        address.setTrainer(trainer);
         return addressRepository.save(address);
     }
 

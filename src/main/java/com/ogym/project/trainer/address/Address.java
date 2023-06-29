@@ -25,7 +25,4 @@ public class Address {
     private Double latitude; //위도
 
     private Double longitude;  //경도
-
-    @OneToOne
-    private Trainer trainer;
 }
