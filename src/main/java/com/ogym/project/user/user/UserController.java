@@ -61,6 +61,9 @@ public class UserController {
         System.out.println("birthYear = " + userCreateForm.getBirthYear());
         System.out.println("birthMonth = " + userCreateForm.getBirthMonth());
         System.out.println("birthDay = " + userCreateForm.getBirthDay());
+        System.out.println("zoneCode = " + userCreateForm.getZoneCode());
+        System.out.println("mainAddress = " + userCreateForm.getMainAddress());
+        System.out.println("subAddress = " + userCreateForm.getSubAddress());
         System.out.println("email = " + userCreateForm.getEmail());
         System.out.println("code = " + userCreateForm.getCode());
         System.out.println("genCode = " + userCreateForm.getGenCode());
@@ -90,7 +93,7 @@ public class UserController {
         System.out.println("validation all completed");
 
         userService.create(userCreateForm.getLoginId(), userCreateForm.getPassword(), userCreateForm.getNickname(), userCreateForm.getUsername(), userCreateForm.getPhone(), userCreateForm.getBirthYear(),
-                userCreateForm.getBirthMonth(), userCreateForm.getBirthDay(), userCreateForm.getEmail());
+                userCreateForm.getBirthMonth(), userCreateForm.getBirthDay(), userCreateForm.getEmail(), userCreateForm.getZoneCode(), userCreateForm.getMainAddress(), userCreateForm.getSubAddress());
 
         //RedirectAttributes는 리다이렉트 후에도 데이터를 전달하고 유지하기 위함.
         //addFalshAttrribute메서드를 사용하여 데이터를 추가하면, 리다이렉트 이후에도 데이터가 유지되며 한 번만 사용할 수 있어 해당 코드 사용

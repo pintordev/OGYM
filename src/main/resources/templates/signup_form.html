@@ -1,5 +1,4 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
-
 <script layout:fragment="api_address" type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script layout:fragment="api_map" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1cfff8a090a4615c9bacd5933a522f6&libraries=services"></script>
 <div layout:fragment="content">
@@ -56,15 +55,15 @@
 
 
                 <div class="input-box addressDate">
-                    <div>
-                        <input type="text" class="zoneCode" placeholder="우편번호">
-                        <button class="btn" type="button">우편번호 찾기</button>
+                    <div id="zoneCode">
+                        <input type="text" class="zoneCode" name="zoneCode" th:onclick="_zoneCode()" placeholder="우편번호">
+                        <button class="btn" type="button" id="zoneCode-btn" th:onclick="_zoneCode()">우편번호 찾기</button>
+                    </div>
+                    <div id="mainAddress">
+                        <input type="text" class="mainAddress" name="mainAddress" th:onclick="_zoneCode()" placeholder="주소">
                     </div>
                     <div>
-                        <input type="text" class="mainAddress" placeholder="주소">
-                    </div>
-                    <div>
-                        <input type="text" class="subAddress" placeholder="상세주소를 입력해주세요">
+                        <input type="text" class="subAddress" name="subAddress" placeholder="상세주소를 입력해주세요">
                     </div>
                     <div class="error" id="addressError"></div>
 
@@ -253,7 +252,6 @@ $(document).ready(function () {
       $("#birthDateError").text("생년(4자)을 입력해주세요.").css("color", "red");
       }
     });
-
 
   //input은 해당 개체의 input이 변경될때 이벤트 발생
   //email input 입력시 email-btn 스타일과, modify-btn 숨김, 보임
@@ -476,6 +474,27 @@ $(document).ready(function () {
       hasError = true;
     }
 
+    if ($(".zoneCode").val() === "") {
+      $(".zoneCode").focus();
+    } else if ($(".mainAddress").val() === "") {
+      $(".mainAddress").focus();
+    } else if ($(".subAddress").val() === "") {
+      $(".subAddress").focus();
+    }
+
+    if (
+      $(".zoneCode").val() === "" ||
+      $(".mainAddress").val() === "" ||
+      $(".subAddress").val() === ""
+    ) {
+      $("#addressError").text("주소를 입력해주세요");
+      hasError = true;
+    }
+
+
+
+
+
     if ($("#birthYear").val() === "") {
       $("#birthYear").focus();
     } else if ($("#birthMonth").val() === "") {
@@ -569,5 +588,23 @@ $(document).ready(function () {
     sessionStorage.setItem("signupSuccess", "true");
   });
 });
+
+function _zoneCode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var mainAddress = "";
+
+                if (data.userSelectedType === "R") {
+                    mainAddress = data.roadAddress;
+                } else {
+                    mainAddress = data.jibunAddress;
+                }
+
+                $(".zoneCode").val(data.zonecode);
+                $(".mainAddress").val(mainAddress);
+                $(".subAddress").focus();
+            }
+        }).open();
+    }
 </script>
 </html>

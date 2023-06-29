@@ -31,9 +31,9 @@ public class FileController {
 
     @GetMapping("")
     public String upload(Model model, FileForm fileForm) {
-        UploadedFile file = this.fileService.getFile(4L);
-        String path = this.fileService.getFilePath(file);
-        model.addAttribute("path", path);
+//        UploadedFile file = this.fileService.getFile(4L);
+//        String path = this.fileService.getFilePath(file);
+//        model.addAttribute("path", path);
         return "file";
     }
 

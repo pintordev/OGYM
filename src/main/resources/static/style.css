@@ -334,9 +334,19 @@ input[type="number"]::-webkit-inner-spin-button {
 	width: 100%;
 }
 
-.signup-form-section > .signup-form > .input-box > input .addressDate {
-    width: 100%;
+.signup-form-section > .signup-form > .input-box.addressDate input {
+        width: 100%;
 }
+
+.signup-form-section > .signup-form > .input-box.addressDate .zoneCode {
+    flex: 0 0 35%;
+    margin-right: 10px;
+}
+
+.signup-form-section > .signup-form > .input-box.addressDate #zoneCode, #mainAddress {
+margin-bottom : 5px;
+}
+
 
 .signup-form-section
 	> .signup-form

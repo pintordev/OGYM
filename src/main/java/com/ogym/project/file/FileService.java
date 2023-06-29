@@ -26,7 +26,7 @@ public class FileService {
 
     public UploadedFile upload(MultipartFile file, String primaryPath, String secondaryPath, String uploader) throws IOException {
 
-        String[] fileBits = file.getContentType().split(File.separator);
+        String[] fileBits = file.getContentType().split("/");
         String type = fileBits[0];
         String ext;
 

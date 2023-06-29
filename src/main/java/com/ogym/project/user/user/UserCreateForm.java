@@ -48,6 +48,15 @@ public class UserCreateForm {
     @Pattern(regexp = "\\d{2}")
     private String birthDay;
 
+    @NotEmpty
+    private String zoneCode;
+
+    @NotEmpty
+    private String mainAddress;
+
+    @NotEmpty
+    private String subAddress;
+
     @NotEmpty(message = "이메일을 입력해주세요")
     @Email
     private String email;
