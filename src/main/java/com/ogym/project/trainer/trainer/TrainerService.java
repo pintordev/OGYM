@@ -1,5 +1,7 @@
 package com.ogym.project.trainer.trainer;
 
+import com.ogym.project.DataNotFoundException;
+import com.ogym.project.board.board.Board;
 import com.ogym.project.trainer.address.Address;
 import com.ogym.project.trainer.address.AddressRepository;
 import com.ogym.project.trainer.certificate.Certificate;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.DataFormatException;
 
 @RequiredArgsConstructor
 @Service
@@ -46,5 +49,19 @@ public class TrainerService {
     public boolean isRegistered(SiteUser userInfo) {
         Optional<Trainer> ot = this.trainerRepository.findByUserInfo(userInfo);
         return ot.isPresent();
+    }
+
+    public Trainer getTrainer(Long id){
+        Optional<Trainer> tn = this.trainerRepository.findById(id);
+        if(tn.isPresent()){
+            return tn.get();
+        }else{
+            throw new DataNotFoundException("trainer not found");
+        }
+    }
+
+    public void saveAddress(Address address, Trainer trainer) {
+        trainer.setAddress(address);
+        this.trainerRepository.save(trainer);
     }
 }
