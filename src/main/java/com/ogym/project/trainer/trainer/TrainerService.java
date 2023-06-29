@@ -50,8 +50,6 @@ public class TrainerService {
 
     public List<Trainer> getListWithRadius() {
 
-
-
         return null;
     }
 }

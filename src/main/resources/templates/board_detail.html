@@ -61,7 +61,7 @@
                 <span><i class="fa-solid fa-thumbs-up"></i></span>
                 <span th:text="${#lists.size(presentBoard.voter)}"></span>
             </div>
-            <div class="vote-btn btn" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+            <div class="vote-btn btn" sec:authorize="isAnonymous()" th:onclick="_anonymous(this)" th:data-uri="|/user/login|">
                 <span><i class="fa-solid fa-thumbs-up"></i></span>
                 <span th:text="${#lists.size(presentBoard.voter)}"></span>
             </div>
@@ -93,7 +93,7 @@
                 <button class="icon-btn" th:onclick="_writeCommentBtn()"><i class="fa-solid fa-pen-to-square"></i></button>
             </div>
             <div class="header-right-box" sec:authorize="isAnonymous()">
-                <button class="icon-btn" th:onclick="_anonymous()"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="icon-btn" th:onclick="_anonymous(this)" th:data-uri="|/user/login|"><i class="fa-solid fa-pen-to-square"></i></button>
             </div>
         </div>
         <div class="comment-write-box">
@@ -139,14 +139,14 @@
                             <span><i class="fa-solid fa-thumbs-up"></i></span>
                             <span th:text="${#lists.size(comment.voter)}"></span>
                         </div>
-                        <div class="vote-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                        <div class="vote-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous(this)" th:data-uri="|/user/login|">
                             <span><i class="fa-solid fa-thumbs-up"></i></span>
                             <span th:text="${#lists.size(comment.voter)}"></span>
                         </div>
                         <div class="reComment-write-btn btn-sm" sec:authorize="isAuthenticated()" th:onclick="_writeReCommentBtn(this)">
                             <span>댓글</span>
                         </div>
-                        <div class="reComment-write-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                        <div class="reComment-write-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous(this)" th:data-uri="|/user/login|">
                             <span>댓글</span>
                         </div>
                     </div>
@@ -199,14 +199,14 @@
                                 <span><i class="fa-solid fa-thumbs-up"></i></span>
                                 <span th:text="${#lists.size(reComment.voter)}"></span>
                             </div>
-                            <div class="vote-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                            <div class="vote-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous(this)" th:data-uri="|/user/login|">
                                 <span><i class="fa-solid fa-thumbs-up"></i></span>
                                 <span th:text="${#lists.size(reComment.voter)}"></span>
                             </div>
                             <div class="reComment-write-btn btn-sm" sec:authorize="isAuthenticated()" th:onclick="_writeReCommentBtn(this)">
                                 <span>댓글</span>
                             </div>
-                            <div class="reComment-write-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous()">
+                            <div class="reComment-write-btn btn-sm" sec:authorize="isAnonymous()" th:onclick="_anonymous(this)" th:data-uri="|/user/login|">
                                 <span>댓글</span>
                             </div>
                         </div>
@@ -293,12 +293,6 @@
     $(function() {
         _reset();
     });
-
-    function _anonymous() {
-        if(confirm("로그인이 필요한 서비스입니다.\n확인을 누르시면 로그인 페이지로 이동합니다.")) {
-            location.href = "/user/login";
-        }
-    }
 
     function _delete(_this) {
         if(confirm("정말 삭제하시겠습니까?")) {

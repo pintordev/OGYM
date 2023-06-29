@@ -1,4 +1,4 @@
-package com.ogym.project.security;
+package com.ogym.project;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

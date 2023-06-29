@@ -24,13 +24,12 @@ public class MainController {
 
     @GetMapping("/index")
     public String index(Model model) {
+
         List<Board> bestBoardList = this.boardService.getBestBoard();
         model.addAttribute("bestBoardList", bestBoardList);
+
         List<Board> recentBoardList = this.boardService.getRecentBoard();
         model.addAttribute("recentBoardList", recentBoardList);
-
-        String presentPath = System.getProperty("user.dir");
-        System.out.println("현재 파일 경로: " + presentPath);
 
         return "index";
     }

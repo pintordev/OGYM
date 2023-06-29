@@ -34,6 +34,13 @@
 
     <!-- 자바스크립트 start -->
     <th:block layout:fragment="script"></th:block>
+    <script>
+        function _anonymous(_this) {
+            if(confirm("로그인이 필요한 서비스입니다.\n확인을 누르시면 로그인 페이지로 이동합니다.")) {
+                location.href = _this.dataset.uri;
+            }
+        }
+    </script>
     <!-- 자바스크립트 end -->
 </body>
 </html>
