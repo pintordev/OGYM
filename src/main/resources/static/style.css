@@ -625,6 +625,49 @@ margin-bottom : 5px;
 }
 
 
+/* modify-nickname-form-section */
+.modify-nickname-form-section > .logo-box {
+	display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.modify-nickname-form-section > .logo-box > img {
+	height:70px;
+}
+
+.modify-nickname-form-section > h3 {
+	margin-bottom: 15px;
+}
+
+.modify-nickname-form-section > .modify-nickname-form > .input-box input {
+	height: 40px;
+	padding: 0 10px;
+	font-size: 0.9rem;
+	border-radius: 0.3rem;
+	border: 1px solid rgb(128, 128, 128);
+}
+
+.modify-nickname-form-section > .modify-nickname-form > .input-box > div {
+	display: flex;
+}
+.modify-nickname-form-section > .modify-nickname-form > .input-box > .error {
+	padding: 0 10px;
+	font-size: 0.7rem;
+	color: red;
+	height: 25px;
+	line-height: 20px;
+	/* 		visibility: hidden; opacity: 0; */
+}
+
+.modify-nickname-form-section > .modify-nickname-form > .btn {
+	display: block;
+	margin-left: auto;
+	margin-top: -10px;
+}
+
+
 /* board-header-section css */
 .board-header-section > h2 {
 	/* 	border: 1px solid orange; */
@@ -1847,7 +1890,7 @@ margin-bottom : 5px;
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
-    flex: 0 0 20%;
+    flex: 0 0 30%;
 }
 .mypage-section > .inner-container > .button-box > button {
     margin-left: 10px;

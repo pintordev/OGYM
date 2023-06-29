@@ -275,6 +275,47 @@ public class UserController {
 
         return "redirect:/user/logout";
     }
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/nickname")
+    public  String modifyNickname() {return "modify_nickname_form"; }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/nickname")
+    public String modifyNickname(@RequestParam("newNickname") String newNickname, Principal principal) {
+        SiteUser user = this.userService.getUser(principal.getName());
+        System.out.println(newNickname);
+
+        if (newNickname.matches(".*[ㄱ-ㅎㅏ-ㅣ!\"#$%&'()*+,-./:;<=>?@\\[\\\\\\]^_`{|}~\\s]+.*")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 닉네임입니다.");
+        }
+
+        if (!this.userService.isNickNameDuplicate(newNickname)) {
+            // 닉네임 변경 로직 추가
+            user.setNickname(newNickname);
+            this.userService.modifyNickname(newNickname, user);
+
+            return "redirect:/user/mypage";
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 닉네임입니다.");
+        }
+    }
+
+
+    @GetMapping("/modify/nickname-check")
+    @ResponseBody
+    public String modifyNicknameCheck(@RequestParam("newNickname") String newNickname, Principal principal) {
+
+        SiteUser user = this.userService.getUser(principal.getName());
+        if (newNickname.matches(".*[ㄱ-ㅎㅏ-ㅣ!\"#$%&'()*+,-./:;<=>?@\\[\\\\\\]^_`{|}~\\s]+.*")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용할 수 없는 닉네임입니다.");
+        }
+
+        if (!this.userService.isNickNameDuplicate(newNickname)) {
+            return "사용 가능한 닉네임입니다.";
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "사용중인 닉네임입니다.");
+        }
+    }
 
     @GetMapping("/mypage")
     public String myPage(Model model, Principal principal,

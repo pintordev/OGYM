@@ -1,0 +1,82 @@
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content">
+  <!-- 구현 Start -->
+  <!-- user-find-form-section start -->
+  <section class="form modify-nickname-form-section">
+    <div class="logo-box">
+      <img th:src="@{/image/todayGym_logo_main.png}" alt="">
+    </div>
+    <h3>닉네임 변경</h3>
+    <form class="modify-nickname-form" th:action="@{/user/modify/nickname}" method="post">
+      <div class="input-box newNickname">
+        <input id="newNickname" name="newNickname" type="text" placeholder="새로운 닉네임을 입력해주세요">
+        <div class="error" id="newNicknameError"></div>
+      </div>
+      <button type="button" class="btn" id="modify-nickname-btn">닉네임 변경</button>
+    </form>
+  </section>
+  <!-- user-find-form-section end -->
+  <!-- 구현 End -->
+</div>
+<script layout:fragment="script" type="text/javascript">
+$(document).ready(function () {
+  $("#newNickname").keyup(function(){
+    var newNickname = $("#newNickname").val();
+    var newNicknameError = $("#newNicknameError");
+
+    if(newNickname !== ""){
+      $("#modify-nickname-btn").css("background-color","black");
+    } else {
+      $("#modify-nickname-btn").css("background-color","");
+    }
+    if (newNickname.length < 2) {
+      $(newNicknameError).text("최소 2자리를 입력해주세요").css("color", "red");
+    } else if (newNickname.length > 0 && newNickname.match(/[ㄱ-ㅎㅏ-ㅣ!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+/)) {
+      $(newNicknameError).text("사용할 수 없는 닉네임입니다").css("color", "red");
+    }
+    if (newNickname === ""){
+    $(newNicknameError).text("");
+    } else if(newNickname.length >= 2) {
+      $.ajax({
+        url: "/user/modify/nickname-check",
+        type: "GET",
+        data: { newNickname: newNickname },
+        success: function(data) {
+        console.log(data);
+        if (data === "") {
+              $(newNicknameError).text("");
+            } else {
+              $(newNicknameError).text(data).css("color", "rgb(50, 210, 50)");
+            }
+          },
+          error: function(xhr, status, error) {
+              $(newNicknameError).text(xhr.responseJSON.message).css("color", "red");
+          }
+        });
+      }
+  });
+  $(".btn").click(function () {
+    var hasError = false;
+    var newNickname = $("#newNickname").val();
+    var newNicknameError = $("#newNicknameError");
+
+    if(newNickname === ""){
+      $(newNicknameError).text("닉네임을 입력해주세요").css("color", "red");
+      $(newNickname).focus();
+      hasError = true;
+    } else if(newNickname.length < 2){
+    $(newNicknameError).text("최소 2자리를 입력해주세요").css("color", "red");
+    $(newNickname).focus();
+    hasError = true;
+    } else if ($(newNicknameError).text().includes("사용중인") || $(newNicknameError).text().includes("사용할")) {
+      $(newNickname).focus();
+      hasError = true;
+    }
+    if (hasError) {
+      return false;
+    }
+    $(".modify-nickname-form").submit();
+  });
+});
+</script>
+</html>

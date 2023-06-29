@@ -126,6 +126,12 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(user);
     }
+
+    public void modifyNickname(String newNickname, SiteUser user) {
+        user.setNickname(newNickname);
+        this.userRepository.save(user);
+    }
+
     public boolean confirmCertificationCode(String inputCode, String genCode) {
         return passwordEncoder.matches(inputCode, genCode);
     }
