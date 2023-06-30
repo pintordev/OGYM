@@ -1,5 +1,4 @@
 <html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
-
 <script layout:fragment="api_address" type="text/javascript" src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script layout:fragment="api_map" type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a1cfff8a090a4615c9bacd5933a522f6&libraries=services"></script>
 <div layout:fragment="content">
@@ -53,6 +52,25 @@
                 </div>
                 <div class="error" id="birthDateError"></div>
             </div>
+
+
+                <div class="input-box addressDate">
+                    <div id="zoneCode">
+                        <input type="text" class="zoneCode" name="zoneCode" th:onclick="_zoneCode()" placeholder="우편번호">
+                        <button class="btn" type="button" id="zoneCode-btn" th:onclick="_zoneCode()">우편번호 찾기</button>
+                    </div>
+                    <div id="mainAddress">
+                        <input type="text" class="mainAddress" name="mainAddress" th:onclick="_zoneCode()" placeholder="주소">
+                    </div>
+                    <div>
+                        <input type="text" class="subAddress" name="subAddress" placeholder="상세주소를 입력해주세요">
+                    </div>
+                    <div class="error" id="addressError"></div>
+
+            </div>
+
+
+
             <div class="input-box email">
                 <label for="email"></label>
                 <div class="two-part">
@@ -87,6 +105,10 @@ var timer;
 $(document).ready(function () {
   //email 버튼 클릭 시 인증번호 발송 및 타이머 작동
   $("#email-btn").click(function () {
+    if($("#email").val() === "") {
+      $("#emailError").text("이메일을 입력해주세요").css("color", "red");
+      return false;
+    }
     $("#email").prop("disabled", true);
     $(".timer").css("display", "flex");
     $(".timer").text("이메일 발송중").css("font-size", "0.8rem");
@@ -143,9 +165,9 @@ $(document).ready(function () {
   $("#nickname").on("blur", function() {
       var nickname = $(this).val();
 
-      if (nickname.length > 0 && !nickname.match(/(?=.*[a-zA-Z가-힣])[a-zA-Z가-힣\d]+/g)) {
+      if (nickname.length > 0 && nickname.match(/[ㄱ-ㅎㅏ-ㅣ!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]+/)) {
         $("#nicknameError").text("사용할 수 없는 닉네임입니다").css("color", "red");
-      } else if (nickname.length >= 2) {
+        } else if (nickname.length >= 2) {
         $.ajax({
           url: "signup/nickname",
           type: "GET",
@@ -231,7 +253,6 @@ $(document).ready(function () {
       }
     });
 
-
   //input은 해당 개체의 input이 변경될때 이벤트 발생
   //email input 입력시 email-btn 스타일과, modify-btn 숨김, 보임
   $("#email").on("input", function () {
@@ -253,6 +274,7 @@ $(document).ready(function () {
     $(".modify-btn").hide();
     $(".timer").css("display", "none");
     timeRemain = 180;
+    $("#genCode").val("");
   });
 
   //html에 pattern을 "\d*"로 바꾸면 숫자만 입력되지만 브라우저에따라 문자나 소수점이 들어갈 수 있어 이 처리가 필요하다고함
@@ -285,6 +307,7 @@ $(document).ready(function () {
     } else {
       clearInterval(timer);
       $(".timer").css("display", "none");
+      $("#genCode").val("");
       //타이머 다시 실행될 수 있으니 값 초기화
       $("#email-btn").prop("disabled", false);
       timeRemain = 180;
@@ -359,6 +382,9 @@ $(document).ready(function () {
   $("#code-btn").click(function () {
     var code = $("#code").val();
     var genCode = $("#genCode").val();
+    if (genCode === ""){
+      $("#codeError").text("인증번호를 확인해주세요").css("color","red");
+      }
 
     if (code !== "" && genCode) {
       $.ajax({
@@ -381,7 +407,7 @@ $(document).ready(function () {
           }
         },
         error: function (res) {
-          $("#codeError").text(res.responseJSON.message);
+          $("#codeError").text(res.responseJSON.message).css("color","red");
         }
       });
     }
@@ -431,7 +457,7 @@ $(document).ready(function () {
     var username = $("#username").val();
 
     if ($("#code").val() === "") {
-      $("#codeError").text("인증번호를 입력해주세요");
+      $("#codeError").text("인증번호를 입력해주세요").css("color","red");
       $("#code").focus();
       hasError = true;
     } else if (!$("#codeError").text().includes("완료")) {
@@ -445,6 +471,23 @@ $(document).ready(function () {
       hasError = true;
       }else if ($("#emailError").text().includes("사용중인")) {
       $("#email").focus();
+      hasError = true;
+    }
+
+    if ($(".zoneCode").val() === "") {
+      $(".zoneCode").focus();
+    } else if ($(".mainAddress").val() === "") {
+      $(".mainAddress").focus();
+    } else if ($(".subAddress").val() === "") {
+      $(".subAddress").focus();
+    }
+
+    if (
+      $(".zoneCode").val() === "" ||
+      $(".mainAddress").val() === "" ||
+      $(".subAddress").val() === ""
+    ) {
+      $("#addressError").text("주소를 입력해주세요");
       hasError = true;
     }
 
@@ -541,5 +584,23 @@ $(document).ready(function () {
     sessionStorage.setItem("signupSuccess", "true");
   });
 });
+
+function _zoneCode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var mainAddress = "";
+
+                if (data.userSelectedType === "R") {
+                    mainAddress = data.roadAddress;
+                } else {
+                    mainAddress = data.jibunAddress;
+                }
+
+                $(".zoneCode").val(data.zonecode);
+                $(".mainAddress").val(mainAddress);
+                $(".subAddress").focus();
+            }
+        }).open();
+    }
 </script>
 </html>

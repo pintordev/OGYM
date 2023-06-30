@@ -18,8 +18,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public SiteUser create(String loginId, String password, String nickname, String username, String phone, String birthyear, String birthmonth, String birthday,
-                           String email) {
+                           String email, String zoneCode, String mainaddress, String subaddress) {
         String birthDate = birthyear + birthmonth + birthday;
+        String addressDate = zoneCode + " " + mainaddress + " " + subaddress;
 
 
         SiteUser user = new SiteUser();
@@ -28,6 +29,7 @@ public class UserService {
         user.setNickname(nickname);
         user.setUsername(username);
         user.setBirthDate(birthDate);
+        user.setAddress(addressDate);
         user.setEmail(email);
         user.setPhoneNumber(phone);
         user.setCreateDate(LocalDateTime.now());
@@ -124,6 +126,12 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(user);
     }
+
+    public void modifyNickname(String newNickname, SiteUser user) {
+        user.setNickname(newNickname);
+        this.userRepository.save(user);
+    }
+
     public boolean confirmCertificationCode(String inputCode, String genCode) {
         return passwordEncoder.matches(inputCode, genCode);
     }
@@ -135,4 +143,8 @@ public class UserService {
         user.setLastLoginDate(LocalDateTime.now());
         this.userRepository.save(user);
     }
+
+//    public boolean checkSpecialCharacter(String password) {
+//         return password.matches(".*[\\W_]+.*");
+//    }
 }
