@@ -1844,11 +1844,27 @@ margin-bottom : 5px;
 	justify-content: center;
 	padding-left: 30px;
 	padding-right: 45px;
+	position: relative;
 }
+
 .mypage-section > .inner-container > .profile-img-box > img {
 	height: 150px;
 	border-radius: 50%;
 }
+
+
+.mypage-section > .inner-container > .profile-img-box > #upload-btn {
+	position: absolute;
+	left: 70%;
+	bottom: 30%;
+	background-color: rgb(128, 128, 128);
+    padding: 3px 3px;
+    border-radius: 0.3rem;
+    color: white;
+    border: none;
+    font-size: 1px;
+}
+
 .mypage-section > .inner-container > .profile-img-box > .user-name {
 	margin-top: 20px;
 	font-weight: bold;

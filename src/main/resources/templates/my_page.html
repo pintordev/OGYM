@@ -1,11 +1,16 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <!-- 구현 Start -->
     <!-- mypage-section start -->
+    <form id="profileForm" th:action="@{/user/profileUpdate}" method="post" enctype="multipart/form-data">
     <section class="mypage-section">
         <div class="inner-container">
             <div class="profile-img-box">
                 <img th:src="@{/image/user_profile.jpg}" alt="">
+                <input id="profile" th:onchange="profileUpLode(this)" type="file" style="display: none;">
+                <button id="upload-btn" type="button" style="display: none;">사진변경</button>
                 <span class="user-name" th:text="${user.username}"></span>
             </div>
             <div class="profile-abstract-box">
@@ -49,6 +54,7 @@
                 <button class="btn-sm">회원탈퇴</button>
             </div>
         </div>
+        </form>
     </section>
     <!-- mypage-section end -->
 
@@ -326,6 +332,37 @@
             $("#parameterForm").submit();
         }
     }
+
+    $("#upload-btn").click(function() {
+        $("#profile").click();
+    });
+
+    function profileUpLode(fileInput) {
+    var file = fileInput.files[0];
+    console.log(file.name);
+    var formData = new FormData();
+    formData.append("file", file);
+
+    $.ajax({
+        type: "POST",
+        url: "/upload/profile",
+        data: formData,
+        contentType: false,
+        processData: false,
+        beforeSend: function (xhr) {
+          var token = $("meta[name='_csrf']").attr("content");
+          var header = $("meta[name='_csrf_header']").attr("content");
+          xhr.setRequestHeader(header, token);
+        },
+        success: function(data) {
+        },
+        error: function(xhr, status, error) {
+        }
+    });
+
+}
+
+
 
 </script>
 </html>
