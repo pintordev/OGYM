@@ -1,6 +1,7 @@
 package com.ogym.project.trainer.trainer;
 
 
+import com.ogym.project.file.UploadedFile;
 import com.ogym.project.trainer.address.Address;
 import com.ogym.project.trainer.certificate.Certificate;
 import com.ogym.project.trainer.contact.Contact;
@@ -35,6 +36,9 @@ public class Trainer {
     //성별
     private String gender;
 
+    @OneToOne
+    private UploadedFile profileImage;
+
     //짧은소개
     @Column(length = 200)
     private String introAbstract;
@@ -51,6 +55,7 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE)
     private List<Lesson> lessonList;
 
+    private Integer avgLessonPrice;
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE)
     private List<Contact> contactList;

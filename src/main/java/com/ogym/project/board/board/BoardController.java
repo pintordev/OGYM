@@ -8,6 +8,9 @@ import com.ogym.project.board.comment.CommentService;
 import com.ogym.project.board.reComment.ReCommentForm;
 import com.ogym.project.user.user.SiteUser;
 import com.ogym.project.user.user.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -83,7 +86,17 @@ public class BoardController {
                          @RequestParam(value = "bSort", defaultValue = "createDate") String bSort,
                          @RequestParam(value = "bCategory", defaultValue = "") String bCategory,
                          @RequestParam(value = "cPage", defaultValue = "0") int cPage,
-                         @RequestParam(value = "cSort", defaultValue = "createDate") String cSort) {
+                         @RequestParam(value = "cSort", defaultValue = "createDate") String cSort,
+                         HttpServletRequest request,
+                         HttpServletResponse response) {
+
+        Board presentBoard;
+        if (hitCountJudge(id, request, response)) {
+            presentBoard = this.boardService.hit(id);
+        } else {
+            presentBoard = this.boardService.getBoard(id);
+        }
+        model.addAttribute("presentBoard", presentBoard);
 
         List<Category> categoryList = this.categoryService.getList();
         model.addAttribute("categoryList", categoryList);
@@ -96,9 +109,6 @@ public class BoardController {
             }
         }
         model.addAttribute("bcc", bcc);
-
-        Board presentBoard = this.boardService.getBoard(id);
-        model.addAttribute("presentBoard", presentBoard);
 
         Page<Board> boardPaging = this.boardService.getList(bPageSize, bPage, bSearch, bKw, bSort, bCategory);
         model.addAttribute("boardPaging", boardPaging);
@@ -270,5 +280,52 @@ public class BoardController {
         model.addAttribute("presentBoard", presentBoard);
 
         return "board_detail :: #board_detail";
+    }
+
+    private boolean hitCountJudge(Long id, HttpServletRequest request, HttpServletResponse response) {
+        // 요청 이전 url을 확인해서 제대로 된 게시물 접근인지 확인
+        String refer = request.getHeader("REFERER");
+
+        if (refer == null) return false;
+
+        String path = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        String referUri = refer.replaceFirst(path, "");
+        System.out.println(referUri);
+
+        // 게시판에서 접근한 경우가 아니면 reject
+        if (!referUri.startsWith("/board") && !referUri.equals("/index") && !referUri.startsWith("/user/mypage")) return false;
+
+        Cookie oldCookie = null;
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("boardHit")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+
+        // 관련 쿠기가 있다면
+        if (oldCookie != null) {
+            // 해당 쿠키가 해당 게시물 id를 조회할 때 생성된 쿠기인지 판단
+            if (!oldCookie.getValue().contains("[" + id + "]")) {
+                // 아니라면 해당 게시물 id를 조회한 결과를 쿠기에 저장
+                oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(30); // 지속시간 30초
+                response.addCookie(oldCookie); // 쿠키를 브라우저에 저장
+                return true;
+            }
+            // 맞다면 reject
+            return false;
+        } else {
+            // 쿠키가 없다면 새로 생성해서 해당 게시물 id를 조회한 결과를 쿠기에 저장
+            Cookie newCookie = new Cookie("boardHit","[" + id + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(30); // 지속시간 30초
+            response.addCookie(newCookie); // 쿠키를 브라우저에 저장
+            return true;
+        }
     }
 }

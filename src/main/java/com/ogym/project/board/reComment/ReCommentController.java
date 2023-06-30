@@ -70,7 +70,8 @@ public class ReCommentController {
         ReComment reComment = this.reCommentService.create(reCommentForm.getContent(), author, comment, parent);
 
         // Redirect to created board detail
-        return String.format("redirect:/board/%s#comment_%s", presentBoard.getId(), comment.getId());
+        int cPage = this.commentService.getPage(comment.getId(), presentBoard);
+        return String.format("redirect:/board/%s?cPage=%s#reComment_%s", presentBoard.getId(), cPage, reComment.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -103,7 +104,8 @@ public class ReCommentController {
         this.reCommentService.modify(reComment, reCommentForm.getContent());
 
         // Redirect to modified comment detail
-        return String.format("redirect:/board/%s#comment_%s", presentBoard.getId(), comment.getId());
+        int cPage = this.commentService.getPage(comment.getId(), presentBoard);
+        return String.format("redirect:/board/%s?cPage=%s#reComment_%s", presentBoard.getId(), cPage, reComment.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -115,7 +117,8 @@ public class ReCommentController {
         Board presentBoard = comment.getBoard();
         this.reCommentService.delete(reComment);
 
-        return String.format("redirect:/board/%s#comment_%s", presentBoard.getId(), comment.getId());
+        int cPage = this.commentService.getPage(comment.getId(), presentBoard);
+        return String.format("redirect:/board/%s?cPage=%s#comment_%s", presentBoard.getId(), cPage, comment.getId());
     }
 
     @PreAuthorize("isAuthenticated()")

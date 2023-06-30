@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class AddressService {
     private final AddressRepository addressRepository;
 
-    public Address create(Integer zoneCode, String mainAddress, String subAddress, Double latitude, Double longitude, Trainer trainer) {
+    public Address create(Integer zoneCode, String mainAddress, String subAddress, Double latitude, Double longitude) {
         Address address = new Address();
         address.setZoneCode(zoneCode);
         address.setMainAddress(mainAddress);

@@ -179,4 +179,11 @@ public class BoardService {
     public List<Board> getRecentBoard() {
         return this.boardRepository.findTop10ByOrderByCreateDateDesc();
     }
+
+    public Board hit(Long id) {
+        Board board = this.getBoard(id);
+        board.setHit(board.getHit() + 1);
+        this.boardRepository.save(board);
+        return board;
+    }
 }

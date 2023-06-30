@@ -10,20 +10,17 @@
         <div class="trainer-list-header">
             <div class="header-left-box">
                 <div>
-                    <span>전체</span>
-                    <span class="comment-number">123</span>
+                    <span th:if="${tField == ''}">전체</span>
+                    <span th:if="${tField != ''}" th:text="${tField}"></span>
+                    <span class="comment-number" th:text="${trainerPaging.getTotalElements()}"></span>
                 </div>
-            </div>
-            <div class="header-right-box">
-                <span>위치</span>
-                <span>성별</span>
-                <span>등록순</span>
             </div>
         </div>
         <div class="trainer-list-body">
             <div class="trainer-list" th:each="trainer : ${trainerPaging}">
                 <div class="profile-img-box">
-                    <img th:src="@{/image/user_profile.jpg}" alt="">
+                    <img th:if="${trainer.profileImage != null}" th:attr="src=${@commonUtil.getFilePath(trainer.profileImage.id)}" alt="">
+                    <img th:if="${trainer.profileImage == null}" th:src="@{/image/user_profile.jpg}" alt="">
                 </div>
                 <div class="profile-detail-box">
                     <div class="detail-header">
@@ -32,9 +29,7 @@
                     </div>
                     <div class="info-abstract" th:text="${trainer.introAbstract}"></div>
                     <div class="info-detail">
-                        <div class="info-lesson">
-                            PT 10회 기준 회당 70,000원
-                        </div>
+                        <div class="info-lesson" th:text="|PT 10회 기준 약 ${#numbers.formatInteger(trainer.avgLessonPrice, 0, 'COMMA')} 원|"></div>
                         <div class="delimiter"></div>
                         <div class="info-center" th:text="${trainer.center}"></div>
                     </div>
@@ -44,23 +39,56 @@
                 </div>
             </div>
         </div>
-        <ul class="page-list">
-            <li class="page-start">처음</li>
-            <li class="page-middle"><i class="fa-solid fa-angles-left"></i></li>
-            <li class="page-middle"><i class="fa-solid fa-angle-left"></i></li>
-            <li class="page-middle page-active">1</li>
-            <li class="page-middle">2</li>
-            <li class="page-middle">3</li>
-            <li class="page-middle">4</li>
-            <li class="page-middle">5</li>
-            <li class="page-middle"><i class="fa-solid fa-angle-right"></i></li>
-            <li class="page-middle"><i class="fa-solid fa-angles-right"></i></li>
-            <li class="page-end">끝</li>
+        <ul class="page-list" th:if="${!trainerPaging.isEmpty()}">
+            <li class="page-start" th:classappend="${trainerPaging.number != 0} ? 'page-active' : 'disabled'"
+                th:onclick="_tPaging(this)" th:data-page="${0}">처음</li>
+            <li class="page-middle" th:classappend="${trainerPaging.number - 10 >= 0} ? 'page-active' : 'disabled'"
+                th:onclick="_tPaging(this)" th:data-page="${trainerPaging.number - 10}"><i class="fa-solid fa-angles-left"></i></li>
+            <li class="page-middle" th:classappend="${trainerPaging.hasPrevious} ? 'page-active' : 'disabled'"
+                th:onclick="_tPaging(this)" th:data-page="${trainerPaging.number - 1}"><i class="fa-solid fa-angle-left"></i></li>
+            <li class="page-middle" th:each="page : ${#numbers.sequence(0, trainerPaging.totalPages-1)}"
+                th:if="${page >= trainerPaging.number - 2 and page <= trainerPaging.number + 2 and trainerPaging.number > 1 and trainerPaging.number < trainerPaging.totalPages-2}"
+                th:classappend="${page != trainerPaging.number} ? 'page-active' : 'disabled page-now'"
+                th:onclick="_tPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+            <li class="page-middle" th:each="page : ${#numbers.sequence(0, trainerPaging.totalPages-1)}"
+                th:if="${(trainerPaging.number <= 1 and page <= 4) or (trainerPaging.number >= trainerPaging.totalPages-2 and page >= trainerPaging.totalPages-5)}"
+                th:classappend="${page != trainerPaging.number} ? 'page-active' : 'disabled page-now'"
+                th:onclick="_tPaging(this)" th:data-page="${page}" th:text="${page+1}"></li>
+            <li class="page-middle" th:classappend="${trainerPaging.hasNext} ? 'page-active' : 'disabled'"
+                th:onclick="_tPaging(this)" th:data-page="${trainerPaging.number + 1}"><i class="fa-solid fa-angle-right"></i></li>
+            <li class="page-middle" th:classappend="${trainerPaging.number + 10 <= trainerPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                th:onclick="_tPaging(this)" th:data-page="${trainerPaging.number + 10}"><i class="fa-solid fa-angles-right"></i></li>
+            <li class="page-end" th:classappend="${trainerPaging.number != trainerPaging.totalPages-1} ? 'page-active' : 'disabled'"
+                th:onclick="_tPaging(this)" th:data-page="${trainerPaging.totalPages-1}">끝</li>
         </ul>
     </section>
     <!-- trainer-list-section end -->
+
+    <!-- several parameters input part start; bPageSize, bPage, bKw, bSort, bCategory -->
+    <form th:action="@{/trainer}" method="get" id="parameterForm">
+        <input type="hidden" id="tPage" name="tPage" th:value="${tPage}">
+        <input type="hidden" id="tKw" name="tKw" th:value="${tKw}">
+        <input type="hidden" id="tField" name="tField" th:value="${tField}">
+    </form>
+    <!-- several parameters input part end -->
     <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
+    function _tPaging(_this) {
+        if (!$(_this).hasClass("disabled")) {
+            $("#tPage").val(_this.dataset.page);
+            $("#parameterForm").submit();
+        }
+    }
+    function _tField(_this) {
+        $("#tPage").val(0);
+        $("#tField").val(_this.dataset.field);
+        $("#parameterForm").submit();
+    }
+    function _tSearch() {
+        $("#tPage").val(0);
+        $("#tKw").val($("#trainerKeyword").val());
+        $("#parameterForm").submit();
+    }
 </script>
 </html>

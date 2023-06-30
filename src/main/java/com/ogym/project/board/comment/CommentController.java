@@ -59,7 +59,8 @@ public class CommentController {
         Comment comment = this.commentService.create(commentForm.getContent(), author, presentBoard);
 
         // Redirect to created board detail
-        return String.format("redirect:/board/%s#comment_%s", presentBoard.getId(), comment.getId());
+        int cPage = this.commentService.getPage(comment.getId(), presentBoard);
+        return String.format("redirect:/board/%s?cPage=%s#comment_%s", presentBoard.getId(), cPage, comment.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -91,7 +92,8 @@ public class CommentController {
         this.commentService.modify(comment, commentForm.getContent());
 
         // Redirect to modified comment detail
-        return String.format("redirect:/board/%s#comment_%s", presentBoard.getId(), comment.getId());
+        int cPage = this.commentService.getPage(comment.getId(), presentBoard);
+        return String.format("redirect:/board/%s?cPage=%s#comment_%s", presentBoard.getId(), cPage, comment.getId());
     }
 
     @PreAuthorize("isAuthenticated()")

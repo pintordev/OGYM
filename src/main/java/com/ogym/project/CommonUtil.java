@@ -1,5 +1,7 @@
 package com.ogym.project;
 
+import com.ogym.project.file.FileService;
+import com.ogym.project.file.UploadedFile;
 import com.ogym.project.user.oauth2Account.Oauth2Account;
 import com.ogym.project.user.user.SiteUser;
 import com.ogym.project.user.user.UserService;
@@ -9,6 +11,7 @@ import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -20,6 +23,7 @@ import java.util.List;
 public class CommonUtil {
 
     private final UserService userService;
+    private final FileService fileService;
 
     public String markdown(String markdown) {
 
@@ -48,5 +52,10 @@ public class CommonUtil {
     public String reduceAddress(String address) {
         String[] addressBits = address.split("\s");
         return String.format("%s %s", addressBits[0], addressBits[1]);
+    }
+
+    public String getFilePath(Long id) {
+        UploadedFile file = this.fileService.getFile(id);
+        return this.fileService.getFilePath(file);
     }
 }

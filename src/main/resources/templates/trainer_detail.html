@@ -9,7 +9,8 @@
     <section class="trainer-detail-header">
         <div class="inner-container">
             <div class="profile-img-box">
-                <img th:src="@{/image/user_profile.jpg}" alt="">
+                <img th:if="${trainer.profileImage != null}" th:attr="src=${@commonUtil.getFilePath(trainer.profileImage.id)}" alt="">
+                <img th:if="${trainer.profileImage == null}" th:src="@{/image/user_profile.jpg}" alt="">
                 <span class="trainer-name" th:text="${trainer.userInfo.username}"></span>
                 <span class="trainer-address" th:text="${@commonUtil.reduceAddress(trainer.address.mainAddress)}"></span>
             </div>
@@ -18,9 +19,7 @@
                     <div class="info-abstract">
                         <span class="trainer-intro-abstract" th:text="${trainer.introAbstract}"></span>
                     </div>
-                    <div class="info-lesson">
-                        PT 10회 기준 회당 70,000원
-                    </div>
+                    <div class="info-lesson" th:text="|PT 10회 기준 약 ${#numbers.formatInteger(trainer.avgLessonPrice, 0, 'COMMA')} 원|"></div>
                     <div class="info-center">
                         <span class="trainer-center" th:text="${trainer.center}"></span>
                     </div>
@@ -71,7 +70,7 @@
                         <span th:text="${certificate.name}"></span>
                     </div>
                     <div class="certificate-img">
-                        <img th:attr="src=${certificatePathList[__${loop.index}__]}" alt="">
+                        <img th:attr="src=${@commonUtil.getFilePath(certificate.image.id)}" alt="">
                     </div>
                 </div>
             </div>
@@ -81,10 +80,10 @@
                 <h3>레슨 이용가격</h3>
                 <div class="lesson-list-box">
                     <div class="lesson-list" th:each="lesson:${trainer.lessonList}">
-                        <div class="number" th:text="${lesson.number}+'회'"></div>
+                        <div class="number" th:text="|${lesson.number} 회|"></div>
                         <div class="price-box">
-                            <div class="unit-price" th:text="|회당 ${#numbers.formatInteger(lesson.price/lesson.number, 0, 'COMMA')} 원|"></div>
-                            <div class="total-price" th:text="|${#numbers.formatInteger(lesson.price, 0, 'COMMA')} 원|"></div>
+                            <div class="unit-price" th:text="|회당 ${#numbers.formatInteger(lesson.price, 0, 'COMMA')} 원|"></div>
+                            <div class="total-price" th:text="|${#numbers.formatInteger(lesson.price*lesson.number, 0, 'COMMA')} 원|"></div>
                         </div>
                     </div>
                 </div>
@@ -102,17 +101,34 @@
         </div>
     </section>
     <!-- trainer-information-section end -->
+
+    <!-- several parameters input part start; bPageSize, bPage, bKw, bSort, bCategory -->
+    <form th:action="@{/trainer}" method="get" id="parameterForm">
+        <input type="hidden" id="tKw" name="tKw" th:value="${tKw}">
+        <input type="hidden" id="tField" name="tField" th:value="${tField}">
+    </form>
+    <!-- several parameters input part end -->
     <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
     $(document).ready(function () {
-	$("html, body").animate(
-		{
-			scrollTop: $("section.trainer-detail-header").offset().top
-		},
-		0
-	);
-});
+        $("html, body").animate(
+            {
+                scrollTop: $("section.trainer-detail-header").offset().top
+            },
+            0
+        );
+    });
+
+    function _tField(_this) {
+        $("#tField").val(_this.dataset.field);
+        $("#parameterForm").submit();
+    }
+
+    function _tSearch() {
+        $("#tKw").val($("#trainerKeyword").val());
+        $("#parameterForm").submit();
+    }
 
 
 </script>

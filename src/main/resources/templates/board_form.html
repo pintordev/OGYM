@@ -2,12 +2,10 @@
 <script layout:fragment="simplemde" type="text/javascript" th:src="@{/simplemde.min.js}"></script>
 <div layout:fragment="content">
     <!-- 구현 Start -->
-    <!-- board-header-section start -->
-    <section th:replace="~{board_header :: board_headerFragment}"></section>
-    <!-- board-header-section end -->
 
     <!-- board-write-section start -->
     <section class="board-write-section">
+        <h2><a href="/board">커뮤니티</a></h2>
         <h3>글쓰기</h3>
         <form th:object="${boardForm}" method="post" class="board-write-form">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

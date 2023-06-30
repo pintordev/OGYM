@@ -4,8 +4,8 @@
         <h2><a href="/trainer">트레이너</a></h2>
         <div class="right-box">
             <div class="search-box">
-                <input type="text" placeholder="지역/소속/트레이너 이름을 검색해주세요.">
-                <a href="#" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <input type="text" id="trainerKeyword" name="trainerKeyword" th:value="${tKw}" placeholder="지역/소속/트레이너 이름을 검색해주세요.">
+                <a th:onclick="_tSearch()" class="search-btn a-hover"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
             <div class="register-btn-box">
                 <button class="btn" sec:authorize="isAuthenticated()" onclick="location.href='/trainer/register'">트레이너 등록하기</button>
@@ -16,7 +16,10 @@
     <div class="trainer-item-box">
         <h3>트레이닝 종목</h3>
         <div class="trainer-item-list">
-            <div class="trainer-item-text" th:each="field : ${fieldList}"><a href="#" th:text="${field.name}"></a></div>
+            <div class="trainer-item-text" th:each="field : ${fieldList}">
+                <a class="a-hover" th:onclick="_tField(this)"
+                   th:data-field="${field.name}" th:text="${field.name}"></a>
+            </div>
         </div>
     </div>
 </section>

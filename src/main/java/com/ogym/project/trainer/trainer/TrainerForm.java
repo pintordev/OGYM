@@ -8,6 +8,7 @@ import com.ogym.project.trainer.lesson.LessonForm;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class TrainerForm {
 
     @NotEmpty
     private String gender;
+
+    private MultipartFile profileImage;
 
     @NotEmpty
     private String introAbstract;

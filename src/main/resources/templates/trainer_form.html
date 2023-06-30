@@ -58,6 +58,17 @@
                 </li>
             </ul>
             <ul>
+                <li class="type">프로필 사진</li>
+                <li class="content">
+                    <div class="profile-imgUrl">
+                        <div class="uploaded-file-name">프로필 사진을 업로드 해주세요.</div>
+                        <input type="file" th:value="${profileImage}" th:field="*{profileImage}"
+                               placeholder="프로필 사진을 업로드 해주세요." th:onchange="_getFileName(this)">
+                        <label th:for="profileImage"><i class="fa-solid fa-cloud-arrow-up"></i></label>
+                    </div>
+                </li>
+            </ul>
+            <ul>
                 <li class="type">간략한 소개</li>
                 <li class="content">
                     <input type="text" th:field="*{introAbstract}" placeholder="간략한 소개를 입력해주세요.">
@@ -89,6 +100,7 @@
                             <span>회</span>
                         </div>
                         <div class="lesson-price">
+                            <span>총</span>
                             <input type="text" th:value="${lesson.price}" th:field="*{lessonList[__${loop.index}__].price}">
                             <span>원</span>
                         </div>

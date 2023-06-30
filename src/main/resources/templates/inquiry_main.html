@@ -2,8 +2,127 @@
 <div layout:fragment="content">
   <!-- 구현 Start -->
 
+  <section class="inquiry-section">
+    <h2>자주 묻는 질문</h2>
+    <div class="inquiry-list-box">
+      <ul>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 회원가입은 어떻게하나요?</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              상단 배너 오른쪽 회원가입 버튼을 클릭하여 회원가입을 진행하실 수 있습니다. 또한 카카오톡, 네이버, 구글로 연동하여 이용이 가능합니다.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 커뮤니티를 이용하기 위해서는 회원가입을 해야하나요?</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              커뮤니티 뿐만 아니라 트레이너를 이용하더라도 회원가입은 필수입니다.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 비밀번호는 어떻게 찾나요?</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              비밀번호 찾기는 로그인 페이지에 들어가서 비밀번호 찾기를 누르시면, 고객님의 ID와 회원가입 했을 때의 이메일을 입력하시면 찾으실 수 있습니다.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 트레이너 등록은 어떻게 하나요?</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              고객님께서 로그인을 진행 후 상단 배너 왼쪽 트레이너 버튼을 클릭하여 트레이너 페이지로 이동 후 오른쪽 상단에 위치한 트레이너 등록하기 버튼을 클릭하여 필요한 정보를 입력한 다음 등록하기를 눌러주시면 됩니다.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 등록된 트레이너는 믿어도 되나요?</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              등록된 트레이너는 활동중인 센터, 자격증 등을 확인 후 등록을 해드리고 있습니다.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 커뮤니티에 악성 글들이 많습니다.</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              매일 커뮤니티를 확인하며 경고 후 제제를 하고 있습니다.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 헬스운동 품목을 구매하고 싶어요</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              상단 배너 왼쪽 스토어 버튼을 클릭
+              원하시는 물품을 선택하여 구매하기 버튼을 누르시면 됩니다.
+              (현재는 스토어 기능은 구현 예정입니다.)
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 트레이너 pt 회당 가격은 얼마인가요?</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              트레이너 pt 회당 가격은 트레이너 상세페이지에서 확인하실 수 있습니다.
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="inquiry-question">
+            <span>Q. 트레이너 상담은 대면으로만 진행되나요?</span>
+          </div>
+          <div class="inquiry-answer">
+            <div>
+              트레이너 상담은 트레이너 상세 페이지에있는 연락처를 통해 서로 조율하실 수 있습니다.
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
   <!-- 구현 End -->
 </div>
 <script layout:fragment="script" type="text/javascript">
+  function _faqBoxInit() {
+    $(".inquiry-list-box > ul > li").click(function() {
+      $(this).siblings(".hover").find(" > .inquiry-answer").stop().slideUp(300);
+      $(this).siblings(".hover").removeClass("hover");
+
+      if ($(this).hasClass("hover")) {
+        $(this).find(" > .inquiry-answer").stop().slideUp(300);
+        $(this).removeClass("hover");
+      }
+      else {
+        $(this).find(" > .inquiry-answer").stop().slideDown(300);
+        $(this).addClass("hover");
+      }
+    });
+
+    $(".inquiry-answer").click(function() {
+      return false;
+    });
+  }
+  _faqBoxInit();
 </script>
 </html>

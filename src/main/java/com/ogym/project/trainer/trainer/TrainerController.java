@@ -48,13 +48,19 @@ public class TrainerController {
 
     @GetMapping("")
     public String main(Model model,
-                       @RequestParam(value = "page", defaultValue = "0") int page) {
+                       @RequestParam(value = "tPage", defaultValue = "0") int tPage,
+                       @RequestParam(value = "tKw", defaultValue = "") String tKw,
+                       @RequestParam(value = "tField", defaultValue = "") String tField) {
 
         List<Field> fieldList = this.fieldService.getList();
         model.addAttribute("fieldList", fieldList);
 
-        Page<Trainer> trainerPaging = this.trainerService.getList(page);
+        Page<Trainer> trainerPaging = this.trainerService.getList(tPage, tKw, tField);
         model.addAttribute("trainerPaging", trainerPaging);
+
+        model.addAttribute("tPage", tPage);
+        model.addAttribute("tKw", tKw);
+        model.addAttribute("tField", tField);
 
         return "trainer_list";
     }
@@ -69,12 +75,8 @@ public class TrainerController {
         Trainer trainer = this.trainerService.getTrainer(id);
         model.addAttribute("trainer", trainer);
 
-        List<String> certificatePathList = new ArrayList<>();
-        for (Certificate certificate : trainer.getCertificateList()) {
-            UploadedFile image = certificate.getImage();
-            certificatePathList.add(this.fileService.getFilePath(image));
-        }
-        model.addAttribute("certificatePathList", certificatePathList);
+        model.addAttribute("tKw", "");
+        model.addAttribute("tField", "");
 
         return "trainer_detail";
     }
@@ -238,10 +240,29 @@ public class TrainerController {
             fieldList.add(this.fieldService.getField(field));
         }
 
+        // 레슨 평균 값 저장
+        Integer unit = 0;
+        Integer totalPrice = 0;
+        for (LessonForm lessonForm : trainerForm.getLessonList()) {
+            if (lessonForm.getTime() != null && lessonForm.getPrice() != null) {
+                unit += lessonForm.getTime();
+                totalPrice += lessonForm.getPrice();
+            }
+        }
+        Integer avgLessonPrice = totalPrice / 1000 / unit * 10000;
+
+        // 주소 저장
+        AddressForm addressForm = trainerForm.getAddress();
+        Address address = null;
+        if (addressForm.getZoneCode() != null && !addressForm.getMainAddress().equals("")
+                && addressForm.getLatitude() != null && addressForm.getLongitude() != null) {
+            address = this.addressService.create(addressForm.getZoneCode(), addressForm.getMainAddress(), addressForm.getSubAddress(), addressForm.getLatitude(), addressForm.getLongitude());
+        }
+
         // 트레이너 기본 정보 저장
         Trainer trainer = this.trainerService.create(userInfo, trainerForm.getCenter(),
-                trainerForm.getGender(), trainerForm.getIntroAbstract(),
-                trainerForm.getIntroDetail(), fieldList);
+                trainerForm.getGender(), trainerForm.getProfileImage(), trainerForm.getIntroAbstract(),
+                trainerForm.getIntroDetail(), fieldList, avgLessonPrice, address);
 
         // 레슨 정보 저장
         for (LessonForm lessonForm : trainerForm.getLessonList()) {
@@ -264,15 +285,6 @@ public class TrainerController {
             }
         }
 
-        // 주소 저장
-        AddressForm addressForm = trainerForm.getAddress();
-        Address address = null;
-        if (addressForm.getZoneCode() != null && !addressForm.getMainAddress().equals("")
-                && addressForm.getLatitude() != null && addressForm.getLongitude() != null) {
-            address = this.addressService.create(addressForm.getZoneCode(), addressForm.getMainAddress(), addressForm.getSubAddress(), addressForm.getLatitude(), addressForm.getLongitude(), trainer);
-        }
-
-        this.trainerService.saveAddress(address, trainer);
         return String.format("redirect:/trainer/%s", trainer.getId());
     }
 }
