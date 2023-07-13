@@ -1308,7 +1308,9 @@ margin-bottom : 5px;
 	> .trainer-list
 	> .profile-img-box
 	> img {
+	width: 120px;
 	height: 120px;
+	object-fit: cover;
 	border-radius: 50%;
 }
 .trainer-list-section
@@ -1388,7 +1390,9 @@ margin-bottom : 5px;
 	padding-right: 45px;
 }
 .trainer-detail-header > .inner-container > .profile-img-box > img {
+    width: 200px;
 	height: 200px;
+	object-fit: cover;
 	border-radius: 50%;
 }
 .trainer-detail-header > .inner-container > .profile-img-box > .trainer-name {
@@ -1881,7 +1885,9 @@ margin-bottom : 5px;
 }
 
 .mypage-section > .inner-container > .profile-img-box > img {
+    width: 150px;
 	height: 150px;
+	object-fit: cover;
 	border-radius: 50%;
 }
 

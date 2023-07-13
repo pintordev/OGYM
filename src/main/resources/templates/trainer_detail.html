@@ -82,8 +82,8 @@
                     <div class="lesson-list" th:each="lesson:${trainer.lessonList}">
                         <div class="number" th:text="|${lesson.number} 회|"></div>
                         <div class="price-box">
-                            <div class="unit-price" th:text="|회당 ${#numbers.formatInteger(lesson.price, 0, 'COMMA')} 원|"></div>
-                            <div class="total-price" th:text="|${#numbers.formatInteger(lesson.price*lesson.number, 0, 'COMMA')} 원|"></div>
+                            <div class="unit-price" th:text="|회당 ${#numbers.formatInteger(lesson.price/lesson.number, 0, 'COMMA')} 원|"></div>
+                            <div class="total-price" th:text="|${#numbers.formatInteger(lesson.price, 0, 'COMMA')} 원|"></div>
                         </div>
                     </div>
                 </div>
