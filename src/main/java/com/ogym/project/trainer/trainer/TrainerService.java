@@ -1,33 +1,22 @@
 package com.ogym.project.trainer.trainer;
 
 import com.ogym.project.DataNotFoundException;
-import com.ogym.project.board.board.Board;
 import com.ogym.project.file.FileService;
 import com.ogym.project.file.UploadedFile;
 import com.ogym.project.trainer.address.Address;
-import com.ogym.project.trainer.address.AddressRepository;
-import com.ogym.project.trainer.certificate.Certificate;
-import com.ogym.project.trainer.contact.Contact;
 import com.ogym.project.trainer.field.Field;
-import com.ogym.project.trainer.field.FieldRepository;
-import com.ogym.project.trainer.lesson.Lesson;
-import com.ogym.project.trainer.lesson.LessonForm;
 import com.ogym.project.user.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.zip.DataFormatException;
 
 @RequiredArgsConstructor
 @Service
