@@ -13,6 +13,7 @@ import java.util.Properties;
 @RequiredArgsConstructor
 @Service
 public class UserEmailService {
+
     private final JavaMailSender javaMailSender;
 
     public void mailSend(String email, String type, String type2, String code) {

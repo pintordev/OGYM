@@ -1,5 +1,6 @@
 package com.ogym.project.user.user;
 
+import com.ogym.project.CommonUtil;
 import com.ogym.project.DataNotFoundException;
 
 import com.ogym.project.board.board.Board;

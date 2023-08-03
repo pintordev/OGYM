@@ -52,7 +52,7 @@ public class BoardController {
 
         Map<Category, Long> bcc = new HashMap<>();
         for (Category category : categoryList) {
-            if(!category.getName().equals("공지")) {
+            if (!category.getName().equals("공지")) {
                 Long count = this.boardService.getCount(category);
                 bcc.put(category, count);
             }
@@ -103,7 +103,7 @@ public class BoardController {
 
         Map<Category, Long> bcc = new HashMap<>();
         for (Category category : categoryList) {
-            if(!category.getName().equals("공지")) {
+            if (!category.getName().equals("공지")) {
                 Long count = this.boardService.getCount(category);
                 bcc.put(category, count);
             }
@@ -138,7 +138,7 @@ public class BoardController {
 
         Map<Category, Long> bcc = new HashMap<>();
         for (Category category : categoryList) {
-            if(!category.getName().equals("공지")) {
+            if (!category.getName().equals("공지")) {
                 Long count = this.boardService.getCount(category);
                 bcc.put(category, count);
             }
@@ -161,7 +161,7 @@ public class BoardController {
 
             Map<Category, Long> bcc = new HashMap<>();
             for (Category category : categoryList) {
-                if(!category.getName().equals("공지")) {
+                if (!category.getName().equals("공지")) {
                     Long count = this.boardService.getCount(category);
                     bcc.put(category, count);
                 }
@@ -197,7 +197,7 @@ public class BoardController {
 
         Map<Category, Long> bcc = new HashMap<>();
         for (Category category : categoryList) {
-            if(!category.getName().equals("공지")) {
+            if (!category.getName().equals("공지")) {
                 Long count = this.boardService.getCount(category);
                 bcc.put(category, count);
             }
@@ -230,7 +230,7 @@ public class BoardController {
 
             Map<Category, Long> bcc = new HashMap<>();
             for (Category category : categoryList) {
-                if(!category.getName().equals("공지")) {
+                if (!category.getName().equals("공지")) {
                     Long count = this.boardService.getCount(category);
                     bcc.put(category, count);
                 }
@@ -293,7 +293,8 @@ public class BoardController {
         System.out.println(referUri);
 
         // 게시판에서 접근한 경우가 아니면 reject
-        if (!referUri.startsWith("/board") && !referUri.equals("/index") && !referUri.startsWith("/user/mypage")) return false;
+        if (!referUri.startsWith("/board") && !referUri.equals("/index") && !referUri.startsWith("/user/mypage"))
+            return false;
 
         Cookie oldCookie = null;
 
@@ -321,7 +322,7 @@ public class BoardController {
             return false;
         } else {
             // 쿠키가 없다면 새로 생성해서 해당 게시물 id를 조회한 결과를 쿠기에 저장
-            Cookie newCookie = new Cookie("boardHit","[" + id + "]");
+            Cookie newCookie = new Cookie("boardHit", "[" + id + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(30); // 지속시간 30초
             response.addCookie(newCookie); // 쿠키를 브라우저에 저장
