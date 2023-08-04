@@ -2,6 +2,7 @@ package com.ogym.project.file;
 
 import com.ogym.project.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class FileService {
@@ -57,9 +59,15 @@ public class FileService {
                 + "_" + date
                 + "." + ext;
 
-        File target = new File(saveFilePath);
-        if (!target.exists()) target.mkdir();
-        file.transferTo(target);
+        File target = new File(saveDirPath);
+        if (!target.exists()) {
+            log.info(saveDirPath + " 경로가 존재하지 않습니다.");
+            target.mkdir();
+            log.info(saveDirPath + " 경로를 생성했습니다.");
+        }
+
+        file.transferTo(new File(saveFilePath));
+        log.info(saveFilePath + " 파일 저장을 완료했습니다.");
 
         UploadedFile uploadedFile = new UploadedFile();
 
