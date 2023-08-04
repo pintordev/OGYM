@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -272,7 +273,7 @@ public class BoardController {
         SiteUser voter = this.userService.getUserByLoginId(principal.getName());
 
         if (presentBoard.getAuthor().getLoginId().equals(voter.getLoginId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "본인이 작성한 글은 추천할 수 없습니다.");
+            throw new RuntimeException("본인이 작성한 글은 추천할 수 없습니다.");
         }
 
         this.boardService.vote(presentBoard, voter);
