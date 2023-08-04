@@ -57,7 +57,9 @@ public class FileService {
                 + "_" + date
                 + "." + ext;
 
-        file.transferTo(new File(saveFilePath));
+        File target = new File(saveFilePath);
+        if (!target.exists()) target.mkdir();
+        file.transferTo(target);
 
         UploadedFile uploadedFile = new UploadedFile();
 
