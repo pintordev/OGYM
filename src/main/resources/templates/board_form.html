@@ -13,7 +13,7 @@
                 <div>
                     <select th:field="*{category}">
                         <option th:each="category : ${categoryList}" th:value="${category.name}" th:text="${category.name}"
-                                th:attr="disabled=${category.name == '공지' and !#strings.contains(#authentication.getAuthorities(), 'admin') ? 'true' : 'false'}"></option>
+                                th:attr="disabled=${category.name == '공지' and !#strings.contains(#authentication.authorities, 'admin')}"></option>
                     </select>
                 </div>
                 <input type="text" th:field="*{title}" placeholder="제목">
