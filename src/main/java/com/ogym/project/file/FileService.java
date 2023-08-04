@@ -62,14 +62,10 @@ public class FileService {
         File target = new File(saveDirPath);
         if (!target.exists()) {
             log.info(saveDirPath + " 경로가 존재하지 않습니다.");
-            target.mkdir();
+            target.mkdirs();
             log.info(saveDirPath + " 경로를 생성했습니다.");
-        }
-
-        if (target.exists()) {
-            log.info(saveDirPath + " 경로가 존재합니다.");
         } else {
-            log.info(saveDirPath + " 경로가 존재하지 않습니다.");
+            log.info(saveDirPath + " 경로가 존재합니다.");
         }
 
         file.transferTo(new File(saveFilePath));
